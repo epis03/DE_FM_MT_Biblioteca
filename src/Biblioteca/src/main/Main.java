@@ -1,11 +1,16 @@
 package main;
 
 import java.util.Scanner;
-
+import gui.*;
 
 public class Main {
     public static void main(String[] args) {
-        GestioneUtenti gestioneUtenti = new GestioneUtenti();
+    	
+    	new Home().main(args);
+    	
+    	
+    	
+       /* GestioneUtenti gestioneUtenti = new GestioneUtenti();
         Scanner scanner = new Scanner(System.in);
 
        
@@ -21,6 +26,6 @@ public class Main {
         gestioneUtenti.autenticaUtente(username, password);
         
      
-        gestioneUtenti.listaUtenti();
+        gestioneUtenti.listaUtenti(); */
     }
 }
