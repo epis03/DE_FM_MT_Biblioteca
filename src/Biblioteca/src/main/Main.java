@@ -1,9 +1,6 @@
 package main;
 
-import java.util.Scanner;
 
-
-import com.biblioteca.gestione.GestioneUtenti;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
