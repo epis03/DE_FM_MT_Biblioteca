@@ -5,5 +5,6 @@
  * 
  */
 module Biblioteca {
-	requires log4j.api;
+	
+	requires org.apache.logging.log4j;
 }
