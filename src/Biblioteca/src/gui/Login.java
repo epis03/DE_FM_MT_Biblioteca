@@ -98,7 +98,7 @@ public class Login extends JDialog {
 		lblNewLabel_1.setBounds(31, 100, 163, 56);
 		contentPanel.add(lblNewLabel_1);
 		
-		codFiscale = new Text();
+		codFiscale = new JTextField();
 		codFiscale.addKeyListener(new KeyAdapter() {
 			
 			public void keyReleased(KeyEvent e) {
