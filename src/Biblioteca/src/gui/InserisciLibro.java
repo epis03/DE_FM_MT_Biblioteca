@@ -1,29 +1,35 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
 
-
-
-public class Registrazione extends JDialog {
+public class InserisciLibro extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private final JLabel lblNewLabel_2 = new JLabel("Registrazione");
-
+	private static boolean datiInseriti = false;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			Registrazione dialog = new Registrazione();
+			InserisciLibro dialog = new InserisciLibro();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -34,43 +40,19 @@ public class Registrazione extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Registrazione() {
-		setBounds(100, 100, 433, 359);
+	public InserisciLibro() {
+		setAlwaysOnTop(true);
+		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(new Color(240, 248, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
-		lblNewLabel_2.setBounds(81, 20, 239, 51);
-		contentPanel.add(lblNewLabel_2);
-		
-		
-		JLabel date = new JLabel();
+		JLabel date = new JLabel("");
 		date.setBounds(10, -3, 406, 22);
 		contentPanel.add(date);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(306, 93, 45, 13);
-		contentPanel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(54, 93, 45, 13);
-		contentPanel.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(71, 189, 45, 13);
-		contentPanel.add(lblNewLabel_3);
-		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		lblNewLabel_4.setBounds(188, 146, 45, 13);
-		contentPanel.add(lblNewLabel_4);
-		
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setBounds(188, 174, 45, 13);
-		contentPanel.add(lblNewLabel_5);
 		Timer timer = new Timer(1000, new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
@@ -79,7 +61,6 @@ public class Registrazione extends JDialog {
 		});
 		timer.start();
 
-		
 		{
 			JPanel buttonPane = new JPanel();
 			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.RIGHT);
@@ -96,7 +77,8 @@ public class Registrazione extends JDialog {
 				cancelButton.setPreferredSize(new Dimension(77, 30));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Home.chiudiRegistrazione();
+						datiInseriti=false;
+						TabellaLibri.chiudiInserimento();
 					}
 				});
 				buttonPane.add(cancelButton);
@@ -104,8 +86,11 @@ public class Registrazione extends JDialog {
 			{
 				JButton okButton = new JButton("Conferma");
 				okButton.setMargin(new Insets(2, 8, 2, 14));
-				
-				
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+				});
 				okButton.setForeground(new Color(0, 0, 255));
 				okButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 9));
 				okButton.setPreferredSize(new Dimension(77, 30));
@@ -115,7 +100,8 @@ public class Registrazione extends JDialog {
 			}
 		}
 	}
+	
+	public static boolean verificaDatiInseriti() {
+		return datiInseriti;
 	}
-	
-	
-	
+}
