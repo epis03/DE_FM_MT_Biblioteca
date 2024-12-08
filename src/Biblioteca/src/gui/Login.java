@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 
@@ -59,7 +61,7 @@ public class Login extends JDialog {
 				mostraPassword=true;
 				}
 		});
-		mostra.setBounds(277, 164, 115, 21);
+		mostra.setBounds(277, 178, 115, 21);
 		contentPanel.add(mostra);
 		
 		nascondi = new JToggleButton("Nascondi Password");
@@ -75,27 +77,27 @@ public class Login extends JDialog {
 	    });
 		nascondi.setSelected(true);
 		nascondi.setVisible(false);
-		nascondi.setBounds(277, 164, 115, 21);
+		nascondi.setBounds(277, 178, 115, 21);
 		contentPanel.add(nascondi);
 		
 		passwordVisibile = new JTextField();
 		passwordVisibile.setVisible(false);
-		passwordVisibile.setBounds(135, 165, 115, 19);
+		passwordVisibile.setBounds(135, 179, 115, 19);
 		contentPanel.add(passwordVisibile);
 		passwordVisibile.setColumns(10);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(135, 165, 115, 19);
+		passwordField.setBounds(135, 179, 115, 19);
 		contentPanel.add(passwordField);
 		
 		JLabel lblNewLabel = new JLabel("Password");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel.setBounds(41, 166, 87, 13);
+		lblNewLabel.setBounds(43, 180, 87, 13);
 		contentPanel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Codice Fiscale");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(31, 100, 163, 56);
+		lblNewLabel_1.setBounds(31, 113, 163, 56);
 		contentPanel.add(lblNewLabel_1);
 		
 		codFiscale = new JTextField();
@@ -105,22 +107,34 @@ public class Login extends JDialog {
 				codFiscale.setText(codFiscale.getText().toUpperCase());
 			}
 		});
-		codFiscale.setBounds(135, 121, 115, 19);
+		codFiscale.setBounds(135, 134, 115, 19);
 		contentPanel.add(codFiscale);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
-		lblNewLabel_2.setBounds(152, 0, 115, 50);
+		lblNewLabel_2.setBounds(147, 10, 115, 50);
 		contentPanel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Inserisci le tue credenziali");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_3.setBounds(95, 60, 225, 30);
+		lblNewLabel_3.setBounds(95, 70, 225, 30);
 		contentPanel.add(lblNewLabel_3);
 		
 	    accesso = new JLabel("");
 	    accesso.setForeground(new Color(255, 0, 0));
 	    accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
-		accesso.setBounds(31, 211, 385, 36);
+		accesso.setBounds(31, 214, 385, 36);
 		contentPanel.add(accesso);
+		
+		JLabel date = new JLabel();
+		date.setBounds(10, -3, 406, 22);
+		contentPanel.add(date);
+		Timer timer = new Timer(1000, new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
+		        date.setText(currentTime);
+		    }
+		});
+		timer.start();
+
 		
 		{
 			JPanel buttonPane = new JPanel();
@@ -172,7 +186,7 @@ public class Login extends JDialog {
 			password = passwordVisibile.getText();
 		}
 		else {
-			password = passwordField.getText();
+			password = new String(passwordField.getPassword());
 		}
 		return password;
 	}
