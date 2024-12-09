@@ -5,14 +5,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
-
+import gui.*;
 
  public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
     	
-        GestioneUtenti gestioneUtenti = new GestioneUtenti();
+    	new Home().main(args);
+    	
+    	
+    	
+       /* GestioneUtenti gestioneUtenti = new GestioneUtenti();
         Scanner scanner = new Scanner(System.in);
 
        
@@ -29,5 +33,7 @@ import java.util.Scanner;
 
         
         gestioneUtenti.listaUtenti();
+     
+        gestioneUtenti.listaUtenti(); */
     }
 }
