@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <!-- Specifica il JRE (JavaSE-21) -->
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
-        <attributes>
-            <attribute name="module" value="true"/>
-            <attribute name="maven.pomderived" value="true"/>
-        </attributes>
-    </classpathentry>
-
-    <!-- Specifica i sorgenti principali -->
-    <classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
-        <attributes>
-            <attribute name="optional" value="true"/>
-            <attribute name="maven.pomderived" value="true"/>
-        </attributes>
-    </classpathentry>
-
-    <!-- Specifica la directory delle risorse -->
-    <classpathentry kind="src" path="resource"/>
-
-    <!-- Specifica la directory aggiuntiva (Immagini) -->
-    <classpathentry kind="src" path="Immagini"/>
-
-    <!-- Contenitore delle dipendenze Maven -->
-    <classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
-        <attributes>
-            <attribute name="maven.pomderived" value="true"/>
-        </attributes>
-    </classpathentry>
-
-    <!-- Librerie esterne (JGoodies) -->
-    <classpathentry kind="lib" path="com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
-    <classpathentry kind="lib" path="com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
-
-    <!-- Directory di output -->
-    <classpathentry kind="output" path="target/classes"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
+		<attributes>
+			<attribute name="module" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="resource"/>
+	<classpathentry kind="src" path="Immagini"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
+	<classpathentry exported="true" kind="lib" path="com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
