@@ -23,3 +23,5 @@
 hs_err_pid*
 replay_pid*
 src/Biblioteca/.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.core.resources.prefs
+src/.settings/org.eclipse.core.resources.prefs
