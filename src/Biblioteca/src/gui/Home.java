@@ -94,14 +94,14 @@ public class Home  {
 
 	public static void chiudiRegistrazione() {
 		
-		reg.setVisible(false);
+		reg.dispose();
 		frame.setVisible(true);
 		
 		}
 	
 public static void chiudiLogin() {
 		
-		log.setVisible(false);
+		log.dispose();
 		frame.setVisible(true);
 		}
 	

@@ -10,18 +10,19 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import main.*;
 
 
 
 public class Login extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	private static Login dialog;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField passwordVisibile;
 	private JToggleButton  nascondi;
 	private JPasswordField passwordField;
-	private JTextField codFiscale;
+	private JTextField usernameField;
 	private final JLabel lblNewLabel_2 = new JLabel("Login");
 	private JLabel accesso;
 	private boolean mostraPassword = false;
@@ -31,7 +32,7 @@ public class Login extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			Login dialog = new Login();
+		    dialog = new Login();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -53,7 +54,7 @@ public class Login extends JDialog {
 		JToggleButton 	mostra = new JToggleButton("Mostra password");
 		mostra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				passwordVisibile.setText((passwordField.getText()));
+				passwordVisibile.setText(( new String(passwordField.getPassword())));
 				passwordField.setVisible(false);
 				passwordVisibile.setVisible(true);
 				mostra.setVisible(false);
@@ -95,20 +96,20 @@ public class Login extends JDialog {
 		lblNewLabel.setBounds(43, 180, 87, 13);
 		contentPanel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Codice Fiscale");
+		JLabel lblNewLabel_1 = new JLabel("Username");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1.setBounds(31, 113, 163, 56);
 		contentPanel.add(lblNewLabel_1);
 		
-		codFiscale = new JTextField();
-		codFiscale.addKeyListener(new KeyAdapter() {
+		usernameField = new JTextField();
+		/* codFiscale.addKeyListener(new KeyAdapter() {
 			
 			public void keyReleased(KeyEvent e) {
 				codFiscale.setText(codFiscale.getText().toUpperCase());
 			}
-		});
-		codFiscale.setBounds(135, 134, 115, 19);
-		contentPanel.add(codFiscale);
+		}); */
+		usernameField.setBounds(135, 134, 115, 19);
+		contentPanel.add(usernameField);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 		lblNewLabel_2.setBounds(147, 10, 115, 50);
 		contentPanel.add(lblNewLabel_2);
@@ -162,12 +163,27 @@ public class Login extends JDialog {
 				okButton.setMargin(new Insets(2, 8, 2, 14));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String codiceFiscale = new String();
-						codiceFiscale= codFiscale.getText();
+						String username = new String();
+						username= usernameField.getText();
 						String password = new String();
 						password = acquisisciPassword();
-						verificaDati(codiceFiscale, password);
-					}
+						if (verificaDati(username, password)) {
+						GestioneUtenti gestioneUtenti = new GestioneUtenti();
+						if( gestioneUtenti.autenticaUtente(username, password)) {
+							accesso.setText("Autenticazione avvenuta con successo");
+							Timer timer = new Timer(5000, new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									TabellaLibri table = new TabellaLibri();
+									table.setVisible(true);
+									Login.this.dispose();
+								}});
+					        timer.setRepeats(false); 
+					        timer.start();
+						} else {
+						accesso.setText("ACCESSO NEGATO: Autenticazione fallita" );
+						}
+							}
+						}
 				});
 				okButton.setForeground(new Color(0, 0, 255));
 				okButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 9));
@@ -191,9 +207,10 @@ public class Login extends JDialog {
 		return password;
 	}
 	
-	public void verificaDati(String codicefiscale,String password) {
+	public boolean verificaDati(String username,String password) {
+		GestioneUtenti gestioneUtenti = new GestioneUtenti();
 		boolean condition= true;
-		if(password.isBlank() && codicefiscale.isBlank()) {
+		if(password.isBlank() && username.isBlank()) {
 			 accesso.setText("ACCESSO NEGATO: Inserire codice fiscale e password");
 			 condition = false;
 		}
@@ -201,12 +218,10 @@ public class Login extends JDialog {
 			accesso.setText("ACCESSO NEGATO: Inserire password");
 			condition=false;
 		}
-		if(condition && codicefiscale.isBlank()){
+		if(condition && username.isBlank()){
 			accesso.setText("ACCESSO NEGATO: Inserire codice fiscale");
 			 condition = false;
-		}
-		if(condition && codicefiscale.length() != 16) {
-			accesso.setText("ACCESSO NEGATO: Codice fiscale errato");
-		}
+		}	
+		return condition;
 	}
 }

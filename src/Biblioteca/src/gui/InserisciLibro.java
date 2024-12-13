@@ -17,13 +17,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-import javax.swing.SwingConstants;
+
 
 public class InserisciLibro extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private static boolean datiInseriti = false;
+
 	/**
 	 * Launch the application.
 	 */
@@ -77,7 +77,6 @@ public class InserisciLibro extends JDialog {
 				cancelButton.setPreferredSize(new Dimension(77, 30));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						datiInseriti=false;
 						TabellaLibri.chiudiInserimento();
 					}
 				});
@@ -88,7 +87,7 @@ public class InserisciLibro extends JDialog {
 				okButton.setMargin(new Insets(2, 8, 2, 14));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
+						//TabellaLibri.inserisciRiga(getName(), getTitle(), getWarningString(), getName());
 					}
 				});
 				okButton.setForeground(new Color(0, 0, 255));
@@ -99,9 +98,5 @@ public class InserisciLibro extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 		}
-	}
-	
-	public static boolean verificaDatiInseriti() {
-		return datiInseriti;
 	}
 }
