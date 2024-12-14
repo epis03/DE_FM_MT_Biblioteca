@@ -77,7 +77,7 @@ public class InserisciLibro extends JDialog {
 				cancelButton.setPreferredSize(new Dimension(77, 30));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						TabellaLibri.chiudiInserimento();
+						InserisciLibro.this.dispose();
 					}
 				});
 				buttonPane.add(cancelButton);
@@ -88,6 +88,7 @@ public class InserisciLibro extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						//TabellaLibri.inserisciRiga(getName(), getTitle(), getWarningString(), getName());
+						InserisciLibro.this.dispose();
 					}
 				});
 				okButton.setForeground(new Color(0, 0, 255));

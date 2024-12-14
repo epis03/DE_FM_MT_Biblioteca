@@ -173,7 +173,7 @@ public class Login extends JDialog {
 							accesso.setText("Autenticazione avvenuta con successo");
 							Timer timer = new Timer(5000, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
-									TabellaLibri table = new TabellaLibri();
+									TabellaLibriAmministratori table = new TabellaLibriAmministratori();
 									table.setVisible(true);
 									Login.this.dispose();
 								}});
