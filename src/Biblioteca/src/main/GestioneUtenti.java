@@ -30,14 +30,14 @@ public class GestioneUtenti {
     }
 
     
-    public Utente autenticaUtente(String username, String password) {
+    public boolean autenticaUtente(String username, String password) {
         Utente utente = utenti.get(username);
         if (utente != null && utente.verificaPassword(password)) {
             logger.info("Autenticazione riuscita per l'utente '{}'.", username);
-            return utente;
+            return true;
         } else {
             logger.error("Autenticazione fallita per l'utente '{}'.", username);
-            return null;
+            return false;
         }
     }
 
