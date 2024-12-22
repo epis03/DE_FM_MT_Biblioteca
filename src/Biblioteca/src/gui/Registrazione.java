@@ -48,7 +48,8 @@ public class Registrazione extends JDialog {
 	 * Create the dialog.
 	 */
 	public Registrazione() {
-		setBounds(100, 100, 465, 397);
+		setResizable(false);
+		setBounds(100, 100, 471, 360);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(240, 248, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -143,7 +144,7 @@ public class Registrazione extends JDialog {
 		
 		
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
-		lblNewLabel_2.setBounds(85, 10, 239, 51);
+		lblNewLabel_2.setBounds(100, 10, 239, 51);
 		contentPanel.add(lblNewLabel_2);
 		
 		
@@ -153,7 +154,7 @@ public class Registrazione extends JDialog {
 		
 		JLabel conferma = new JLabel("Conferma password:");
 		conferma.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		conferma.setBounds(5, 180, 142, 22);
+		conferma.setBounds(6, 180, 142, 22);
 		contentPanel.add(conferma);
 		
 		JLabel lblNewLabel_1 = new JLabel("Username:");
@@ -165,7 +166,7 @@ public class Registrazione extends JDialog {
 		
 		JLabel lblNewLabel_5 = new JLabel("Scegli username e password");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		lblNewLabel_5.setBounds(85, 50, 252, 36);
+		lblNewLabel_5.setBounds(110, 50, 252, 36);
 		contentPanel.add(lblNewLabel_5);
 		
 		usernameField = new JTextField();
@@ -223,13 +224,7 @@ public class Registrazione extends JDialog {
 						if (verificaDati(username, password, passwordConferma)) {
 							GestioneUtenti gestioneUtenti = new GestioneUtenti();
 							if( gestioneUtenti.registraUtente(username, password, "amministratore")) {
-								accesso.setText("Utente " + username + " registrato correttamente");
-								Timer timer = new Timer(5000, new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-								Home.chiudiRegistrazione();
-									}});
-						        timer.setRepeats(false); 
-						        timer.start();
+								
 							}
 							else{
 								accesso.setText("L'utente " + username + " è già registrato" ); 
