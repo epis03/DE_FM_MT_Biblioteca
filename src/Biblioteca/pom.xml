@@ -8,21 +8,17 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <build>
-    <plugins>
-        <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version>
-            <configuration>
-                <release>21</release>
-            </configuration>
-        </plugin>
-        <plugin>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>3.3.1</version>
-        </plugin>
-    </plugins>
-</build>
-
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
