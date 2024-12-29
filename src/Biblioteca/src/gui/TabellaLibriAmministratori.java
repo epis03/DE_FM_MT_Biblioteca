@@ -38,7 +38,7 @@ public class TabellaLibriAmministratori extends JFrame {
 	private static InserisciLibro insert;
 	private JPanel contentPane;
 	private static JTable table;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -110,10 +110,7 @@ public class TabellaLibriAmministratori extends JFrame {
         for (int i = 0; i < 3; i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(new CustomizedTableCellRenderer());
         }
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-		model.addRow(new Object[]{ "autore", "titolo",  "genere", "Visualizza Stato", "Modifica"});
-		model.addRow(new Object[]{ "autore", "titolo",  "genere", "Visualizza Stato", "Modifica"});
-		
+        DefaultTableModel model = (DefaultTableModel) table.getModel();		
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
 		      table.setRowSorter(sorter);
 		      sorter.setSortKeys(java.util.Collections.singletonList(
@@ -130,8 +127,8 @@ public class TabellaLibriAmministratori extends JFrame {
       table.getColumnModel().getColumn(4).setCellRenderer(new CustomizedTableRenderer("Modifica"));
       table.getColumnModel().getColumn(4).setCellEditor(new CustomizedCellEditor(new JButton("Modifica"),  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-          int selectedRow = table.getSelectedRow();
-          if (selectedRow != -1) {
+         int riga  = table.getSelectedRow();
+          if (riga != -1) {
               Object[] options = {"Aggiorna Dati", "Elimina"};
               int choice = javax.swing.JOptionPane.showOptionDialog(
                   null,
@@ -145,7 +142,7 @@ public class TabellaLibriAmministratori extends JFrame {
               );
               if (choice == 0) {
             	  ModificaRiga update = new ModificaRiga();
-            	update.modifica(table.getValueAt(selectedRow, 0),table.getValueAt(selectedRow, 1),table.getValueAt(selectedRow, 2));
+            	update.modifica(table.getValueAt(riga, 0),table.getValueAt(riga, 1),table.getValueAt(riga, 2), riga);
               } else if (choice == 1) {
 
                   Object[] opzioni = {"SI", "NO"};
@@ -160,7 +157,7 @@ public class TabellaLibriAmministratori extends JFrame {
                       opzioni[1]
                   );
                   if (scelta== 0) {
-                	  ((DefaultTableModel) table.getModel()).removeRow(selectedRow);
+                	  eliminaRiga(riga);
                 	  JOptionPane.showMessageDialog(null, "Riga eliminata");
                   } else if (scelta == 1) {
                 	  JOptionPane.showMessageDialog(null, "Azione cancellata");
@@ -190,7 +187,7 @@ public class TabellaLibriAmministratori extends JFrame {
 
 	
 	
-	public static void inserisciRiga(String autore, String titolo,String genere, String disponibilità) {
+	public static void inserisciRiga(String autore, String titolo,String genere, int copie) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.addRow(new Object[]{ autore, titolo,  genere, "Visualizza Stato", "Modifica"});
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
@@ -198,9 +195,21 @@ public class TabellaLibriAmministratori extends JFrame {
 		      sorter.setSortKeys(java.util.Collections.singletonList(
 		              new RowSorter.SortKey(0, SortOrder.ASCENDING)
 		          ));
-		       
+		      
 	}
-
+	
+	public static void eliminaRiga(int riga) {
+		 ((DefaultTableModel) table.getModel()).removeRow(riga);
+     }
+	
+	public static void modificaRiga(String autore, String titolo,String genere, int copie,int riga) {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		String [] dati =  {autore, titolo, genere};
+		for(int i=0;i<3;i++) {
+		model.setValueAt(dati[i], riga, i);
+	}
+	}
+      
     class CustomizedTableRenderer extends JButton implements TableCellRenderer {
         /**
 		 * 
