@@ -86,7 +86,7 @@ public class Home  {
 		
 		JLabel Sfondo = new JLabel("");
 		Sfondo.setLabelFor(frame);
-		Image immagini = new ImageIcon(this.getClass().getResource("/ImmagineBiblioteca.png")).getImage();
+		Image immagini = new ImageIcon(getClass().getResource("/immagini/ImmagineBiblioteca.png")).getImage();
 		Sfondo.setIcon(new ImageIcon(immagini));
 		Sfondo.setBounds(0, -49, 593, 504);
 		frame.getContentPane().add(Sfondo);
