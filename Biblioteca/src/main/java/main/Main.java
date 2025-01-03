@@ -2,9 +2,7 @@ package main;
 
 
 
-import main.DatabaseManager;
-import main.GestioneLibri;
-import main.GestioneUtenti;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
