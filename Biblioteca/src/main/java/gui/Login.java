@@ -23,7 +23,7 @@ public class Login extends JDialog {
 	private JTextField passwordVisibile;
 	private JToggleButton  nascondi;
 	private JPasswordField passwordField;
-	private JTextField usernameField;
+	private JTextField emailField;
 	private final JLabel lblNewLabel_2 = new JLabel("Login");
 	private JLabel accesso;
 	private boolean mostraPassword = false;
@@ -94,23 +94,17 @@ public class Login extends JDialog {
 		
 		JLabel lblNewLabel = new JLabel("Password");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel.setBounds(43, 180, 87, 13);
+		lblNewLabel.setBounds(31, 180, 87, 13);
 		contentPanel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Username");
+		JLabel lblNewLabel_1 = new JLabel("Email");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(31, 113, 163, 56);
+		lblNewLabel_1.setBounds(31, 134, 71, 21);
 		contentPanel.add(lblNewLabel_1);
 		
-		usernameField = new JTextField();
-		/* codFiscale.addKeyListener(new KeyAdapter() {
-			
-			public void keyReleased(KeyEvent e) {
-				codFiscale.setText(codFiscale.getText().toUpperCase());
-			}
-		}); */
-		usernameField.setBounds(135, 134, 115, 19);
-		contentPanel.add(usernameField);
+		emailField = new JTextField();
+		emailField.setBounds(135, 134, 115, 19);
+		contentPanel.add(emailField);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 		lblNewLabel_2.setBounds(147, 10, 115, 50);
 		contentPanel.add(lblNewLabel_2);
@@ -125,25 +119,28 @@ public class Login extends JDialog {
 	    accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		accesso.setBounds(31, 214, 385, 36);
 		contentPanel.add(accesso);
-		
-		JLabel date = new JLabel();
-		date.setBounds(10, -3, 406, 22);
-		contentPanel.add(date);
-		Timer timer = new Timer(1000, new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
-		        date.setText(currentTime);
-		    }
-		});
-		timer.start();
 
+			
+		
 		
 		{
 			JPanel buttonPane = new JPanel();
-			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.RIGHT);
+			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.LEFT);
 			fl_buttonPane.setVgap(10);
 			buttonPane.setLayout(fl_buttonPane);
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			JLabel date = new JLabel();
+			date.setBounds(10, -3, 406, 22);
+			buttonPane.add(date);
+			Timer timer = new Timer(1000, new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
+			        date.setText(currentTime);
+			    }
+			});
+			timer.start();
+			Component horizontalStrut = Box.createHorizontalStrut(60);
+			buttonPane.add(horizontalStrut);
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setMinimumSize(new Dimension(70, 30));
@@ -164,13 +161,13 @@ public class Login extends JDialog {
 				okButton.setMargin(new Insets(2, 8, 2, 14));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String username = new String();
-						username= usernameField.getText();
+						String email = new String();
+						email= emailField.getText();
 						String password = new String();
 						password = acquisisciPassword();
-						if (verificaDati(username, password)) {
+						if (verificaDati(email, password)) {
 						GestioneUtenti gestioneUtenti = new GestioneUtenti();
-						if( gestioneUtenti.autenticaUtente(username, password)) {
+						if( gestioneUtenti.autenticaUtente(email, password)) {
 							accesso.setText("Autenticazione avvenuta con successo");
 							Timer timer = new Timer(5000, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
@@ -208,19 +205,19 @@ public class Login extends JDialog {
 		return password;
 	}
 	
-	public boolean verificaDati(String username,String password) {
+	public boolean verificaDati(String email,String password) {
 		GestioneUtenti gestioneUtenti = new GestioneUtenti();
 		boolean condition= true;
-		if(password.isBlank() && username.isBlank()) {
-			 accesso.setText("ACCESSO NEGATO: Inserire codice fiscale e password");
+		if(password.isBlank() && email.isBlank()) {
+			 accesso.setText("ACCESSO NEGATO: Inserire email e password");
 			 condition = false;
 		}
 		if(condition && password.isBlank()) {
 			accesso.setText("ACCESSO NEGATO: Inserire password");
 			condition=false;
 		}
-		if(condition && username.isBlank()){
-			accesso.setText("ACCESSO NEGATO: Inserire codice fiscale");
+		if(condition && email.isBlank()){
+			accesso.setText("ACCESSO NEGATO: Inserire email");
 			 condition = false;
 		}	
 		return condition;

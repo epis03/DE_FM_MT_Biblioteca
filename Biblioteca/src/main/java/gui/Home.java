@@ -84,12 +84,12 @@ public class Home  {
 		lblNewLabel.setBounds(0, 34, 583, 153);
 		frame.getContentPane().add(lblNewLabel);
 		
-		JLabel Sfondo = new JLabel("");
-		Sfondo.setLabelFor(frame);
+		JLabel sfondo = new JLabel("");
+		sfondo.setLabelFor(frame);
 		Image immagini = new ImageIcon(getClass().getResource("/immagini/ImmagineBiblioteca.png")).getImage();
-		Sfondo.setIcon(new ImageIcon(immagini));
-		Sfondo.setBounds(0, -49, 593, 504);
-		frame.getContentPane().add(Sfondo);
+		sfondo.setIcon(new ImageIcon(immagini));
+		sfondo.setBounds(0, -49, 593, 504);
+		frame.getContentPane().add(sfondo);
 	}
 
 	public static void chiudiRegistrazione() {

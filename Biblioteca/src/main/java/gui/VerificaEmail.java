@@ -15,18 +15,25 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+
+import main.GestioneEmail;
+
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class VerificaEmail extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField inserisciEmail;
+	private JTextField inserisciCodice;
 	private String email;
 	private  String codice;
 	private JLabel accesso;
@@ -48,28 +55,48 @@ public class VerificaEmail extends JDialog {
 	 * Create the dialog.
 	 */
 	public VerificaEmail() {
+		setAlwaysOnTop(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		inserisciEmail = new JTextField();
-		inserisciEmail.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		inserisciEmail.setDocument(new JTextFieldsetLimite()); 
-		inserisciEmail.setBounds(148, 107, 92, 25);
-		contentPanel.add(inserisciEmail);
-		inserisciEmail.setColumns(10);
+		inserisciCodice = new JTextField();
+		inserisciCodice.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		inserisciCodice.setDocument(new JTextFieldsetLimite()); 
+		inserisciCodice.setBounds(134, 131, 114, 36);
+		contentPanel.add(inserisciCodice);
+		inserisciCodice.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Inserisci codice");
-		lblNewLabel.setBounds(10, 112, 102, 13);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel.setBounds(10, 134, 114, 31);
 		contentPanel.add(lblNewLabel);
 		
-		    accesso = new JLabel("");
-		    accesso.setForeground(new Color(255, 0, 0));
-		    accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
-			accesso.setBounds(31, 225, 385, 36);
-			contentPanel.add(accesso);
+		accesso = new JLabel("");
+	    accesso.setForeground(new Color(255, 0, 0));
+	    accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
+		accesso.setBounds(10, 167, 385, 36);
+		contentPanel.add(accesso);
+			
+			JLabel lblNewLabel_1 = new JLabel("VERIFICA EMAIL");
+			lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
+			lblNewLabel_1.setBounds(84, 0, 261, 36);
+			contentPanel.add(lblNewLabel_1);
+			
+			JTextArea sottotilo = new JTextArea();
+			sottotilo.setBackground(new Color(240, 240, 240));
+			sottotilo.setWrapStyleWord(true);
+			sottotilo.setFont(new Font("Verdana Pro", Font.PLAIN, 12));
+			sottotilo.setText("Inserisci il codice inviato a: null \r\nSe l'email non è correta, clicca su cancella per tornare alla schermata di registraizione. \r\nSe non hai ricevuto il codice, clicca \"Nuovo codice\" per riceverne un altro. ");
+			sottotilo.setEditable(false);
+			sottotilo.setLineWrap(true);
+			sottotilo.setSelectedTextColor(new Color(0, 0, 0));
+			sottotilo.setToolTipText("");
+			sottotilo.setRows(2);
+			sottotilo.setBounds(10, 43, 416, 82);
+			contentPanel.add(sottotilo);
 		{
 			JPanel buttonPane = new JPanel();
 			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.RIGHT);
@@ -87,22 +114,46 @@ public class VerificaEmail extends JDialog {
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						VerificaEmail.this.dispose();
+						Home.chiudiRegistrazione();
 					}
 				});
+				
+				JButton nuovoCodice = new JButton("Nuovo codice");
+				nuovoCodice.setMinimumSize(new Dimension(70, 30));
+				nuovoCodice.setMaximumSize(new Dimension(170, 30));
+				nuovoCodice.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+				nuovoCodice.setBackground(new Color(240, 240, 240));
+				nuovoCodice.setForeground(new Color(0, 0, 0));
+				nuovoCodice.setPreferredSize(new Dimension(110, 30));
+				buttonPane.add(nuovoCodice);
+				nuovoCodice.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						codice=GestioneEmail.verificaEmail(email);
+						JOptionPane.showMessageDialog(null, "Ti abbiamo inviato un nuovo codice a: " + email);
+					}
+				});
+				
+				Component horizontalStrut = Box.createHorizontalStrut(145);
+				buttonPane.add(horizontalStrut);
 				buttonPane.add(cancelButton);
+				
 			}
 			{
 				JButton okButton = new JButton("Conferma");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (inserisciEmail.getText().equals(codice)) {
+						if (inserisciCodice.getText().equals(codice)) {
 							accesso.setText("Utente " + email + " registrato correttamente");
 							Timer timer = new Timer(5000, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 							VerificaEmail.this.dispose();
+							
 								}});
 							timer.setRepeats(false); 
 					        timer.start();
+						}
+						else {
+							accesso.setText("Il codice inserito non è corretto!");
 						}
 							}
 							

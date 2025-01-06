@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import main.GestioneEmail;
 import main.GestioneUtenti;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public class Registrazione extends JDialog {
 	private JPasswordField passwordFieldConferma;
 	private JToggleButton nascondiConferma;
 	private boolean mostraConferma = false;
-	private JTextField usernameField;
+	private JTextField emailField;
 	private JLabel accesso;
 	
 
@@ -148,31 +149,27 @@ public class Registrazione extends JDialog {
 		contentPanel.add(lblNewLabel_2);
 		
 		
-		JLabel date = new JLabel();
-		date.setBounds(10, -3, 406, 22);
-		contentPanel.add(date);
-		
 		JLabel conferma = new JLabel("Conferma password:");
 		conferma.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		conferma.setBounds(6, 180, 142, 22);
 		contentPanel.add(conferma);
 		
-		JLabel lblNewLabel_1 = new JLabel("Username:");
+		JLabel lblNewLabel_1 = new JLabel("Email");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1.setBounds(70, 90, 76, 18);
 		contentPanel.add(lblNewLabel_1);
 		
 		
 		
-		JLabel lblNewLabel_5 = new JLabel("Scegli username e password");
+		JLabel lblNewLabel_5 = new JLabel("Inserisci email e password");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		lblNewLabel_5.setBounds(110, 50, 252, 36);
 		contentPanel.add(lblNewLabel_5);
 		
-		usernameField = new JTextField();
-		usernameField.setBounds(162, 90, 132, 19);
-		contentPanel.add(usernameField);
-		usernameField.setColumns(10);
+		emailField = new JTextField();
+		emailField.setBounds(162, 90, 132, 19);
+		contentPanel.add(emailField);
+		emailField.setColumns(10);
 		
 
 	    accesso = new JLabel("");
@@ -181,21 +178,27 @@ public class Registrazione extends JDialog {
 		accesso.setBounds(31, 225, 385, 36);
 		contentPanel.add(accesso);
 	
-		Timer timer = new Timer(1000, new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
-		        date.setText(currentTime);
-		    }
-		});
-		timer.start();
+		
 
 		
 		{
 			JPanel buttonPane = new JPanel();
-			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.RIGHT);
+			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.LEFT);
 			fl_buttonPane.setVgap(10);
 			buttonPane.setLayout(fl_buttonPane);
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			JLabel date = new JLabel();
+			date.setBounds(10, -3, 406, 22);
+			buttonPane.add(date);
+			Timer timer = new Timer(1000, new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
+			        date.setText(currentTime);
+			    }
+			});
+			timer.start();
+			Component horizontalStrut = Box.createHorizontalStrut(95);
+			buttonPane.add(horizontalStrut);
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setMinimumSize(new Dimension(70, 30));
@@ -215,19 +218,21 @@ public class Registrazione extends JDialog {
 				JButton okButton = new JButton("Conferma");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String username = new String();
-						username= usernameField.getText();
+						String email = new String();
+						email= emailField.getText();
 						String password = new String();
 						String passwordConferma = new String();
 						password = acquisisciPassword(mostraPassword,passwordVisibile,passwordField);
 						passwordConferma = acquisisciPassword(mostraConferma, confermaVisibile, passwordFieldConferma);
-						if (verificaDati(username, password, passwordConferma)) {
+						if (verificaDati(email, password, passwordConferma)) {
 							GestioneUtenti gestioneUtenti = new GestioneUtenti();
-							if( gestioneUtenti.registraUtente(username, password, "amministratore")) {
-								
+							if( gestioneUtenti.registraUtente(email, password, "amministratore")) {
+							String	codice = GestioneEmail.verificaEmail(email);
+								VerificaEmail verifica= new VerificaEmail();
+								verifica.verfica(true,codice, email);
 							}
 							else{
-								accesso.setText("L'utente " + username + " è già registrato" ); 
+								accesso.setText("L'utente " + email + " è già registrato" ); 
 							}
 								}
 						}
@@ -257,26 +262,30 @@ public class Registrazione extends JDialog {
 		return password;
 	}
 	
-	public boolean verificaDati(String username,String password, String conferma) {
+	public boolean verificaDati(String email,String password, String conferma) {
 		boolean condition=true;
-		if(password.isBlank() && username.isBlank()) {
-			 accesso.setText("Inserire username e password");
+		if(password.isBlank() && email.isBlank()) {
+			 accesso.setText("Inserire email e password");
+			 condition = false;
+		}
+		if(condition && email.isBlank()){
+			accesso.setText("Inserire email");
+			 condition = false;
+		}
+		if(condition && !email.matches(("^[^@]+@[^@]+\\.[^@]+$"))) {
+			accesso.setText("Formato email errato");
 			 condition = false;
 		}
 		if(condition && password.isBlank()) {
-			accesso.setText(" Inserire password");
+			accesso.setText("Inserire password");
 			condition=false;
-		}
-		if(condition && username.isBlank()){
-			accesso.setText(" Inserire username");
-			 condition = false;
-		}	
+		}		
 		if(condition && conferma.isBlank()) {
-			accesso.setText(" Confermare password");
+			accesso.setText("Confermare password");
 			condition=false;
 		}
 		if(condition && !password.equals(conferma)) {
-			accesso.setText(" Le password non corrispondono");
+			accesso.setText("Le password non corrispondono");
 			condition=false;
 		}
 		return condition;
