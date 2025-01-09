@@ -40,7 +40,7 @@ import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class TabellaLibriBase extends JFrame {
+public abstract class TabellaLibriBase extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static InserisciLibro insert;
@@ -92,8 +92,6 @@ public class TabellaLibriBase extends JFrame {
 		JMenuBar menuBar_1 = new JMenuBar();
 		mnNewMenu.add(menuBar_1);
 		
-		JMenu mnNewMenu_2 = new JMenu("info");
-		menuBar.add(mnNewMenu_2);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

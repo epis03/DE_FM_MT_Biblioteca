@@ -197,7 +197,7 @@ public class Registrazione extends JDialog {
 			    }
 			});
 			timer.start();
-			Component horizontalStrut = Box.createHorizontalStrut(95);
+			Component horizontalStrut = Box.createHorizontalStrut(70);
 			buttonPane.add(horizontalStrut);
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -228,8 +228,8 @@ public class Registrazione extends JDialog {
 							GestioneUtenti gestioneUtenti = new GestioneUtenti();
 							if( gestioneUtenti.registraUtente(email, password, "amministratore")) {
 							String	codice = GestioneEmail.verificaEmail(email);
-								VerificaEmail verifica= new VerificaEmail();
-								verifica.verfica(true,codice, email);
+								VerificaEmail verifica= new VerificaEmail(true,codice, email);
+								verifica.setVisible(true);
 							}
 							else{
 								accesso.setText("L'utente " + email + " è già registrato" ); 

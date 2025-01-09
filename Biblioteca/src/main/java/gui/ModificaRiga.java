@@ -30,23 +30,12 @@ public class ModificaRiga extends JDialog {
 	private JTextField copieTextField;
 	private JTextArea avviso;
 	private int riga;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ModificaRiga dialog = new ModificaRiga();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public ModificaRiga() {
+	public ModificaRiga(Object Autore, Object Titolo, Object Genere, int riga) {
+		this.riga = riga;
 		setResizable(false);
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 489, 358);
@@ -59,9 +48,9 @@ public class ModificaRiga extends JDialog {
 		date.setBounds(10, 0, 406, 22);
 		contentPanel.add(date);
 		
-		JLabel titoloJDialog = new JLabel("Inserisci un nuovo libro");
+		JLabel titoloJDialog = new JLabel("Modifica libro");
 		titoloJDialog.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
-		titoloJDialog.setBounds(90, 9, 292, 63);
+		titoloJDialog.setBounds(138, 9, 244, 63);
 		contentPanel.add(titoloJDialog);
 		{
 			JLabel titolo = new JLabel("Titolo");
@@ -178,10 +167,5 @@ public class ModificaRiga extends JDialog {
 		return condition;
 	}
 
-	public void modifica(Object valueAt, Object valueAt2, Object valueAt3, int riga) {
-		this.riga = riga;
-		ModificaRiga.this.setVisible(true);
-		
-	}
 	
 }

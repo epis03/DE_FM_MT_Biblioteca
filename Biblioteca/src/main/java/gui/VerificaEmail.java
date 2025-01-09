@@ -37,24 +37,14 @@ public class VerificaEmail extends JDialog {
 	private String email;
 	private  String codice;
 	private JLabel accesso;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			VerificaEmail dialog = new VerificaEmail();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	/**
 	 * Create the dialog.
 	 */
-	public VerificaEmail() {
+	public VerificaEmail(boolean amministratore, String codice, String email) {
+		this.codice = codice;
+		this.email=email;
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -128,8 +118,8 @@ public class VerificaEmail extends JDialog {
 				buttonPane.add(nuovoCodice);
 				nuovoCodice.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						codice=GestioneEmail.verificaEmail(email);
-						JOptionPane.showMessageDialog(null, "Ti abbiamo inviato un nuovo codice a: " + email);
+						VerificaEmail.this.codice =GestioneEmail.verificaEmail(VerificaEmail.this.email);
+						JOptionPane.showMessageDialog(null, "Ti abbiamo inviato un nuovo codice a: " + VerificaEmail.this.email);
 					}
 				});
 				
@@ -142,8 +132,8 @@ public class VerificaEmail extends JDialog {
 				JButton okButton = new JButton("Conferma");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (inserisciCodice.getText().equals(codice)) {
-							accesso.setText("Utente " + email + " registrato correttamente");
+						if (inserisciCodice.getText().equals(VerificaEmail.this.codice)) {
+							accesso.setText("Utente " + VerificaEmail.this.email + " registrato correttamente");
 							Timer timer = new Timer(5000, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 							VerificaEmail.this.dispose();
@@ -169,12 +159,6 @@ public class VerificaEmail extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 		}
-	}
-
-	public  void verfica(boolean amministratore, String codice, String email) {
-		VerificaEmail.this.setVisible(true);
-		this.codice = codice;
-		this.email = email; 
 	}
 }
 

@@ -15,8 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
-public class Stato extends JFrame {
+public abstract class StatoPrestiti extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -25,23 +26,12 @@ public class Stato extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Stato frame = new Stato();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public Stato() {
+	public StatoPrestiti(String sottotilo, String oggetto) {       // oggetto = email dell'utente o titolo del libro
 		setResizable(false);
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -52,13 +42,17 @@ public class Stato extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel titolo = new JLabel("Stato");
-		titolo.setBounds(134, 10, 149, 21);
+		JLabel titolo = new JLabel("Stato Prestiti");
+		titolo.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 25));
+		titolo.setHorizontalAlignment(SwingConstants.CENTER);
+		titolo.setBounds(0, 10, 436, 21);
 		contentPane.add(titolo);
 		
-		JLabel sottotiolo = new JLabel("Libro: ");
-		sottotiolo.setBounds(29, 33, 358, 26);
-		contentPane.add(sottotiolo);
+		JLabel labelSottotitolo = new JLabel(sottotilo + "" + oggetto);
+		labelSottotitolo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		labelSottotitolo.setHorizontalAlignment(SwingConstants.CENTER);
+		labelSottotitolo.setBounds(0, 40, 436, 26);
+		contentPane.add(labelSottotitolo);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(5, 76, 428, 152);
@@ -69,26 +63,12 @@ public class Stato extends JFrame {
 		scrollPane.setViewportView(table);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, "", null, null},
-			},
-			new String[] {
-				"Id", "stato", "utente", "scadenza prestito"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		
 		
 		JButton closeButton = new JButton("Chiudi");
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Stato.this.dispose();
+				StatoPrestiti.this.dispose();
 			}		
 		});
 		closeButton.setBounds(345, 238, 85, 21);
@@ -99,5 +79,9 @@ public class Stato extends JFrame {
 		closeButton.setForeground(new Color(0, 0, 0));
 		closeButton.setPreferredSize(new Dimension(77, 30));
 		contentPane.add(closeButton);
+	}
+
+	public JTable getTable() {
+		return table;
 	}
 }

@@ -1,14 +1,18 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
-
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 
 public class TabellaLibri extends TabellaLibriBase{
@@ -45,10 +49,17 @@ public class TabellaLibri extends TabellaLibriBase{
 	public TabellaLibri() {
 		
 super(columnEditables,row,azione,getActionListener());
-      
-		
-		
-	}
+         JButton info = new JButton("Prestiti Attivi");
+         info.addActionListener(new ActionListener() {
+         	public void actionPerformed(ActionEvent e) {
+                PrestitiAttivi prestiti = new PrestitiAttivi();
+         		prestiti.setVisible(true);
+         	}
+         });
+         info.setBackground(new Color(192, 192, 192));
+         JMenuBar menuBar =  super.getMenu();
+         menuBar.add(info);
+           }
 	
 	public static ActionListener getActionListener() {
 		ActionListener action = new ActionListener() {

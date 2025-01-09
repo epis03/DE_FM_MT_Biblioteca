@@ -63,17 +63,18 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
       table.getColumnModel().getColumn(3).setCellRenderer(new CustomizedTableRenderer("Visualizza Stato"));
       table.getColumnModel().getColumn(3).setCellEditor(new CustomizedCellEditor(new JButton("Visualizza Stato"), new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Stato state = new Stato();
+				StatoPrestitiAmministratore state = new StatoPrestitiAmministratore();
 				state.setVisible(true);
 			}}));
-      JButton addRow = new JButton("Aggiungi Riga");
-		addRow.setBackground(new Color(192, 192, 192));
-		menuBar.add(addRow);
-		addRow.addActionListener(new ActionListener() {
+      JButton aggiungiRiga = new JButton("Aggiungi Riga");
+		aggiungiRiga.setBackground(new Color(192, 192, 192));
+		menuBar.add(aggiungiRiga);
+		aggiungiRiga.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				insert = new InserisciLibro();
 				insert.setVisible(true);
 			}});
+		
 	}
 
 	
@@ -118,8 +119,8 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
                   options[0]
               );
               if (choice == 0) {
-            	  ModificaRiga update = new ModificaRiga();
-            	update.modifica(table.getValueAt(riga, 0),table.getValueAt(riga, 1),table.getValueAt(riga, 2), riga);
+            	  ModificaRiga update = new ModificaRiga(table.getValueAt(riga, 0),table.getValueAt(riga, 1),table.getValueAt(riga, 2), riga);
+            	update.setVisible(true);
               } else if (choice == 1) {
 
                   Object[] opzioni = {"SI", "NO"};

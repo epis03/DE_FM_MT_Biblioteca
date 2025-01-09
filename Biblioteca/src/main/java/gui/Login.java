@@ -63,7 +63,7 @@ public class Login extends JDialog {
 				mostraPassword=true;
 				}
 		});
-		mostra.setBounds(277, 178, 115, 21);
+		mostra.setBounds(260, 178, 132, 21);
 		contentPanel.add(mostra);
 		
 		nascondi = new JToggleButton("Nascondi Password");
@@ -139,7 +139,7 @@ public class Login extends JDialog {
 			    }
 			});
 			timer.start();
-			Component horizontalStrut = Box.createHorizontalStrut(60);
+			Component horizontalStrut = Box.createHorizontalStrut(35);
 			buttonPane.add(horizontalStrut);
 			{
 				JButton cancelButton = new JButton("Cancel");
