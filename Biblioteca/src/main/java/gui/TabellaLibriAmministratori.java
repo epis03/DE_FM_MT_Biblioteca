@@ -63,8 +63,8 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
       table.getColumnModel().getColumn(3).setCellRenderer(new CustomizedTableRenderer("Visualizza Stato"));
       table.getColumnModel().getColumn(3).setCellEditor(new CustomizedCellEditor(new JButton("Visualizza Stato"), new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StatoPrestitiAmministratore state = new StatoPrestitiAmministratore();
-				state.setVisible(true);
+		//		StatoPrestitiAmministratore state = new StatoPrestitiAmministratore();
+		//		state.setVisible(true);
 			}}));
       JButton aggiungiRiga = new JButton("Aggiungi Riga");
 		aggiungiRiga.setBackground(new Color(192, 192, 192));

@@ -52,8 +52,8 @@ super(columnEditables,row,azione,getActionListener());
          JButton info = new JButton("Prestiti Attivi");
          info.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent e) {
-                PrestitiAttivi prestiti = new PrestitiAttivi();
-         		prestiti.setVisible(true);
+               // PrestitiAttivi prestiti = new PrestitiAttivi();
+         	   // prestiti.setVisible(true);
          	}
          });
          info.setBackground(new Color(192, 192, 192));
