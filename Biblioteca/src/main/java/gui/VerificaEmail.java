@@ -79,7 +79,7 @@ public class VerificaEmail extends JDialog {
 			sottotilo.setBackground(new Color(240, 240, 240));
 			sottotilo.setWrapStyleWord(true);
 			sottotilo.setFont(new Font("Verdana Pro", Font.PLAIN, 12));
-			sottotilo.setText("Inserisci il codice inviato a: null \r\nSe l'email non è correta, clicca su cancella per tornare alla schermata di registraizione. \r\nSe non hai ricevuto il codice, clicca \"Nuovo codice\" per riceverne un altro. ");
+			sottotilo.setText("Inserisci il codice inviato a: " + VerificaEmail.this.email + "\r\nSe l'email non è correta, clicca su cancella per tornare alla schermata di registraizione. \r\nSe non hai ricevuto il codice, clicca \"Nuovo codice\" per riceverne un altro. ");
 			sottotilo.setEditable(false);
 			sottotilo.setLineWrap(true);
 			sottotilo.setSelectedTextColor(new Color(0, 0, 0));
@@ -133,6 +133,7 @@ public class VerificaEmail extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (inserisciCodice.getText().equals(VerificaEmail.this.codice)) {
+							 accesso.setForeground(new Color(0, 255, 0));
 							accesso.setText("Utente " + VerificaEmail.this.email + " registrato correttamente");
 							Timer timer = new Timer(5000, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
