@@ -30,7 +30,7 @@ public class Registrazione extends JDialog {
 	private boolean mostraConferma = false;
 	private JTextField emailField;
 	private JLabel accesso;
-	
+
 
 	/**
 	 * Launch the application.
@@ -56,7 +56,7 @@ public class Registrazione extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
+
 		JToggleButton 	mostra = new JToggleButton("Mostra password");
 		mostra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -66,37 +66,37 @@ public class Registrazione extends JDialog {
 				mostra.setVisible(false);
 				nascondi.setVisible(true);
 				mostraPassword=true;
-				}
+			}
 		});
 		mostra.setBounds(304, 140, 132, 21);
 		contentPanel.add(mostra);
-		
+
 		nascondi = new JToggleButton("Nascondi Password");
-	    nascondi.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		passwordField.setText((passwordVisibile.getText()));
-	    		passwordVisibile.setVisible(false);
+		nascondi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordField.setText((passwordVisibile.getText()));
+				passwordVisibile.setVisible(false);
 				passwordField.setVisible(true);
 				nascondi.setVisible(false);
 				mostra.setVisible(true);
 				mostraPassword=false;
 			}
-	    });
+		});
 		nascondi.setSelected(true);
 		nascondi.setVisible(false);
 		nascondi.setBounds(304, 140, 132, 21);
 		contentPanel.add(nascondi);
-		
+
 		passwordVisibile = new JTextField();
 		passwordVisibile.setVisible(false);
 		passwordVisibile.setBounds(162, 140, 132, 19);
 		contentPanel.add(passwordVisibile);
 		passwordVisibile.setColumns(10);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setBounds(162, 140, 132, 19);
 		contentPanel.add(passwordField);
-		
+
 		JToggleButton 	mostraConfermaPassword = new JToggleButton("Mostra password");
 		mostraConfermaPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -106,81 +106,81 @@ public class Registrazione extends JDialog {
 				mostraConfermaPassword.setVisible(false);
 				nascondiConferma.setVisible(true);
 				mostraConferma=true;
-				}
+			}
 		});
 		mostraConfermaPassword.setBounds(304, 180, 132, 21);
 		contentPanel.add(mostraConfermaPassword);
-		
+
 		nascondiConferma = new JToggleButton("Nascondi Password");
-	    nascondiConferma.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		passwordFieldConferma.setText((confermaVisibile.getText()));
-	    		confermaVisibile.setVisible(false);
+		nascondiConferma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordFieldConferma.setText((confermaVisibile.getText()));
+				confermaVisibile.setVisible(false);
 				passwordFieldConferma.setVisible(true);
 				nascondiConferma.setVisible(false);
 				mostraConfermaPassword.setVisible(true);
 				mostraConferma=false;
 			}
-	    });
+		});
 		nascondiConferma.setSelected(true);
 		nascondiConferma.setVisible(false);
 		nascondiConferma.setBounds(304, 180, 132, 21);
 		contentPanel.add(nascondiConferma);
-		
+
 		confermaVisibile = new JTextField();
 		confermaVisibile.setVisible(false);
 		confermaVisibile.setBounds(162, 180, 132, 19);
 		contentPanel.add(confermaVisibile);
 		confermaVisibile.setColumns(10);
-		
+
 		passwordFieldConferma = new JPasswordField();
 		passwordFieldConferma.setBounds(162, 180, 132, 19);
 		contentPanel.add(passwordFieldConferma);
-		
-		
+
+
 		JLabel lblNewLabel = new JLabel("Password:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setBounds(75, 140, 76, 13);
 		contentPanel.add(lblNewLabel);
-		
-		
+
+
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 		lblNewLabel_2.setBounds(100, 10, 239, 51);
 		contentPanel.add(lblNewLabel_2);
-		
-		
+
+
 		JLabel conferma = new JLabel("Conferma password:");
 		conferma.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		conferma.setBounds(6, 180, 142, 22);
 		contentPanel.add(conferma);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Email");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1.setBounds(70, 90, 76, 18);
 		contentPanel.add(lblNewLabel_1);
-		
-		
-		
+
+
+
 		JLabel lblNewLabel_5 = new JLabel("Inserisci email e password");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		lblNewLabel_5.setBounds(110, 50, 252, 36);
 		contentPanel.add(lblNewLabel_5);
-		
+
 		emailField = new JTextField();
 		emailField.setBounds(162, 90, 132, 19);
 		contentPanel.add(emailField);
 		emailField.setColumns(10);
-		
 
-	    accesso = new JLabel("");
-	    accesso.setForeground(new Color(255, 0, 0));
-	    accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
+
+		accesso = new JLabel("");
+		accesso.setForeground(new Color(255, 0, 0));
+		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		accesso.setBounds(31, 225, 385, 36);
 		contentPanel.add(accesso);
-	
-		
 
-		
+
+
+
 		{
 			JPanel buttonPane = new JPanel();
 			FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.LEFT);
@@ -191,10 +191,10 @@ public class Registrazione extends JDialog {
 			date.setBounds(10, -3, 406, 22);
 			buttonPane.add(date);
 			Timer timer = new Timer(1000, new ActionListener() {
-			    public void actionPerformed(ActionEvent e) {
-			         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
-			        date.setText(currentTime);
-			    }
+				public void actionPerformed(ActionEvent e) {
+					String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
+					date.setText(currentTime);
+				}
 			});
 			timer.start();
 			Component horizontalStrut = Box.createHorizontalStrut(70);
@@ -227,20 +227,20 @@ public class Registrazione extends JDialog {
 						if (verificaDati(email, password, passwordConferma)) {
 							GestioneUtenti gestioneUtenti = new GestioneUtenti();
 							if( gestioneUtenti.registraUtente(email, password, "amministratore")) {
-							String	codice = GestioneEmail.verificaEmail(email);
+								String	codice = GestioneEmail.verificaEmail(email);
 								VerificaEmail verifica= new VerificaEmail(true,codice, email);
 								verifica.setVisible(true);
 							}
 							else{
 								accesso.setText("L'utente " + email + " è già registrato" ); 
 							}
-								}
 						}
 					}
-				);
+				}
+						);
 				okButton.setMargin(new Insets(2, 8, 2, 14));
-				
-				
+
+
 				okButton.setForeground(new Color(0, 0, 255));
 				okButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 9));
 				okButton.setPreferredSize(new Dimension(77, 30));
@@ -250,7 +250,7 @@ public class Registrazione extends JDialog {
 			}
 		}
 	}
-	
+
 	public  String acquisisciPassword(boolean mostra,JTextField passwordVisibile, JPasswordField passwordNascosta) {
 		String password = new  String();
 		if(mostra) {
@@ -261,20 +261,20 @@ public class Registrazione extends JDialog {
 		}
 		return password;
 	}
-	
+
 	public boolean verificaDati(String email,String password, String conferma) {
 		boolean condition=true;
 		if(password.isBlank() && email.isBlank()) {
-			 accesso.setText("Inserire email e password");
-			 condition = false;
+			accesso.setText("Inserire email e password");
+			condition = false;
 		}
 		if(condition && email.isBlank()){
 			accesso.setText("Inserire email");
-			 condition = false;
+			condition = false;
 		}
 		if(condition && !email.matches(("^[^@]+@[^@]+\\.[^@]+$"))) {
 			accesso.setText("Formato email errato");
-			 condition = false;
+			condition = false;
 		}
 		if(condition && password.isBlank()) {
 			accesso.setText("Inserire password");
@@ -293,6 +293,6 @@ public class Registrazione extends JDialog {
 }
 
 
-	
-	
+
+
 	

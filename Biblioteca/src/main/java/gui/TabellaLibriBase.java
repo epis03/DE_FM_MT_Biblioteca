@@ -47,7 +47,7 @@ public abstract class TabellaLibriBase extends JFrame {
 	private JPanel contentPane;
 	private static JTable table;
 	private JMenuBar menuBar;
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -56,63 +56,63 @@ public abstract class TabellaLibriBase extends JFrame {
 		setBounds(100, 100, 450, 300);
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnNewMenu = new JMenu("filtra");
 		menuBar.add(mnNewMenu);
-		
+
 		JMenu mnNewMenu_1 = new JMenu("Autore");
 		mnNewMenu.add(mnNewMenu_1);
-		
-        JPanelPersonalizzato cercaAutore = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
-			
+
+		JPanelPersonalizzato cercaAutore = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
+
 			@Override
 			public void accept(MouseEvent t) {
 				TabellaLibriBase.this.dispose();
-				
+
 			}
 		});
-        mnNewMenu_1.add(cercaAutore);
-		
+		mnNewMenu_1.add(cercaAutore);
+
 		JMenu mnNewMenu_3 = new JMenu("Titolo");
 		mnNewMenu.add(mnNewMenu_3);
-		
-		 JPanelPersonalizzato cercaTitolo = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
-				
-				@Override
-				public void accept(MouseEvent t) {
-					
-					
-				}
-			});
-	        mnNewMenu_3.add(cercaTitolo);
-		
+
+		JPanelPersonalizzato cercaTitolo = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
+
+			@Override
+			public void accept(MouseEvent t) {
+
+
+			}
+		});
+		mnNewMenu_3.add(cercaTitolo);
+
 		JMenu mnNewMenu_4 = new JMenu("Genere");
 		mnNewMenu.add(mnNewMenu_4);
-		
+
 		JMenuBar menuBar_1 = new JMenuBar();
 		mnNewMenu.add(menuBar_1);
-		
-		
+
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel date = new JLabel("");
 		contentPane.add(date, BorderLayout.SOUTH);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
-		
+
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Autore", "Titolo", "Genere", "Stato", "Azioni"
-			}
-		) {
+				new Object[][] {
+				},
+				new String[] {
+						"Autore", "Titolo", "Genere", "Stato", "Azioni"
+				}
+				) {
 			/**
 			 * 
 			 */
@@ -121,101 +121,101 @@ public abstract class TabellaLibriBase extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		
-		// Imposta renderer per tooltip nelle celle di testo
-        for (int i = 0; i < row; i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(new CustomizedTableCellRenderer());
-        }
-        DefaultTableModel model = (DefaultTableModel) table.getModel();		
-			TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
-		      table.setRowSorter(sorter);
-		      sorter.setSortKeys(java.util.Collections.singletonList(
-		              new RowSorter.SortKey(0, SortOrder.ASCENDING)
-		          ));
-     
-		
 
-      table.getColumnModel().getColumn(4).setCellRenderer(new CustomizedTableRenderer(azione));
-      table.getColumnModel().getColumn(4).setCellEditor(new CustomizedCellEditor(new JButton(azione), actionlistener));
+		// Imposta renderer per tooltip nelle celle di testo
+		for (int i = 0; i < row; i++) {
+			table.getColumnModel().getColumn(i).setCellRenderer(new CustomizedTableCellRenderer());
+		}
+		DefaultTableModel model = (DefaultTableModel) table.getModel();		
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+		table.setRowSorter(sorter);
+		sorter.setSortKeys(java.util.Collections.singletonList(
+				new RowSorter.SortKey(0, SortOrder.ASCENDING)
+				));
+
+
+
+		table.getColumnModel().getColumn(4).setCellRenderer(new CustomizedTableRenderer(azione));
+		table.getColumnModel().getColumn(4).setCellEditor(new CustomizedCellEditor(new JButton(azione), actionlistener));
 		scrollPane.setViewportView(table);
-		
+
 		Component horizontalGlue = Box.createHorizontalGlue();
 		menuBar.add(horizontalGlue);
-		
-			
+
+
 		Timer timer = new Timer(1000, new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
-		        date.setText(currentTime);
-		    }
+			public void actionPerformed(ActionEvent e) {
+				String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
+				date.setText(currentTime);
+			}
 		});
 		timer.start();
 	}
-	
+
 	public JTable getTable() {
 		return table;
-}
+	}
 	public JMenuBar getMenu() {
 		return menuBar;
 	}
-      
-    class CustomizedTableRenderer extends JButton implements TableCellRenderer {
-        /**
+
+	class CustomizedTableRenderer extends JButton implements TableCellRenderer {
+		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 		private String tooltip;
 
-        public CustomizedTableRenderer(String tooltip) {
-            this.tooltip = tooltip;
-            setOpaque(true);
-            setToolTipText(tooltip);
-        }
+		public CustomizedTableRenderer(String tooltip) {
+			this.tooltip = tooltip;
+			setOpaque(true);
+			setToolTipText(tooltip);
+		}
 
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText((value != null && value instanceof String) ? value.toString() : tooltip);
-            return this;
-        }
-    }
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value != null && value instanceof String) ? value.toString() : tooltip);
+			return this;
+		}
+	}
 
-    class CustomizedCellEditor extends DefaultCellEditor {
-        /**
+	class CustomizedCellEditor extends DefaultCellEditor {
+		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JButton button;
-        private ActionListener actionListener;
+		private ActionListener actionListener;
 
-        public CustomizedCellEditor(JButton button, ActionListener actionListener) {
-            super(new JCheckBox());
-            this.button = button;
-            this.actionListener = actionListener;
-            button.addActionListener(actionListener);
-        }
+		public CustomizedCellEditor(JButton button, ActionListener actionListener) {
+			super(new JCheckBox());
+			this.button = button;
+			this.actionListener = actionListener;
+			button.addActionListener(actionListener);
+		}
 
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            button.setText((value != null && value instanceof String) ? value.toString() : "");
-            return button;
-        }
-    }
+		@Override
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+			button.setText((value != null && value instanceof String) ? value.toString() : "");
+			return button;
+		}
+	}
 
-    class CustomizedTableCellRenderer extends DefaultTableCellRenderer {
-        /**
+	class CustomizedTableCellRenderer extends DefaultTableCellRenderer {
+		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (value != null) {
-                setToolTipText(value.toString());
-            } else {
-                setToolTipText(null);
-            }
-            return cell;
-        }
-    }
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			if (value != null) {
+				setToolTipText(value.toString());
+			} else {
+				setToolTipText(null);
+			}
+			return cell;
+		}
+	}
 }

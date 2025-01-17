@@ -56,11 +56,11 @@ public class InserisciLibro extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
+
 		JLabel date = new JLabel("");
 		date.setBounds(10, 0, 406, 22);
 		contentPanel.add(date);
-		
+
 		JLabel titoloJDialog = new JLabel("Inserisci un nuovo libro");
 		titoloJDialog.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		titoloJDialog.setBounds(90, 9, 292, 63);
@@ -89,22 +89,22 @@ public class InserisciLibro extends JDialog {
 			copie.setBounds(90, 190, 110, 17);
 			contentPanel.add(copie);
 		}
-		
+
 		titoloTextField = new JTextField();
 		titoloTextField.setBounds(197, 156, 150, 22);
 		contentPanel.add(titoloTextField);
 		titoloTextField.setColumns(10);
-		
+
 		autoreTextField = new JTextField();
 		autoreTextField.setBounds(197, 117, 150, 22);
 		contentPanel.add(autoreTextField);
 		autoreTextField.setColumns(10);
-		
+
 		genereTextField = new JTextField();
 		genereTextField.setBounds(197, 77, 153, 22);
 		contentPanel.add(genereTextField);
 		genereTextField.setColumns(10);
-		
+
 		copieTextField = new JTextField();
 		copieTextField.setBounds(257, 190, 30, 22);
 		contentPanel.add(copieTextField);
@@ -120,13 +120,13 @@ public class InserisciLibro extends JDialog {
 			avviso.setBounds(5, 226, 450, 41);
 			contentPanel.add(avviso);
 		}
-		
-		
+
+
 		Timer timer = new Timer(1000, new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		         String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
-		        date.setText(currentTime);
-		    }
+			public void actionPerformed(ActionEvent e) {
+				String currentTime = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss").format(new Date());
+				date.setText(currentTime);
+			}
 		});
 		timer.start();
 
@@ -157,9 +157,9 @@ public class InserisciLibro extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(verificadati()) {
-						TabellaLibriAmministratori.inserisciRiga(autoreTextField.getText().trim(), titoloTextField.getText().trim().replaceAll( "  ", " "), genereTextField.getText().trim(),Integer.parseInt( copieTextField.getText()));
-						JOptionPane.showMessageDialog(null, "Libro inserito correttamente");
-						InserisciLibro.this.dispose();
+							TabellaLibriAmministratori.inserisciRiga(autoreTextField.getText().trim(), titoloTextField.getText().trim().replaceAll( "  ", " "), genereTextField.getText().trim(),Integer.parseInt( copieTextField.getText()));
+							JOptionPane.showMessageDialog(null, "Libro inserito correttamente");
+							InserisciLibro.this.dispose();
 						}
 					}
 				});
@@ -180,5 +180,5 @@ public class InserisciLibro extends JDialog {
 		}
 		return condition;
 	}
-	
+
 }

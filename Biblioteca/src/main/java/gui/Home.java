@@ -15,8 +15,8 @@ public class Home  {
 	private JLabel lblNewLabel;
 	private static Registrazione reg ;
 	private static Login log;
-	 
-	
+
+
 	/**
 	 * Launch the application.
 	 */
@@ -51,39 +51,39 @@ public class Home  {
 		frame.setBounds(100, 100, 607, 445);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		JButton btnNewButton = new JButton("Registrazione");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 reg = new Registrazione();
-				 frame.setVisible(false);
+				reg = new Registrazione();
+				frame.setVisible(false);
 				reg.setVisible(true);
-				
-				}
+
+			}
 		});
 		btnNewButton.setBounds(85, 232, 135, 70);
 		frame.getContentPane().add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("Login");
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				  log = new Login();
+				log = new Login();
 				frame.setVisible(false);
 				log.setVisible(true);
 			}
 		});
 		btnNewButton_1.setBounds(364, 232, 135, 70);
 		frame.getContentPane().add(btnNewButton_1);
-		
+
 		lblNewLabel = new JLabel("Nome Biblioteca");
 		lblNewLabel.setForeground(new Color(64, 128, 128));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Verdana", lblNewLabel.getFont().getStyle() | Font.BOLD | Font.ITALIC, 50));
 		lblNewLabel.setBounds(0, 34, 583, 153);
 		frame.getContentPane().add(lblNewLabel);
-		
+
 		JLabel sfondo = new JLabel("");
 		sfondo.setLabelFor(frame);
 		Image immagini = new ImageIcon(getClass().getResource("/immagini/ImmagineBiblioteca.png")).getImage();
@@ -93,16 +93,16 @@ public class Home  {
 	}
 
 	public static void chiudiRegistrazione() {
-		
+
 		reg.dispose();
 		frame.setVisible(true);
-		
-		}
-	
-public static void chiudiLogin() {
-		
+
+	}
+
+	public static void chiudiLogin() {
+
 		log.dispose();
 		frame.setVisible(true);
-		}
-	
+	}
+
 }
