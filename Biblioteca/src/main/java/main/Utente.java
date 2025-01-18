@@ -1,27 +1,24 @@
 package main;
 
 public class Utente {
-    private String username;
+    private String email;
     private String password;
-    private String ruolo; // "utente" o "amministratore"
+    private String ruolo; 
 
-    
-    public Utente(String username, String password, String ruolo) {
-        this.username = username;
+    public Utente(String email, String password, String ruolo) {
+        this.email = email;
         this.password = password;
         this.ruolo = ruolo;
     }
 
-    
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getRuolo() {
         return ruolo;
     }
 
-   
     public boolean verificaPassword(String password) {
         return this.password.equals(password);
     }

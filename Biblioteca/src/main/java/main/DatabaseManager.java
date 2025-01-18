@@ -19,7 +19,7 @@ public class DatabaseManager {
     public static void setupDatabase() {
         String createUtentiTable = "CREATE TABLE IF NOT EXISTS utenti (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "username TEXT UNIQUE NOT NULL, " +
+                "email TEXT UNIQUE NOT NULL, " +
                 "password TEXT NOT NULL, " +
                 "ruolo TEXT NOT NULL" +
                 ");";
@@ -28,24 +28,15 @@ public class DatabaseManager {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "titolo TEXT NOT NULL, " +
                 "autore TEXT NOT NULL, " +
-                "genere TEXT" +
-                ");";
-
-        String createPrestitiTable = "CREATE TABLE IF NOT EXISTS prestiti (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "utente_id INTEGER, " +
-                "libro_id INTEGER, " +
-                "data_prestito TEXT, " +
-                "data_restituzione TEXT, " +
-                "FOREIGN KEY (utente_id) REFERENCES utenti(id), " +
-                "FOREIGN KEY (libro_id) REFERENCES libri(id)" +
+                "genere TEXT, " +
+                "stato TEXT NOT NULL DEFAULT 'disponibile', " +
+                "copie INTEGER NOT NULL" +
                 ");";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createUtentiTable);
             stmt.execute(createLibriTable);
-            stmt.execute(createPrestitiTable);
             logger.info("Tabelle create con successo.");
         } catch (SQLException e) {
             logger.error("Errore durante la configurazione del database.", e);
