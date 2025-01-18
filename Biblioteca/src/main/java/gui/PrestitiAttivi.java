@@ -33,21 +33,21 @@ public class PrestitiAttivi extends StatoPrestiti {
 				new Object[][] {
 				},
 				new String[] {
-					"Autore", "Titolo", "Genere", "scadenza prestito"
+						"Autore", "Titolo", "Genere", "scadenza prestito"
 				}
 				) {
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int row, int column) {
-						 boolean[]  columnEditables = new boolean[] {
-									false, false, false, false
-								}; 
-						return columnEditables[column];
-					}
-				});
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int row, int column) {
+				boolean[]  columnEditables = new boolean[] {
+						false, false, false, false
+				}; 
+				return columnEditables[column];
+			}
+		});
 	}
-	}
+}
 
 

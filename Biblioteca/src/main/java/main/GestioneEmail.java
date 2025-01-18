@@ -14,6 +14,7 @@ public  class GestioneEmail {
 	private static String codice;
 	 private static final Logger logger = LogManager.getLogger(GestioneEmail.class);
 	 private static final String AppPassword = "paku nwnb bjwg tumf";
+	 private static final String emailMittente = "noreply.infoBiblioteca";
 	
 	 
 	 public static String verificaEmail(String destinatario) {
@@ -25,7 +26,7 @@ public  class GestioneEmail {
 		
 		// Parametri email
         String host = "smtp.gmail.com"; // SMTP di Gmail
-        final String mittente = "noreply.infoBiblioteca"; 
+        final String mittente = emailMittente;
         final String password = AppPassword; 
         
         // Configurazione delle proprietà per il server SMTP
@@ -69,4 +70,8 @@ public  class GestioneEmail {
        
 		return codice;
 	}
+	 
+	 public static void SegnalaPrestitoScaduto(){
+		 
+	 }
 }

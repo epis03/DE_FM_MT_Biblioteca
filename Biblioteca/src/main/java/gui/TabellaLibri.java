@@ -21,12 +21,12 @@ public class TabellaLibri extends TabellaLibriBase{
 	private static final int row = 4;
 	private static final boolean[]  columnEditables = new boolean[] {
 			false, false, false, false, true
-		}; 
+	}; 
 	private static JTable table;
 	private static final String azione = "Prenota";
-	
-	
-	
+
+
+
 	/**
 	 * Launch the application.
 	 */
@@ -47,47 +47,46 @@ public class TabellaLibri extends TabellaLibriBase{
 	 * Create the frame.
 	 */
 	public TabellaLibri() {
-		
-super(columnEditables,row,azione,getActionListener());
-         JButton info = new JButton("Prestiti Attivi");
-         info.addActionListener(new ActionListener() {
-         	public void actionPerformed(ActionEvent e) {
-               // PrestitiAttivi prestiti = new PrestitiAttivi();
-         	   // prestiti.setVisible(true);
-         	}
-         });
-         info.setBackground(new Color(192, 192, 192));
-         JMenuBar menuBar =  super.getMenu();
-         menuBar.add(info);
-           }
-	
+
+		super(columnEditables,row,azione,getActionListener());
+		JButton info = new JButton("Prestiti Attivi");
+		info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// PrestitiAttivi prestiti = new PrestitiAttivi();
+				// prestiti.setVisible(true);
+			}
+		});
+		info.setBackground(new Color(192, 192, 192));
+		JMenuBar menuBar =  super.getMenu();
+		menuBar.add(info);
+	}
+
 	public static ActionListener getActionListener() {
 		ActionListener action = new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-	          int selectedRow = table.getSelectedRow();
-	          if (selectedRow != -1) {
-	              Object[] options = {"SI", "NO"};
-	              int choice = javax.swing.JOptionPane.showOptionDialog(
-	                  null,
-	                  "Vuoi prenotare questo libro:",
-	                  "Prenotazione",
-	                  javax.swing.JOptionPane.DEFAULT_OPTION,
-	                  javax.swing.JOptionPane.PLAIN_MESSAGE,
-	                  null,
-	                  options,
-	                  options[1]
-	              );
-	              if (choice == 0) {
-	            	  JOptionPane.showMessageDialog(null, "Libro prenotato con successo");
-	              } else if (choice == 1) {
-	            	  JOptionPane.showMessageDialog(null, "Azione cancellata");
-	              }
-	          }
-	      }};
-	      
-	      return action;
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = table.getSelectedRow();
+				if (selectedRow != -1) {
+					Object[] options = {"SI", "NO"};
+					int choice = javax.swing.JOptionPane.showOptionDialog(
+							null,
+							"Vuoi prenotare questo libro:",
+							"Prenotazione",
+							javax.swing.JOptionPane.DEFAULT_OPTION,
+							javax.swing.JOptionPane.PLAIN_MESSAGE,
+							null,
+							options,
+							options[1]
+							);
+					if (choice == 0) {
+						JOptionPane.showMessageDialog(null, "Libro prenotato con successo");
+					} else if (choice == 1) {
+						JOptionPane.showMessageDialog(null, "Azione cancellata");
+					}
+				}
+			}};
+
+			return action;
 	}
 }
 
 
-   
