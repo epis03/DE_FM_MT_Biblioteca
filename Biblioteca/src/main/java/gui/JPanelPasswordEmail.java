@@ -1,11 +1,14 @@
 package gui;
 
+import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
@@ -17,47 +20,53 @@ import java.awt.FlowLayout;
 import javax.swing.UIManager;
 import java.awt.Font;
 
-public class JPanelPassword extends JPanel {
+public class JPanelPasswordEmail extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel iconLabel;
-	private String defaultText = "Password"; 
+	private String defaultText; 
 	private Icon passwordVisibile;
 	private Icon passwordNascosta;
-	private boolean visibile = false; 
+	private boolean visibile = true; 
 	private JTextField textField;
 	private JPasswordField passwordField;
 	/**
 	 * Create the panel.
 	 */
-	public JPanelPassword(boolean password) {
+	public JPanelPasswordEmail(boolean password, String defaultText) {
+		this.defaultText = defaultText;		
+				
 		setBorder(UIManager.getBorder("TextField.border"));
-	
-	        
+	   
 		textField = new JTextField();
 		textField.setBorder(null);
-		textField.setBounds(2, 2, 96, 18);
-		textField.setVisible(false);
+		textField.setBounds(2, 2, 154, 24);
 		textField.setColumns(10);
 		addText(textField);
-		passwordField = new JPasswordField();	
-		passwordField.setBorder(null);
-		passwordField.setBounds(2, 2, 96, 18);
-		passwordField.setColumns(10);
-		passwordField.setEchoChar((char) 0);
-		addText(passwordField);
-		
-	        setLayout(null);
-	        add(passwordField);
+
+	        
+		setLayout(null);
+	        
 	        add(textField);
 	        
-	        if (password) {
+	       if(password) {
+	    	  textField.setBounds(2, 2, 132, 24);
+	          textField.setVisible(false);
+	          visibile = false;
+	          passwordField = new JPasswordField();	
+	    	  passwordField.setBorder(null);
+	    	  passwordField.setBounds(2, 2, 132, 24);
+	    		passwordField.setColumns(10);
+	    		passwordField.setEchoChar((char) 0);
+	    		addText(passwordField);
+	    		add(passwordField);
+	    		
 	        Image passwordVisibile = new ImageIcon(getClass().getResource("/immagini/MostraPassword.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH); 
 	    	Image passwordNascosta =  new ImageIcon(getClass().getResource(("/immagini/NascondiPassword.png"))).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
 
 			ImageIcon imageIcon = new ImageIcon(passwordNascosta);
 	    	iconLabel = new JLabel(imageIcon);
-	        iconLabel.setBounds(106, 2, 16, 16);
+	        iconLabel.setBounds(135, 2, 20, 24);
 	        
 	        iconLabel.addMouseListener(new MouseAdapter() {
 	            @Override
@@ -81,8 +90,9 @@ public class JPanelPassword extends JPanel {
 	            }
 	        });
 	        add(iconLabel);
+	       }
 	        }
-	}
+	
 
 	private void addText(JTextField textField) {
         textField.setText(defaultText);
@@ -114,4 +124,17 @@ public class JPanelPassword extends JPanel {
             }
         });
     }
+	
+	public String getText() {
+		String testo;
+		if(visibile) {
+	        testo = this.textField.getText();
+		}
+		else {
+			testo = new String(this.passwordField.getPassword());
+		}
+		
+	return testo;
+	}
+	
 }

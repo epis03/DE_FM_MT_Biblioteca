@@ -17,6 +17,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import main.GestioneEmail;
+import main.GestioneUtenti;
 
 import java.awt.Font;
 import java.awt.Insets;
@@ -42,7 +43,7 @@ public class VerificaEmail extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VerificaEmail(boolean amministratore, String codice, String email) {
+	public VerificaEmail(boolean amministratore, String codice, String email,String password) {
 		this.codice = codice;
 		this.email=email;
 		setAlwaysOnTop(true);
@@ -134,12 +135,13 @@ public class VerificaEmail extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						if (inserisciCodice.getText().equals(VerificaEmail.this.codice)) {
 							accesso.setForeground(new Color(0, 255, 0));
+							GestioneUtenti gestione = new GestioneUtenti();
+							if(gestione.registraUtente(email, password));
 							accesso.setText("Utente " + VerificaEmail.this.email + " registrato correttamente");
 							Timer timer = new Timer(3000, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									Home.chiudiRegistrazione();
 									VerificaEmail.this.dispose();
-
 								}});
 							timer.setRepeats(false); 
 							timer.start();

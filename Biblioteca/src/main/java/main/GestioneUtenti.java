@@ -46,4 +46,23 @@ public class GestioneUtenti {
             return false;
         }
     }
+    
+    public boolean emailEsiste(String email) {
+        String sql = "SELECT 1 FROM utenti WHERE email = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                logger.warn("L'email '{}' esiste già ", email);
+                return true;
+            } else {
+                logger.info("L'email '{}' non è presente nel sistema.", email);
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.error("Errore durante la verifica dell'esistenza dell'email.", e);
+            return false;
+        }
+    }
 }
