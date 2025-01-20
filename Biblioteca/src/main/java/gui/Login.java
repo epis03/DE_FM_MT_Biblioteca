@@ -12,6 +12,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
@@ -20,13 +22,12 @@ public class Login extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static Login dialog;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField passwordVisibile;
-	private JToggleButton  nascondi;
-	private JPasswordField passwordField;
-	private JTextField emailField;
 	private final JLabel lblNewLabel_2 = new JLabel("Login");
 	private JLabel accesso;
-	private boolean mostraPassword = false;
+	private String[] defaultText = {"Email", "Password"};
+	private JPanelPasswordEmail [] infoPanel = new JPanelPasswordEmail[2];
+	private boolean passwordfield = false;
+
 
 	/**
 	 * Launch the application.
@@ -51,64 +52,22 @@ public class Login extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-
-		JToggleButton 	mostra = new JToggleButton("Mostra password");
-		mostra.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				passwordVisibile.setText(( new String(passwordField.getPassword())));
-				passwordField.setVisible(false);
-				passwordVisibile.setVisible(true);
-				mostra.setVisible(false);
-				nascondi.setVisible(true);
-				mostraPassword=true;
+		
+		for(int i=0;i<2;i++) {
+			infoPanel[i] = new JPanelPasswordEmail(passwordfield, defaultText[i]);
+			contentPanel.add (infoPanel[i]);
+			if(i==0) {
+				passwordfield = true;
 			}
-		});
-		mostra.setBounds(260, 178, 132, 21);
-		contentPanel.add(mostra);
-
-		nascondi = new JToggleButton("Nascondi Password");
-		nascondi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				passwordField.setText((passwordVisibile.getText()));
-				passwordVisibile.setVisible(false);
-				passwordField.setVisible(true);
-				nascondi.setVisible(false);
-				mostra.setVisible(true);
-				mostraPassword=false;
-			}
-		});
-		nascondi.setSelected(true);
-		nascondi.setVisible(false);
-		nascondi.setBounds(277, 178, 115, 21);
-		contentPanel.add(nascondi);
-
-		passwordVisibile = new JTextField();
-		passwordVisibile.setVisible(false);
-		passwordVisibile.setBounds(135, 179, 115, 19);
-		contentPanel.add(passwordVisibile);
-		passwordVisibile.setColumns(10);
-
-		passwordField = new JPasswordField();
-		passwordField.setBounds(135, 179, 115, 19);
-		contentPanel.add(passwordField);
-
-		JLabel lblNewLabel = new JLabel("Password");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel.setBounds(31, 180, 87, 13);
-		contentPanel.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("Email");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(31, 134, 71, 21);
-		contentPanel.add(lblNewLabel_1);
-
-		emailField = new JTextField();
-		emailField.setBounds(135, 134, 115, 19);
-		contentPanel.add(emailField);
+			infoPanel[i].setFocusable(false);
+		} 
+		infoPanel[0].setBounds(120, 120, 159, 30);
+		infoPanel[1].setBounds(120, 160, 159, 30);
+		
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 		lblNewLabel_2.setBounds(147, 10, 115, 50);
 		contentPanel.add(lblNewLabel_2);
-
+		
 		JLabel lblNewLabel_3 = new JLabel("Inserisci le tue credenziali");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_3.setBounds(95, 70, 225, 30);
@@ -117,8 +76,27 @@ public class Login extends JDialog {
 		accesso = new JLabel("");
 		accesso.setForeground(new Color(255, 0, 0));
 		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
-		accesso.setBounds(31, 214, 385, 36);
+		accesso.setBounds(31, 218, 385, 36);
 		contentPanel.add(accesso);
+		
+		JLabel lblNewLabel = new JLabel("Password dimenticata?");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(infoPanel[0].getText().isBlank()){
+			accesso.setText("Inserire email e poi cliccare 'Password dimenticata?'");
+			}
+				else {
+					String email = infoPanel[0].getText();
+					GestioneUtenti gestione = new GestioneUtenti();
+					if(gestione.emailEsiste(email)) {
+					ConfermaIdentità identificazione = new ConfermaIdentità(email);
+					identificazione.setVisible(true);
+				}
+		}}});
+		lblNewLabel.setForeground(new Color(0, 0, 255));
+		lblNewLabel.setBounds(120, 199, 142, 13);
+		contentPanel.add(lblNewLabel);
 
 
 
@@ -161,13 +139,12 @@ public class Login extends JDialog {
 				okButton.setMargin(new Insets(2, 8, 2, 14));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String email = new String();
-						email= emailField.getText();
-						String password = new String();
-						password = acquisisciPassword();
+						String email = infoPanel[0].getText();
+						String password = infoPanel[1].getText();
 						if (verificaDati(email, password)) {
 							GestioneUtenti gestioneUtenti = new GestioneUtenti();
 							if( gestioneUtenti.autenticaUtente(email, password)) {
+								accesso.setForeground(new Color(0, 255, 0));
 								accesso.setText("Autenticazione avvenuta con successo");
 								Timer timer = new Timer(5000, new ActionListener() {
 									public void actionPerformed(ActionEvent e) {
@@ -191,19 +168,15 @@ public class Login extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 		}
-
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				for(int i=0;i<2;i++) {
+					infoPanel[i].setFocusable(true);
+				}
+			}
+		});
 	}
 
-	public  String acquisisciPassword() {
-		String password = new  String();
-		if(mostraPassword) {
-			password = passwordVisibile.getText();
-		}
-		else {
-			password = new String(passwordField.getPassword());
-		}
-		return password;
-	}
 
 	public boolean verificaDati(String email,String password) {
 		GestioneUtenti gestioneUtenti = new GestioneUtenti();

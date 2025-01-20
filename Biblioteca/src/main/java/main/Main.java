@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
+import gui.Home;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
@@ -14,6 +15,9 @@ public class Main {
         GestioneLibri gestioneLibri = new GestioneLibri();
         Scanner scanner = new Scanner(System.in);
 
+        Home start = new Home();
+        start.main(args);
+        
         logger.info("Sistema di Gestione Biblioteca Digitale avviato.");
 
         logger.info("Richiesta autenticazione.");

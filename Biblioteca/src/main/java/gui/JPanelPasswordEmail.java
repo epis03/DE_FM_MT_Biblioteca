@@ -35,106 +35,110 @@ public class JPanelPasswordEmail extends JPanel {
 	 */
 	public JPanelPasswordEmail(boolean password, String defaultText) {
 		this.defaultText = defaultText;		
-				
+
 		setBorder(UIManager.getBorder("TextField.border"));
-	   
+
 		textField = new JTextField();
 		textField.setBorder(null);
 		textField.setBounds(2, 2, 154, 24);
 		textField.setColumns(10);
 		addText(textField);
 
-	        
+
 		setLayout(null);
-	        
-	        add(textField);
-	        
-	       if(password) {
-	    	  textField.setBounds(2, 2, 132, 24);
-	          textField.setVisible(false);
-	          visibile = false;
-	          passwordField = new JPasswordField();	
-	    	  passwordField.setBorder(null);
-	    	  passwordField.setBounds(2, 2, 132, 24);
-	    		passwordField.setColumns(10);
-	    		passwordField.setEchoChar((char) 0);
-	    		addText(passwordField);
-	    		add(passwordField);
-	    		
-	        Image passwordVisibile = new ImageIcon(getClass().getResource("/immagini/MostraPassword.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH); 
-	    	Image passwordNascosta =  new ImageIcon(getClass().getResource(("/immagini/NascondiPassword.png"))).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+
+		add(textField);
+
+		if(password) {
+			textField.setBounds(2, 2, 132, 24);
+			textField.setVisible(false);
+			visibile = false;
+			passwordField = new JPasswordField();	
+			passwordField.setBorder(null);
+			passwordField.setBounds(2, 2, 132, 24);
+			passwordField.setColumns(10);
+			passwordField.setEchoChar((char) 0);
+			addText(passwordField);
+			add(passwordField);
+
+			Image passwordVisibile = new ImageIcon(getClass().getResource("/immagini/MostraPassword.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH); 
+			Image passwordNascosta =  new ImageIcon(getClass().getResource(("/immagini/NascondiPassword.png"))).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
 
 			ImageIcon imageIcon = new ImageIcon(passwordNascosta);
-	    	iconLabel = new JLabel(imageIcon);
-	        iconLabel.setBounds(135, 2, 20, 24);
-	        
-	        iconLabel.addMouseListener(new MouseAdapter() {
-	            @Override
-	            public void mouseClicked(MouseEvent e) {
-	            	if (visibile) {
-	                  
-	                    iconLabel.setIcon(new ImageIcon(passwordNascosta));
-	                    visibile = false;
-	                    passwordField.setText(textField.getText());
-	                    textField.setVisible(false);
-	                    passwordField.setVisible(true);
-	                }  
-	                 else {
-	                	 textField.setVisible(true);
-	                	 passwordField.setVisible(false);
-	                    iconLabel.setIcon(new ImageIcon(passwordVisibile));
-	                    visibile = true;
-	                    textField.setText(new String(passwordField.getPassword()));
-	                    
-	                }
-	            }
-	        });
-	        add(iconLabel);
-	       }
-	        }
-	
+			iconLabel = new JLabel(imageIcon);
+			iconLabel.setBounds(135, 2, 20, 24);
+
+			iconLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (visibile) {
+
+						iconLabel.setIcon(new ImageIcon(passwordNascosta));
+						visibile = false;
+						passwordField.setText(textField.getText());
+						textField.setVisible(false);
+						passwordField.setVisible(true);
+					}  
+					else {
+						textField.setVisible(true);
+						passwordField.setVisible(false);
+						iconLabel.setIcon(new ImageIcon(passwordVisibile));
+						visibile = true;
+						textField.setText(new String(passwordField.getPassword()));
+						textField.setForeground(Color.BLACK);
+					}
+				}
+			});
+			add(iconLabel);
+		}
+	}
+
 
 	private void addText(JTextField textField) {
-        textField.setText(defaultText);
-        textField.setForeground(Color.BLACK);
+		textField.setText(defaultText);
+		textField.setForeground(Color.GRAY);
 
-        textField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textField.getText().equals(defaultText)) {
-                    textField.setText("");
-                    textField.setForeground(Color.BLACK);
+		textField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (textField.getText().equals(defaultText)) {
+					textField.setText("");
+					textField.setForeground(Color.BLACK);
+				}
+				if (textField instanceof JPasswordField) {
+						((JPasswordField) textField).setEchoChar('●');
+						textField.setFont(new Font("Tahoma", Font.PLAIN, 11));   
+						textField.setForeground(Color.BLACK);}
+				}
+			
 
-                    if (textField instanceof JPasswordField) {
-                        ((JPasswordField) textField).setEchoChar('●');
-                        textField.setFont(new Font("Tahoma", Font.PLAIN, 11));                    }
-                }
-            }
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (textField.getText().isEmpty()) {          
+					textField.setText(defaultText);
+					textField.setForeground(Color.GRAY);
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textField.getText().isEmpty()) {
-                    textField.setText(defaultText);
-                    textField.setForeground(Color.BLACK);
+					if (textField instanceof JPasswordField) {
+						((JPasswordField) textField).setEchoChar((char) 0); // Rimuove l'echo char
+					}
+				}
+			}
+		});
+	}
 
-                    if (textField instanceof JPasswordField) {
-                        ((JPasswordField) textField).setEchoChar((char) 0); // Rimuove l'echo char
-                    }
-                }
-            }
-        });
-    }
-	
 	public String getText() {
-		String testo;
+		String testo = "";
+		if(this.textField.getText().equals( this.defaultText)) {
+			return testo;
+		}
 		if(visibile) {
-	        testo = this.textField.getText();
+			testo = this.textField.getText();
 		}
 		else {
 			testo = new String(this.passwordField.getPassword());
 		}
-		
-	return testo;
+
+		return testo;
 	}
-	
+
 }
