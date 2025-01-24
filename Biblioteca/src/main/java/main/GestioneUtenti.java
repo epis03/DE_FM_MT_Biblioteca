@@ -10,8 +10,64 @@ import java.sql.SQLException;
 
 public class GestioneUtenti {
     private static final Logger logger = LogManager.getLogger(GestioneUtenti.class);
+    
+    
 
-    public boolean registraUtente(String email, String password) {
+        
+        public String getUserRole(String email) {
+            String ruolo = null;
+            String sql = "SELECT ruolo FROM utenti WHERE email = ?";
+
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                pstmt.setString(1, email);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    ruolo = rs.getString("ruolo");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return ruolo;
+        }
+
+       
+        public boolean changeUserPassword(String email, String newPassword) {
+            String sql = "UPDATE utenti SET password = ? WHERE email = ?";
+            boolean updated = false;
+
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                pstmt.setString(1, newPassword); 
+                pstmt.setString(2, email);
+                int rowsAffected = pstmt.executeUpdate();
+
+                updated = rowsAffected > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return updated;
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+        public boolean registraUtente(String email, String password) {
         String ruolo = email.contains("@unibg") ? "amministratore" : "utente";
         String sql = "INSERT INTO utenti (email, password, ruolo) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseManager.getConnection();
