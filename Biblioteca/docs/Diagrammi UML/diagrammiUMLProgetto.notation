@@ -1748,13 +1748,17 @@
           <element xmi:type="uml:EnumerationLiteral" href="diagrammiUMLProgetto.uml#_NXZ_kNs2Ee-jCJsVag37PA"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_NX4gsds2Ee-jCJsVag37PA"/>
         </children>
+        <children xmi:type="notation:Shape" xmi:id="_2qR0cNtCEe-jCJsVag37PA" type="EnumerationLiteral_LiteralLabel">
+          <element xmi:type="uml:EnumerationLiteral" href="diagrammiUMLProgetto.uml#_2gDhcNtCEe-jCJsVag37PA"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_2qSbgNtCEe-jCJsVag37PA"/>
+        </children>
         <styles xmi:type="notation:TitleStyle" xmi:id="_mGqkEds1Ee-jCJsVag37PA"/>
         <styles xmi:type="notation:SortingStyle" xmi:id="_mGqkEts1Ee-jCJsVag37PA"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_mGrLINs1Ee-jCJsVag37PA"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mGrLIds1Ee-jCJsVag37PA"/>
       </children>
       <element xmi:type="uml:Enumeration" href="diagrammiUMLProgetto.uml#_l7enwNs1Ee-jCJsVag37PA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mFhUkNs1Ee-jCJsVag37PA" x="940" y="380" width="140" height="120"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mFhUkNs1Ee-jCJsVag37PA" x="940" y="380" width="140" height="140"/>
     </children>
     <styles xmi:type="notation:StringValueStyle" xmi:id="_v3MVINWyEe-8_Y7VY-TUVw" name="diagram_compatibility_version" stringValue="1.4.0"/>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_v3MVIdWyEe-8_Y7VY-TUVw"/>

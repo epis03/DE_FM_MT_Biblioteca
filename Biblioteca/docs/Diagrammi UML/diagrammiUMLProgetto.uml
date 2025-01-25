@@ -596,6 +596,7 @@ lo ritengono necessario</body>
     <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_HZLtoNs2Ee-jCJsVag37PA" name="Disponibile"/>
     <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_LD0MUNs2Ee-jCJsVag37PA" name="Prenotato"/>
     <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_NXZ_kNs2Ee-jCJsVag37PA" name="Ritirato"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_2gDhcNtCEe-jCJsVag37PA" name="NonDisponibie"/>
   </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_SPyjwNT0Ee-8_Y7VY-TUVw">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_SP0Y8NT0Ee-8_Y7VY-TUVw" source="http://www.eclipse.org/uml2/2.0.0/UML">
