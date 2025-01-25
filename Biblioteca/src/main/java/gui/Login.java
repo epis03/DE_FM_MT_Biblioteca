@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -79,24 +80,25 @@ public class Login extends JDialog {
 		accesso.setBounds(31, 218, 385, 36);
 		contentPanel.add(accesso);
 		
-		JLabel lblNewLabel = new JLabel("Password dimenticata?");
-		lblNewLabel.addMouseListener(new MouseAdapter() {
+		JLabel passwordDimenticata = new JLabel("Password dimenticata?");
+		passwordDimenticata.setToolTipText("Clicca qui per cambiare la password");
+		passwordDimenticata.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(infoPanel[0].getText().isBlank()){
+				String email = new String(infoPanel[0].getText());
+				if(email.isBlank()){
 			accesso.setText("Inserire email e poi cliccare 'Password dimenticata?'");
 			}
 				else {
-					String email = infoPanel[0].getText();
 					GestioneUtenti gestione = new GestioneUtenti();
 					if(gestione.emailEsiste(email)) {
 					ConfermaIdentità identificazione = new ConfermaIdentità(email);
 					identificazione.setVisible(true);
 				}
 		}}});
-		lblNewLabel.setForeground(new Color(0, 0, 255));
-		lblNewLabel.setBounds(120, 199, 142, 13);
-		contentPanel.add(lblNewLabel);
+		passwordDimenticata.setForeground(new Color(0, 0, 255));
+		passwordDimenticata.setBounds(120, 199, 142, 13);
+		contentPanel.add(passwordDimenticata);
 
 
 
@@ -139,11 +141,12 @@ public class Login extends JDialog {
 				okButton.setMargin(new Insets(2, 8, 2, 14));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String email = infoPanel[0].getText();
-						String password = infoPanel[1].getText();
+						String email = new String(infoPanel[0].getText());
+						char[] password = infoPanel[1].getText();
 						if (verificaDati(email, password)) {
 							GestioneUtenti gestioneUtenti = new GestioneUtenti();
 							if( gestioneUtenti.autenticaUtente(email, password)) {
+								Arrays.fill(password, '\0');
 								accesso.setForeground(new Color(0, 255, 0));
 								accesso.setText("Autenticazione avvenuta con successo");
 								Timer timer = new Timer(5000, new ActionListener() {
@@ -178,14 +181,14 @@ public class Login extends JDialog {
 	}
 
 
-	public boolean verificaDati(String email,String password) {
+	public boolean verificaDati(String email,char[] password) {
 		GestioneUtenti gestioneUtenti = new GestioneUtenti();
 		boolean condition= true;
-		if(password.isBlank() && email.isBlank()) {
+		if(password.length==0 && email.isBlank()) {
 			accesso.setText("ACCESSO NEGATO: Inserire email e password");
 			condition = false;
 		}
-		if(condition && password.isBlank()) {
+		if(condition && password.length==0) {
 			accesso.setText("ACCESSO NEGATO: Inserire password");
 			condition=false;
 		}

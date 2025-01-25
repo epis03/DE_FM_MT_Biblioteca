@@ -26,7 +26,7 @@ public class Main {
         System.out.print("Inserisci password: ");
         String password = scanner.nextLine();
 
-        if (gestioneUtenti.autenticaUtente(email, password)) {
+    //    if (gestioneUtenti.autenticaUtente(email, password)) {
             logger.info("Utente autenticato con successo: {}", email);
             boolean continua = true;
 
@@ -74,8 +74,8 @@ public class Main {
                     default -> logger.warn("Scelta non valida: {}", scelta);
                 }
             }
-        } else {
+        }/* else {
             logger.error("Autenticazione fallita per l'utente: {}", email);
-        }
-    }
+        } 
+    } */
 }

@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class GestioneUtenti {
     private static final Logger logger = LogManager.getLogger(GestioneUtenti.class);
@@ -34,14 +37,15 @@ public class GestioneUtenti {
         }
 
        
-        public boolean changeUserPassword(String email, String newPassword) {
+        public boolean changeUserPassword(String email, char[] newPassword) {
+        	String hashedPassword = HashPasswords.hashPassword(new String(newPassword));
             String sql = "UPDATE utenti SET password = ? WHERE email = ?";
             boolean updated = false;
 
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
-                pstmt.setString(1, newPassword); 
+                pstmt.setString(1, hashedPassword); 
                 pstmt.setString(2, email);
                 int rowsAffected = pstmt.executeUpdate();
 
@@ -52,28 +56,14 @@ public class GestioneUtenti {
             return updated;
         }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-        public boolean registraUtente(String email, String password) {
+        public boolean registraUtente(String email, char[] password) {
+        String hashedPassword = HashPasswords.hashPassword(new String(password));
         String ruolo = email.contains("@unibg") ? "amministratore" : "utente";
         String sql = "INSERT INTO utenti (email, password, ruolo) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, email);
-            pstmt.setString(2, password);
+            pstmt.setString(2, hashedPassword);
             pstmt.setString(3, ruolo);
             pstmt.executeUpdate();
             logger.info("Utente '{}' registrato come '{}'.", email, ruolo);
@@ -84,13 +74,14 @@ public class GestioneUtenti {
         }
     }
 
-    public boolean autenticaUtente(String email, String password) {
+    public boolean autenticaUtente(String email, char[] password) {
+    	String passwordString = new String (password);
         String sql = "SELECT password FROM utenti WHERE email = ?";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next() && rs.getString("password").equals(password)) {
+            if (rs.next() && HashPasswords.verificaPassword(passwordString, rs.getString("password"))) {
                 logger.info("Autenticazione riuscita per l'utente '{}'.", email);
                 return true;
             } else {
@@ -122,3 +113,4 @@ public class GestioneUtenti {
         }
     }
 }
+

@@ -25,16 +25,18 @@ public class JPanelPasswordEmail extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel iconLabel;
 	private String defaultText; 
-	private Icon passwordVisibile;
-	private Icon passwordNascosta;
+	private static Image passwordVisibile;
+	private static Image passwordNascosta;
 	private boolean visibile = true; 
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private boolean password;
 	/**
 	 * Create the panel.
 	 */
 	public JPanelPasswordEmail(boolean password, String defaultText) {
 		this.defaultText = defaultText;		
+		this.password=password;
 
 		setBorder(UIManager.getBorder("TextField.border"));
 
@@ -49,7 +51,7 @@ public class JPanelPasswordEmail extends JPanel {
 
 		add(textField);
 
-		if(password) {
+		if(this.password) {
 			textField.setBounds(2, 2, 132, 24);
 			textField.setVisible(false);
 			visibile = false;
@@ -61,8 +63,8 @@ public class JPanelPasswordEmail extends JPanel {
 			addText(passwordField);
 			add(passwordField);
 
-			Image passwordVisibile = new ImageIcon(getClass().getResource("/immagini/MostraPassword.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH); 
-			Image passwordNascosta =  new ImageIcon(getClass().getResource(("/immagini/NascondiPassword.png"))).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+			passwordVisibile = new ImageIcon(getClass().getResource("/immagini/MostraPassword.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH); 
+			passwordNascosta =  new ImageIcon(getClass().getResource(("/immagini/NascondiPassword.png"))).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
 
 			ImageIcon imageIcon = new ImageIcon(passwordNascosta);
 			iconLabel = new JLabel(imageIcon);
@@ -106,11 +108,11 @@ public class JPanelPasswordEmail extends JPanel {
 					textField.setForeground(Color.BLACK);
 				}
 				if (textField instanceof JPasswordField) {
-						((JPasswordField) textField).setEchoChar('●');
-						textField.setFont(new Font("Tahoma", Font.PLAIN, 11));   
-						textField.setForeground(Color.BLACK);}
-				}
-			
+					((JPasswordField) textField).setEchoChar('●');
+					textField.setFont(new Font("Tahoma", Font.PLAIN, 11));   
+					textField.setForeground(Color.BLACK);}
+			}
+
 
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -126,19 +128,32 @@ public class JPanelPasswordEmail extends JPanel {
 		});
 	}
 
-	public String getText() {
-		String testo = "";
-		if(this.textField.getText().equals( this.defaultText)) {
-			return testo;
-		}
-		if(visibile) {
-			testo = this.textField.getText();
+	public char[] getText() {
+		char[] testo = {}; 
+
+		if (visibile ) {
+			if(this.textField.getText().equals( this.defaultText)) {
+				return testo;
+			}
+			if(password) {
+				this.passwordField.setText(this.textField.getText());
+				testo = this.passwordField.getPassword();
+			}
+			else {
+				testo = this.textField.getText().toCharArray();
+			}
 		}
 		else {
-			testo = new String(this.passwordField.getPassword());
+			this.textField.setText(new String(this.passwordField.getPassword()));
+			if(this.textField.getText().equals( this.defaultText)) {
+				return testo;
+			}
+			else {
+			testo = this.passwordField.getPassword();
+			}
 		}
-
 		return testo;
 	}
 
 }
+

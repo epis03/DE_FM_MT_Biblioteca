@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,7 +43,7 @@ public class VerificaEmail extends InserimentoCodice {
 	/**
 	 * Create the dialog.
 	 */
-	public VerificaEmail(boolean amministratore,String email,String password) {
+	public VerificaEmail(boolean amministratore,String email,char[] password) {
 		super(email,messaggio,titolo);
 		codice = GestioneEmail.verificaEmail(email);
 
@@ -51,6 +52,7 @@ public class VerificaEmail extends InserimentoCodice {
 				if(Verificacodice(codice)) {
 					GestioneUtenti gestione = new GestioneUtenti();
 					if(gestione.registraUtente(email, password)) {
+					Arrays.fill(password, '\0');
 					JOptionPane.showMessageDialog(null, "Utente:" + email +  "registrato correttamente");
 					Home.chiudiRegistrazione();
 					VerificaEmail.this.dispose();

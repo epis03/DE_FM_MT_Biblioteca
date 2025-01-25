@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.swing.Box;
@@ -34,7 +35,7 @@ public class CambiaPassword extends JDialog {
 	private JPanelPasswordEmail [] infoPanel = new JPanelPasswordEmail[2];
 	private boolean passwordfield = true;
 
-	
+
 
 	/**
 	 * Create the dialog.
@@ -54,9 +55,9 @@ public class CambiaPassword extends JDialog {
 			infoPanel[i] = new JPanelPasswordEmail(passwordfield, defaultText[i]);
 			contentPanel.add (infoPanel[i]);
 		} 
-		infoPanel[0].setBounds(140, 130, 159, 30);
-		infoPanel[1].setBounds(140, 170, 159, 30);
-		
+		infoPanel[0].setBounds(140, 100, 159, 30);
+		infoPanel[1].setBounds(140, 140, 159, 30);
+
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 		lblNewLabel_2.setBounds(109, 10, 219, 51);
 		contentPanel.add(lblNewLabel_2);
@@ -65,12 +66,16 @@ public class CambiaPassword extends JDialog {
 		lblNewLabel_5.setBounds(121, 52, 191, 36);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		contentPanel.add(lblNewLabel_5);
-
+		
 		accesso = new JLabel("");
 		accesso.setBounds(31, 228, 385, 36);
 		accesso.setForeground(new Color(255, 0, 0));
 		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		contentPanel.add(accesso);
+		
+	RegolePassword regole = new RegolePassword(accesso);
+		regole.setBounds(129, 170, 255, 85);
+		contentPanel.add(regole);
 
 		{
 			JPanel buttonPane = new JPanel();
@@ -108,19 +113,24 @@ public class CambiaPassword extends JDialog {
 				JButton okButton = new JButton("Conferma");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String password = infoPanel[0].getText();
-						String passwordConferma = infoPanel[1].getText();
+						char[] password = infoPanel[0].getText();
+						char[] passwordConferma = infoPanel[1].getText();
 						if (verificaDati( password, passwordConferma)) {
-							//metodo per cambiare password
-							JOptionPane.showMessageDialog(null, "Password cambiata corettamente,clicca ok oer tornare alla schermata di Login");
-							CambiaPassword.this.dispose();
+							Arrays.fill(passwordConferma, '\0');
+							GestioneUtenti gestione = new GestioneUtenti();
+							if(gestione.changeUserPassword(email, password)) {
+								Arrays.fill(password, '\0');
+								JOptionPane.showMessageDialog(null, "Password cambiata corettamente,clicca ok oer tornare alla schermata di Login");
+								CambiaPassword.this.dispose();
 							}
+
 							else{
 								accesso.setText("Tentativo di cambio password fallito" ); 
 							}
 						}
 					}
-				
+				}
+
 						);
 				okButton.setMargin(new Insets(2, 8, 2, 14));
 
@@ -142,21 +152,40 @@ public class CambiaPassword extends JDialog {
 		});
 	}
 
-	public boolean verificaDati(String password, String conferma) {
+	public boolean verificaDati(char[] password, char[] conferma) {
 		boolean condition=true;
+		String passwordString = new String(password);
 
-		
-		if(condition && password.isBlank()) {
+		if(condition && passwordString.isBlank()) {
 			accesso.setText("Inserire password");
 			condition=false;
 		}		
-		if(condition && conferma.isBlank()) {
+		if(condition && conferma.length == 0) {
 			accesso.setText("Confermare password");
 			condition=false;
 		}
-		if(condition && !password.equals(conferma)) {
+		if(condition && !Arrays.equals(password, conferma)) {
 			accesso.setText("Le password non corrispondono");
 			condition=false;
+		}
+		if (condition && passwordString.length() < 8) {
+			accesso.setText("La password deve contenere almeno 8 caratteri.");
+			condition = false;
+		}
+
+		if (condition && !passwordString.matches(".*[A-Z].*")) {
+			accesso.setText("La password deve contenere almeno una lettera maiuscola.");
+			condition = false;
+		}
+
+		if (condition && !passwordString.matches(".*\\d.*")) {
+			accesso.setText("La password deve contenere almeno un numero.");
+			condition = false;
+		}
+
+		if (condition && !passwordString.matches(".*[@#$%^&+=!].*")) {
+			accesso.setText("La password deve contenere almeno un carattere speciale (@#$%^&+=!).");
+			condition = false;
 		}
 		return condition;
 	}
