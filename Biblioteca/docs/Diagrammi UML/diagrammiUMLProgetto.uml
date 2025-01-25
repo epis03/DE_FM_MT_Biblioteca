@@ -362,6 +362,9 @@ lo ritengono necessario</body>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_DQ4JwNjsEe-jCJsVag37PA" name="ruolo">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_zYveINs1Ee-jCJsVag37PA" name="prestitoScaduto">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+    </ownedAttribute>
     <ownedOperation xmi:type="uml:Operation" xmi:id="_G7I1ANjsEe-jCJsVag37PA" name="autentica"/>
     <ownedOperation xmi:type="uml:Operation" xmi:id="_MUCzYNjsEe-jCJsVag37PA" name="cambiaPassword"/>
   </packagedElement>
@@ -375,8 +378,9 @@ lo ritengono necessario</body>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_hhPJ4NjsEe-jCJsVag37PA" name="genere">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_lINQkNjsEe-jCJsVag37PA" name="stato">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_lINQkNjsEe-jCJsVag37PA" name="stato" type="_l7enwNs1Ee-jCJsVag37PA"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_xCUxoNs7Ee-jCJsVag37PA" name="copie">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
     </ownedAttribute>
     <ownedOperation xmi:type="uml:Operation" xmi:id="_oZvSwNjsEe-jCJsVag37PA" name="prenota"/>
     <ownedOperation xmi:type="uml:Operation" xmi:id="_qFrQINjsEe-jCJsVag37PA" name="restituisci"/>
@@ -588,6 +592,12 @@ lo ritengono necessario</body>
   <packagedElement xmi:type="uml:Usage" xmi:id="_8jAZ8NmjEe-jCJsVag37PA" name="Query libri" client="_hLclMNmeEe-jCJsVag37PA" supplier="_i9PgsNmjEe-jCJsVag37PA"/>
   <packagedElement xmi:type="uml:Usage" xmi:id="_Ku4p0NmkEe-jCJsVag37PA" name="Gestisce dati utente" client="_i9PgsNmjEe-jCJsVag37PA" supplier="_DexSMNmkEe-jCJsVag37PA"/>
   <packagedElement xmi:type="uml:Usage" xmi:id="_NyXo8NmkEe-jCJsVag37PA" name="Gestisce dati libri" client="_i9PgsNmjEe-jCJsVag37PA" supplier="_GWrTcNmkEe-jCJsVag37PA"/>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_l7enwNs1Ee-jCJsVag37PA" name="Stato">
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_HZLtoNs2Ee-jCJsVag37PA" name="Disponibile"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_LD0MUNs2Ee-jCJsVag37PA" name="Prenotato"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_NXZ_kNs2Ee-jCJsVag37PA" name="Ritirato"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_2gDhcNtCEe-jCJsVag37PA" name="NonDisponibie"/>
+  </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_SPyjwNT0Ee-8_Y7VY-TUVw">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_SP0Y8NT0Ee-8_Y7VY-TUVw" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
