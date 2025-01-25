@@ -1698,6 +1698,10 @@
           <element xmi:type="uml:Property" href="diagrammiUMLProgetto.uml#_lINQkNjsEe-jCJsVag37PA"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_lIgykdjsEe-jCJsVag37PA"/>
         </children>
+        <children xmi:type="notation:Shape" xmi:id="_xomHcNs7Ee-jCJsVag37PA" type="Property_ClassAttributeLabel">
+          <element xmi:type="uml:Property" href="diagrammiUMLProgetto.uml#_xCUxoNs7Ee-jCJsVag37PA"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_xonVkNs7Ee-jCJsVag37PA"/>
+        </children>
         <styles xmi:type="notation:TitleStyle" xmi:id="_yGzqdNjrEe-jCJsVag37PA"/>
         <styles xmi:type="notation:SortingStyle" xmi:id="_yGzqddjrEe-jCJsVag37PA"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_yGzqdtjrEe-jCJsVag37PA"/>
@@ -1724,7 +1728,7 @@
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yGzqgdjrEe-jCJsVag37PA"/>
       </children>
       <element xmi:type="uml:Class" href="diagrammiUMLProgetto.uml#_yGorUNjrEe-jCJsVag37PA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yGzDYdjrEe-jCJsVag37PA" x="700" y="380" width="160" height="160"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yGzDYdjrEe-jCJsVag37PA" x="700" y="380" width="160" height="180"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_mFgGcNs1Ee-jCJsVag37PA" type="Enumeration_Shape">
       <children xmi:type="notation:DecorationNode" xmi:id="_mGeW0Ns1Ee-jCJsVag37PA" type="Enumeration_NameLabel"/>
