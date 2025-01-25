@@ -68,7 +68,7 @@ public class CambiaPassword extends JDialog {
 		contentPanel.add(lblNewLabel_5);
 		
 		accesso = new JLabel("");
-		accesso.setBounds(31, 228, 385, 36);
+		accesso.setBounds(10, 205, 447, 58);
 		accesso.setForeground(new Color(255, 0, 0));
 		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		contentPanel.add(accesso);
@@ -155,7 +155,7 @@ public class CambiaPassword extends JDialog {
 	public boolean verificaDati(char[] password, char[] conferma) {
 		boolean condition=true;
 		String passwordString = new String(password);
-
+		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		if(condition && passwordString.isBlank()) {
 			accesso.setText("Inserire password");
 			condition=false;
@@ -184,6 +184,7 @@ public class CambiaPassword extends JDialog {
 		}
 
 		if (condition && !passwordString.matches(".*[@#$%^&+=!].*")) {
+			accesso.setFont(new Font("Nirmala UI", Font.BOLD, 13));
 			accesso.setText("La password deve contenere almeno un carattere speciale (@#$%^&+=!).");
 			condition = false;
 		}

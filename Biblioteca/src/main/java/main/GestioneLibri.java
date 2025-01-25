@@ -327,5 +327,27 @@ public class GestioneLibri {
         }
     }
 
-  
+    public static int getCopie(String autore, String titolo) {
+        int numeroCopie = 0;
+        
+        String query = "SELECT DISTINCT copie FROM libri WHERE autore = ? AND titolo = ?";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            
+            pstmt.setString(1, autore);
+            pstmt.setString(2, titolo);
+            
+            ResultSet rs = pstmt.executeQuery();
+          
+            numeroCopie = rs.getInt("copie");
+                      
+        } catch (SQLException e) {
+            logger.error("Errore durante il recupero del numero di copie.", e);
+        }
+        
+        return numeroCopie;
+    }
+
+
 }

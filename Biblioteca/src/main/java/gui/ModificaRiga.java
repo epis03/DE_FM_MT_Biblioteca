@@ -18,6 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+
+import main.GestioneLibri;
+
 import javax.swing.JTextField;
 
 public class ModificaRiga extends JDialog {
@@ -34,7 +37,7 @@ public class ModificaRiga extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ModificaRiga(Object Autore, Object Titolo, Object Genere, int riga) {
+	public ModificaRiga(Object autore, Object titolo, Object genere, int riga) {
 		this.riga = riga;
 		setResizable(false);
 		setAlwaysOnTop(true);
@@ -53,22 +56,22 @@ public class ModificaRiga extends JDialog {
 		titoloJDialog.setBounds(138, 9, 244, 63);
 		contentPanel.add(titoloJDialog);
 		{
-			JLabel titolo = new JLabel("Titolo");
-			titolo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			titolo.setBounds(90, 82, 45, 13);
-			contentPanel.add(titolo);
+			JLabel titoloLabel = new JLabel("Titolo");
+			titoloLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			titoloLabel.setBounds(90, 82, 45, 13);
+			contentPanel.add(titoloLabel);
 		}
 		{
-			JLabel autore = new JLabel("Autore");
-			autore.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			autore.setBounds(90, 119, 45, 13);
-			contentPanel.add(autore);
+			JLabel autoreLabel = new JLabel("Autore");
+			autoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			autoreLabel.setBounds(90, 119, 45, 13);
+			contentPanel.add(autoreLabel);
 		}
 		{
-			JLabel genere = new JLabel("Genere");
-			genere.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			genere.setBounds(90, 158, 66, 13);
-			contentPanel.add(genere);
+			JLabel genereLabel = new JLabel("Genere");
+			genereLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			genereLabel.setBounds(90, 158, 66, 13);
+			contentPanel.add(genereLabel);
 		}
 		{
 			JLabel copie = new JLabel("Numero di copie");
@@ -79,16 +82,19 @@ public class ModificaRiga extends JDialog {
 
 		titoloTextField = new JTextField();
 		titoloTextField.setBounds(197, 156, 150, 22);
+		titoloTextField.setText((String) titolo);
 		contentPanel.add(titoloTextField);
 		titoloTextField.setColumns(10);
 
 		autoreTextField = new JTextField();
 		autoreTextField.setBounds(197, 117, 150, 22);
+		autoreTextField.setText((String) autore);
 		contentPanel.add(autoreTextField);
 		autoreTextField.setColumns(10);
 
 		genereTextField = new JTextField();
 		genereTextField.setBounds(197, 77, 153, 22);
+		genereTextField.setText((String) genere);
 		contentPanel.add(genereTextField);
 		genereTextField.setColumns(10);
 
@@ -96,6 +102,8 @@ public class ModificaRiga extends JDialog {
 		copieTextField.setBounds(257, 190, 30, 22);
 		contentPanel.add(copieTextField);
 		copieTextField.setColumns(10);
+		int copie =GestioneLibri.getCopie((String) autore, (String) titolo);
+		copieTextField.setText(String.valueOf(copie));
 		{
 			avviso = new JTextArea("");
 			avviso.setBackground(new Color(240, 240, 240));
@@ -144,7 +152,7 @@ public class ModificaRiga extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(verificadati()) {
-							TabellaLibriAmministratori.modificaRiga(autoreTextField.getText().trim(), titoloTextField.getText().trim().replaceAll( "  ", " "), genereTextField.getText().trim(),Integer.parseInt( copieTextField.getText()), riga);
+							TabellaLibriAmministratori.modificaRiga((String)titolo,(String)autore,(String)genere,autoreTextField.getText().trim(), titoloTextField.getText().trim().replaceAll( "  ", " "), genereTextField.getText().trim(),Integer.parseInt( copieTextField.getText()), riga);
 							ModificaRiga.this.dispose();
 						}
 					}

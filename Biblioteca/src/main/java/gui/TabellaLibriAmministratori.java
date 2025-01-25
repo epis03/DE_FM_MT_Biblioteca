@@ -117,7 +117,8 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 		((DefaultTableModel) table.getModel()).removeRow(riga);
 	}
 
-	public static void modificaRiga(String autore, String titolo,String genere, int copie,int riga) {
+	public static void modificaRiga(String vecchioTitolo, String vecchioAutore,String vecchioGenere,String autore, String titolo,String genere, int copie,int riga) {
+		GestioneLibri.modificaLibri(vecchioTitolo, vecchioAutore, vecchioGenere, titolo, autore,genere, copie);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		String [] dati =  {autore, titolo, genere};
 		for(int i=0;i<3;i++) {

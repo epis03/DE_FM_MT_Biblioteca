@@ -62,7 +62,7 @@ public class Registrazione extends JDialog {
 		contentPanel.add(lblNewLabel_5);
 
 		accesso = new JLabel("");
-		accesso.setBounds(31, 228, 385, 36);
+		accesso.setBounds(10, 172, 447, 98);
 		accesso.setForeground(new Color(255, 0, 0));
 		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		contentPanel.add(accesso);
@@ -145,6 +145,7 @@ public class Registrazione extends JDialog {
 
 	public boolean verificaDati(String email,char[] password, char[] conferma) {
 		boolean condition=true;
+		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		String passwordString = new String(password);
 		if(passwordString.isBlank() && email.isBlank()) {
 			accesso.setText("Inserire email e password");
@@ -186,6 +187,7 @@ public class Registrazione extends JDialog {
 		}
 
 		if (condition && !passwordString.matches(".*[@#$%^&+=!].*")) {
+			accesso.setFont(new Font("Nirmala UI", Font.BOLD, 13));
 			accesso.setText("La password deve contenere almeno un carattere speciale (@#$%^&+=!).");
 		    condition = false;
 		}
