@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.swing.JFrame;
@@ -28,6 +29,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import main.GestioneLibri;
+import main.Libro;
+
 import java.awt.Component;
 
 import javax.imageio.ImageIO;
@@ -47,11 +52,16 @@ public abstract class TabellaLibriBase extends JFrame {
 	private JPanel contentPane;
 	private static JTable table;
 	private JMenuBar menuBar;
+	private boolean amministratore;
+	private JPanelPersonalizzato cercaAutore;
+	private JPanelPersonalizzato cercaTitolo;
+	private JPanelPersonalizzato cercaGenere;
 
 	/**
 	 * Create the frame.
 	 */
-	public TabellaLibriBase(boolean[] columnEditables, int row, String azione, ActionListener actionlistener) {
+	public TabellaLibriBase(boolean amministratore, boolean[] columnEditables, int row, String azione, ActionListener actionlistener) {
+	    this.amministratore=amministratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		menuBar = new JMenuBar();
@@ -63,12 +73,14 @@ public abstract class TabellaLibriBase extends JFrame {
 		JMenu mnNewMenu_1 = new JMenu("Autore");
 		mnNewMenu.add(mnNewMenu_1);
 
-		JPanelPersonalizzato cercaAutore = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
-
+		  cercaAutore = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
+           
 			@Override
 			public void accept(MouseEvent t) {
-				TabellaLibriBase.this.dispose();
-
+				
+				String autore = cercaAutore.getText();
+				List<Libro> lista	=GestioneLibri.filtraAutore(autore);
+				TabellaLibri.filtraTabella(lista);
 			}
 		});
 		mnNewMenu_1.add(cercaAutore);
@@ -76,18 +88,30 @@ public abstract class TabellaLibriBase extends JFrame {
 		JMenu mnNewMenu_3 = new JMenu("Titolo");
 		mnNewMenu.add(mnNewMenu_3);
 
-		JPanelPersonalizzato cercaTitolo = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
+		cercaTitolo = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
 
 			@Override
 			public void accept(MouseEvent t) {
 
-
+				String titolo = cercaTitolo.getText();
+				List<Libro> lista	=GestioneLibri.filtraAutore(titolo);
+				TabellaLibri.filtraTabella(lista);
 			}
 		});
 		mnNewMenu_3.add(cercaTitolo);
 
+
 		JMenu mnNewMenu_4 = new JMenu("Genere");
 		mnNewMenu.add(mnNewMenu_4);
+		 cercaGenere = new JPanelPersonalizzato( new Consumer<MouseEvent>() {
+			@Override
+			public void accept(MouseEvent t) {
+				String genere = cercaGenere.getText();
+				List<Libro> lista	=GestioneLibri.filtraAutore(genere);
+				TabellaLibri.filtraTabella(lista);
+			}
+		});
+		mnNewMenu_4.add(cercaGenere);
 
 		JMenuBar menuBar_1 = new JMenuBar();
 		mnNewMenu.add(menuBar_1);
@@ -121,20 +145,12 @@ public abstract class TabellaLibriBase extends JFrame {
 				return columnEditables[column];
 			}
 		});
-
+		
 		// Imposta renderer per tooltip nelle celle di testo
 		for (int i = 0; i < row; i++) {
 			table.getColumnModel().getColumn(i).setCellRenderer(new CustomizedTableCellRenderer());
 		}
-		DefaultTableModel model = (DefaultTableModel) table.getModel();		
-		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
-		table.setRowSorter(sorter);
-		sorter.setSortKeys(java.util.Collections.singletonList(
-				new RowSorter.SortKey(0, SortOrder.ASCENDING)
-				));
-
-
-
+	
 		table.getColumnModel().getColumn(4).setCellRenderer(new CustomizedTableRenderer(azione));
 		table.getColumnModel().getColumn(4).setCellEditor(new CustomizedCellEditor(new JButton(azione), actionlistener));
 		scrollPane.setViewportView(table);
@@ -157,6 +173,10 @@ public abstract class TabellaLibriBase extends JFrame {
 	}
 	public JMenuBar getMenu() {
 		return menuBar;
+	}
+	
+	public static  void filtraTabella() {
+		
 	}
 
 	class CustomizedTableRenderer extends JButton implements TableCellRenderer {

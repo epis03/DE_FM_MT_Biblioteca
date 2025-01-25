@@ -53,7 +53,7 @@ public class Login extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
+
 		for(int i=0;i<2;i++) {
 			infoPanel[i] = new JPanelPasswordEmail(passwordfield, defaultText[i]);
 			contentPanel.add (infoPanel[i]);
@@ -64,11 +64,11 @@ public class Login extends JDialog {
 		} 
 		infoPanel[0].setBounds(120, 120, 159, 30);
 		infoPanel[1].setBounds(120, 160, 159, 30);
-		
+
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 		lblNewLabel_2.setBounds(147, 10, 115, 50);
 		contentPanel.add(lblNewLabel_2);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("Inserisci le tue credenziali");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_3.setBounds(95, 70, 225, 30);
@@ -79,7 +79,7 @@ public class Login extends JDialog {
 		accesso.setFont(new Font("Nirmala UI", Font.BOLD, 14));
 		accesso.setBounds(31, 218, 385, 36);
 		contentPanel.add(accesso);
-		
+
 		JLabel passwordDimenticata = new JLabel("Password dimenticata?");
 		passwordDimenticata.setToolTipText("Clicca qui per cambiare la password");
 		passwordDimenticata.addMouseListener(new MouseAdapter() {
@@ -87,15 +87,15 @@ public class Login extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 				String email = new String(infoPanel[0].getText());
 				if(email.isBlank()){
-			accesso.setText("Inserire email e poi cliccare 'Password dimenticata?'");
-			}
+					accesso.setText("Inserire email e poi cliccare 'Password dimenticata?'");
+				}
 				else {
 					GestioneUtenti gestione = new GestioneUtenti();
 					if(gestione.emailEsiste(email)) {
-					ConfermaIdentità identificazione = new ConfermaIdentità(email);
-					identificazione.setVisible(true);
-				}
-		}}});
+						ConfermaIdentità identificazione = new ConfermaIdentità(email);
+						identificazione.setVisible(true);
+					}
+				}}});
 		passwordDimenticata.setForeground(new Color(0, 0, 255));
 		passwordDimenticata.setBounds(120, 199, 142, 13);
 		contentPanel.add(passwordDimenticata);
@@ -151,8 +151,15 @@ public class Login extends JDialog {
 								accesso.setText("Autenticazione avvenuta con successo");
 								Timer timer = new Timer(5000, new ActionListener() {
 									public void actionPerformed(ActionEvent e) {
-										TabellaLibriAmministratori table = new TabellaLibriAmministratori();
-										table.setVisible(true);
+										String ruolo = gestioneUtenti.getUserRole(email);
+										if(ruolo.equals("amministratore")){
+											TabellaLibriAmministratori table = new TabellaLibriAmministratori();
+											table.setVisible(true);
+										}
+										else {
+											TabellaLibri table= new TabellaLibri();
+											table.setVisible(true);
+										}										
 										Login.this.dispose();
 									}});
 								timer.setRepeats(false); 

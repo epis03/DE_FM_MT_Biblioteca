@@ -1,5 +1,7 @@
 package main;
 
+import java.time.LocalDate;
+
 public class Libro {
     private int id;
     private String titolo;
@@ -7,14 +9,18 @@ public class Libro {
     private String genere;
     private Stato stato;
     private int copie;
+    private  LocalDate inizioPrestito;
+    private  LocalDate finePrestito ;
 
-    public Libro(int id, String titolo, String autore, String genere, Stato stato, int copie) {
+    public Libro(int id, String titolo, String autore, String genere, Stato stato, int copie,LocalDate inizioPrestito, LocalDate finePrestito) {
         this.id = id;
         this.titolo = titolo;
         this.autore = autore;
         this.genere = genere;
         this.stato = stato;
         this.copie = copie;
+        this.inizioPrestito = inizioPrestito;
+        this.finePrestito = finePrestito;
     }
     
     public int getId() {
@@ -63,6 +69,22 @@ public class Libro {
 
 	public void setCopie(int copie) {
 		this.copie = copie;
+	}
+
+	public LocalDate getInizioPrestito() {
+		return inizioPrestito;
+	}
+
+	public void setInizioPrestito(LocalDate inizioPrestito) {
+		this.inizioPrestito = inizioPrestito;
+	}
+
+	public LocalDate getFinePrestito() {
+		return finePrestito;
+	}
+
+	public void setFinePrestito(LocalDate finePrestito) {
+		this.finePrestito = finePrestito;
 	}
 
 

@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.Image;
+import java.awt.TextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 public class JPanelPersonalizzato extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private JTextField textField;
 
 
 	/**
@@ -21,7 +23,7 @@ public class JPanelPersonalizzato extends JPanel {
 	public JPanelPersonalizzato( Consumer<MouseEvent> onClick) {
 
 		setLayout(new BorderLayout());
-		JTextField textField = new JTextField(10); 
+		textField = new JTextField(10); 
 		add(textField, BorderLayout.CENTER);
 		Image immagini = new ImageIcon(getClass().getResource("/immagini/Cerca.png")).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(immagini);
@@ -34,5 +36,11 @@ public class JPanelPersonalizzato extends JPanel {
 		});
 		add(iconLabel, BorderLayout.EAST);
 	}
+	
+	public String getText() {
+		
+		return textField.getText();
+	}
+	
 }
 

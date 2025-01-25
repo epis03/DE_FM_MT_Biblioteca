@@ -21,7 +21,8 @@ public class DatabaseManager {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "email TEXT UNIQUE NOT NULL, " +
                 "password TEXT NOT NULL, " +
-                "ruolo TEXT NOT NULL" +
+                "ruolo TEXT NOT NULL," +
+                "prestitoScaduto INTEGER NOT NULL DEFAULT 0" +
                 ");";
 
         String createLibriTable = "CREATE TABLE IF NOT EXISTS libri (" +
@@ -29,8 +30,10 @@ public class DatabaseManager {
                 "titolo TEXT NOT NULL, " +
                 "autore TEXT NOT NULL, " +
                 "genere TEXT, " +
-                "stato TEXT NOT NULL DEFAULT 'disponibile', " +
+                "stato TEXT NOT NULL DEFAULT 'DISPONIBILE', " +
                 "copie INTEGER NOT NULL" +
+                "inizio_prestito DATE, " +  
+                "fine_prestito DATE" +      
                 ");";
 
         try (Connection conn = getConnection();

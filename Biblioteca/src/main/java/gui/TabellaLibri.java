@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -12,7 +13,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import main.GestioneLibri;
+import main.Libro;
 
 
 public class TabellaLibri extends TabellaLibriBase{
@@ -48,7 +57,20 @@ public class TabellaLibri extends TabellaLibriBase{
 	 */
 	public TabellaLibri() {
 
-		super(columnEditables,row,azione,getActionListener());
+		super(false,columnEditables,row,azione,getActionListener());
+		table = super.getTable();
+		DefaultTableModel model = (DefaultTableModel) table.getModel();		
+		List<Libro> lista = GestioneLibri.getListaLibri(true);
+		for (int i = 0; i < lista.size(); i++) {
+			Libro libro = lista.get(i);
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+		}
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+		table.setRowSorter(sorter);
+		sorter.setSortKeys(java.util.Collections.singletonList(
+				new RowSorter.SortKey(0, SortOrder.ASCENDING)
+				));
+
 		JButton info = new JButton("Prestiti Attivi");
 		info.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -86,6 +108,21 @@ public class TabellaLibri extends TabellaLibriBase{
 			}};
 
 			return action;
+	}
+	
+	public static void filtraTabella(List<Libro> lista) {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+		for (int i = 0; i < lista.size(); i++) {
+			Libro libro = lista.get(i);
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+		}
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+		table.setRowSorter(sorter);
+		sorter.setSortKeys(java.util.Collections.singletonList(
+				new RowSorter.SortKey(0, SortOrder.ASCENDING)
+				));
+		
 	}
 }
 

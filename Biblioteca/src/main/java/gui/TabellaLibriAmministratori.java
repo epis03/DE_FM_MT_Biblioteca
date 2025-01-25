@@ -4,8 +4,7 @@ import java.awt.EventQueue;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
+import java.util.List;
 
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -20,6 +19,10 @@ import javax.swing.table.DefaultTableModel;
 
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import main.GestioneLibri;
+import main.GestioneUtenti;
+import main.Libro;
 
 import java.awt.Color;
 
@@ -55,7 +58,7 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 	 * Create the frame.
 	 */
 	public TabellaLibriAmministratori() {
-		super( columnEditables,row,azione,getActionListener());
+		super( true,columnEditables,row,azione,getActionListener());
 
 		table = super.getTable();
 		menuBar = super.getJMenuBar();
@@ -63,9 +66,23 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 		table.getColumnModel().getColumn(3).setCellRenderer(new CustomizedTableRenderer("Visualizza Stato"));
 		table.getColumnModel().getColumn(3).setCellEditor(new CustomizedCellEditor(new JButton("Visualizza Stato"), new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//		StatoPrestitiAmministratore state = new StatoPrestitiAmministratore();
-				//		state.setVisible(true);
+				int riga  = table.getSelectedRow();
+				String autore = (String) table.getValueAt(riga, 1);
+				List<Libro> lista = GestioneLibri.filtraAutore(autore);
+				    StatoPrestitiAmministratore state = new StatoPrestitiAmministratore(lista);
+					state.setVisible(true);
 			}}));
+		DefaultTableModel model = (DefaultTableModel) table.getModel();		
+		List<Libro> lista = GestioneLibri.getListaLibri(true);
+		for (int i = 0; i < lista.size(); i++) {
+			Libro libro = lista.get(i);
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+		}
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+		table.setRowSorter(sorter);
+		sorter.setSortKeys(java.util.Collections.singletonList(
+				new RowSorter.SortKey(0, SortOrder.ASCENDING)
+				));
 		JButton aggiungiRiga = new JButton("Aggiungi Riga");
 		aggiungiRiga.setBackground(new Color(192, 192, 192));
 		menuBar.add(aggiungiRiga);
@@ -80,6 +97,8 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 
 
 	public static void inserisciRiga(String autore, String titolo,String genere, int copie) {
+		GestioneLibri gestione = new GestioneLibri();
+		gestione.aggiungiLibro(titolo, autore, genere, copie);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.addRow(new Object[]{ autore, titolo,  genere, "Visualizza Stato", "Modifica"});
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
@@ -91,6 +110,10 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 	}
 
 	public static void eliminaRiga(int riga) {
+		String autore = (String) table.getValueAt(riga, 0);
+		String titolo = (String) table.getValueAt(riga, 1);
+		String genere = (String) table.getValueAt(riga, 2);	
+		GestioneLibri.eliminaLibri(titolo,autore,genere);
 		((DefaultTableModel) table.getModel()).removeRow(riga);
 	}
 
@@ -144,6 +167,21 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 				}
 			}};
 			return action; 
-	}}
+	}
+	public static void filtraTabella(List<Libro> lista) {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+		for (int i = 0; i < lista.size(); i++) {
+			Libro libro = lista.get(i);
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+		}
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+		table.setRowSorter(sorter);
+		sorter.setSortKeys(java.util.Collections.singletonList(
+				new RowSorter.SortKey(0, SortOrder.ASCENDING)
+				));
+		
+	}	
+}
 
    

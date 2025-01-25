@@ -64,7 +64,7 @@ public class Main {
                         System.out.print("Inserisci l'ID del libro da prenotare: ");
                         int libroId = scanner.nextInt();
                         scanner.nextLine();
-                        gestioneLibri.prenotaLibro(libroId);
+                        gestioneLibri.ritiraLibro(libroId);
                     }
                     case 4 -> {
                         logger.info("Scelta: Esci dal sistema.");
