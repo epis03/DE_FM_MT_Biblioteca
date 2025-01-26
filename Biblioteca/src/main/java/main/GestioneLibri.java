@@ -312,73 +312,70 @@ public class GestioneLibri {
         }
         return libri;
     }
-    
+
     public static void modificaLibri(String vecchioTitolo, String vecchioAutore, String vecchioGenere, String nuovoTitolo, String nuovoAutore, String nuovoGenere, int nuoveCopie) {
-        String selectQuery = "SELECT id,copie FROM libri WHERE titolo = ? AND autore = ? AND genere = ? AND stato=DISPONIBILE ORDER BY id ASC"; 
-        String updateQuery = "UPDATE libri SET titolo = ?, autore = ?, genere = ?, copie = ? WHERE titolo = ? AND autore = ? AND genere = ?";
-        String insertQuery = "INSERT INTO libri (titolo, autore, genere, stato, copie) VALUES (?, ?, ?, 'DISPONIBILE', ?)";
-        String deleteQuery = "DELETE FROM libri WHERE id=?";
-        
-        try (Connection conn = DatabaseManager.getConnection()) {
-          
-            PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
-            selectStmt.setString(1, vecchioTitolo);
-            selectStmt.setString(2, vecchioAutore);
-            selectStmt.setString(3, vecchioGenere);
-            
-            ResultSet
-            rs = selectStmt.executeQuery();
-            
-            int copieAttuali = 0;
-            List<Integer> libroIds = new ArrayList<>();
-            
-            
-            while (rs.next()) {
-                int id = rs.getInt("id");     
-                libroIds.add(id);
-            }
-            copieAttuali= libroIds.size();
-           
-            PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-            updateStmt.setString(1, nuovoTitolo);
-            updateStmt.setString(2, nuovoAutore);
-            updateStmt.setString(3, nuovoGenere);
-            updateStmt.setInt(4, nuoveCopie);
-            updateStmt.setString(5, vecchioTitolo);
-            updateStmt.setString(6, vecchioAutore);
-            updateStmt.setString(7, vecchioGenere);
-            int righeModificate = updateStmt.executeUpdate();
-            
-            logger.info(righeModificate + " libri aggiornati con successo.");
-            if(nuoveCopie > copieAttuali) {
-            	int differenza = copieAttuali - nuoveCopie;
-            	 for (int i = 0; i == differenza; i++) {
-                     try (PreparedStatement pstmtInsert = conn.prepareStatement(insertQuery)) {
-                         pstmtInsert.setString(1, nuovoTitolo);
-                         pstmtInsert.setString(2, nuovoAutore);
-                         pstmtInsert.setString(3, nuovoGenere);
-                         pstmtInsert.setInt(4, nuoveCopie);
-                         pstmtInsert.executeUpdate();
-                     }
-                 }
-            	 logger.info("Creati: " + differenza + " nuovi libri.");
-            }
-            
+    	String selectQuery = "SELECT id,copie FROM libri WHERE titolo = ? AND autore = ? AND genere = ? AND stato = 'DISPONIBILE' ORDER BY id ASC"; 
+    	String updateQuery = "UPDATE libri SET titolo = ?, autore = ?, genere = ?, copie = ? WHERE titolo = ? AND autore = ? AND genere = ?";
+    	String insertQuery = "INSERT INTO libri (titolo, autore, genere, stato, copie) VALUES (?, ?, ?, 'DISPONIBILE', ?)";
+    	String deleteQuery = "DELETE FROM libri WHERE id=?";
+
+    	try (Connection conn = DatabaseManager.getConnection()) {
+
+    		PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+    		selectStmt.setString(1, vecchioTitolo);
+    		selectStmt.setString(2, vecchioAutore);
+    		selectStmt.setString(3, vecchioGenere);
+
+    		ResultSet
+    		rs = selectStmt.executeQuery();
+
+    		int copieAttuali = 0;
+    		List<Integer> libroIds = new ArrayList<>();
+
+
+    		while (rs.next()) {
+    			int id = rs.getInt("id");     
+    			libroIds.add(id);
+    		}
+    		copieAttuali= libroIds.size();
+
+    		PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+    		updateStmt.setString(1, nuovoTitolo);
+    		updateStmt.setString(2, nuovoAutore);
+    		updateStmt.setString(3, nuovoGenere);
+    		updateStmt.setInt(4, nuoveCopie);
+    		updateStmt.setString(5, vecchioTitolo);
+    		updateStmt.setString(6, vecchioAutore);
+    		updateStmt.setString(7, vecchioGenere);
+    		int righeModificate = updateStmt.executeUpdate();
+
+    		logger.info(righeModificate + " libri aggiornati con successo.");
+    		if(nuoveCopie > copieAttuali) {
+    			int differenza =  nuoveCopie - copieAttuali;
+    			for (int i = 0; i < differenza; i++) {
+    				try (PreparedStatement pstmtInsert = conn.prepareStatement(insertQuery)) {
+    					pstmtInsert.setString(1, nuovoTitolo);
+    					pstmtInsert.setString(2, nuovoAutore);
+    					pstmtInsert.setString(3, nuovoGenere);
+    					pstmtInsert.setInt(4, nuoveCopie);
+    					pstmtInsert.executeUpdate();
+
+    				}
+    				logger.info("Creati: " + differenza + " nuovi libri.");
+    			}
+    		}
 
             if (nuoveCopie < copieAttuali) {
             	int differenza = copieAttuali - nuoveCopie;
 
 
-            	for (int i=0; i==differenza;i++) {
+            	for (int i=0; i < differenza;i++) {
             		int idToDelete = libroIds.get(i);
             		PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
             		deleteStmt.setInt(1, idToDelete);
             		int righeEliminate= deleteStmt.executeUpdate();
-            		if (righeEliminate==0) {
-            			i--;
-            		} else {
-            			logger.info("Libro con id " + idToDelete + " eliminato.");
-            		}               
+            		logger.info("Libro con id " + idToDelete + " eliminato.");
+            		              
             	}
             }
 
