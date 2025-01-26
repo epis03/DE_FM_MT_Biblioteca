@@ -19,10 +19,10 @@ public class GestionePrestiti {
 	 public static List<Libro> getLibriScaduti() {
 		    List<Libro> libriRitirati = new ArrayList<>();
 		    String sql = "SELECT u.*, p.email " +
-	                 "FROM libri u " +
-	                 "JOIN prenotazioni p ON u.id = p.id_libro " +
-	                 "WHERE u.stato = 'RITIRATO' AND u.fine_prestito < DATE('now') " +
-	                 "u.id";
+		             "FROM libri u " +
+		             "JOIN prenotazioni p ON u.id = p.id_libro " +
+		             "WHERE u.stato = 'RITIRATO' AND u.fine_prestito < DATE('now') " +
+		             "ORDER BY u.id";
 
 		    try (Connection conn = DatabaseManager.getConnection();
 		         PreparedStatement pstmt = conn.prepareStatement(sql);
