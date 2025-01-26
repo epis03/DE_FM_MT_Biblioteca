@@ -21,6 +21,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import main.GestioneLibri;
+import main.GestionePrestiti;
 import main.Libro;
 
 
@@ -33,31 +34,15 @@ public class TabellaLibri extends TabellaLibriBase{
 	}; 
 	private static JTable table;
 	private static final String azione = "Prenota";
+	private static String email;
 
-
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TabellaLibri frame = new TabellaLibri();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public TabellaLibri() {
-
+	public TabellaLibri(String email) {
 		super(false,columnEditables,row,azione,getActionListener());
+		this.email=email;
 		table = super.getTable();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		List<Libro> lista = GestioneLibri.getListaLibri(true);
@@ -74,8 +59,8 @@ public class TabellaLibri extends TabellaLibriBase{
 		JButton info = new JButton("Prestiti Attivi");
 		info.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// PrestitiAttivi prestiti = new PrestitiAttivi();
-				// prestiti.setVisible(true);
+				PrestitiAttivi prestiti = new PrestitiAttivi(email);
+				prestiti.setVisible(true);
 			}
 		});
 		info.setBackground(new Color(192, 192, 192));
@@ -86,8 +71,8 @@ public class TabellaLibri extends TabellaLibriBase{
 	public static ActionListener getActionListener() {
 		ActionListener action = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow != -1) {
+				int riga = table.getSelectedRow();
+				if (riga != -1) {
 					Object[] options = {"SI", "NO"};
 					int choice = javax.swing.JOptionPane.showOptionDialog(
 							null,
@@ -100,6 +85,9 @@ public class TabellaLibri extends TabellaLibriBase{
 							options[1]
 							);
 					if (choice == 0) {
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						int id=GestioneLibri.prenotaLibro((String)model.getValueAt(riga, 0), (String)model.getValueAt(riga, 1));
+						GestionePrestiti.prenotaLibro(email, id);
 						JOptionPane.showMessageDialog(null, "Libro prenotato con successo");
 					} else if (choice == 1) {
 						JOptionPane.showMessageDialog(null, "Azione cancellata");

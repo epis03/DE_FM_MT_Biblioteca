@@ -31,15 +31,28 @@ public class DatabaseManager {
                 "autore TEXT NOT NULL, " +
                 "genere TEXT, " +
                 "stato TEXT NOT NULL DEFAULT 'DISPONIBILE', " +
-                "copie INTEGER NOT NULL" +
+                "copie INTEGER NOT NULL, " +
                 "inizio_prestito DATE, " +  
                 "fine_prestito DATE" +      
                 ");";
+       
+        String createPrenotazioniTable = " CREATE TABLE IF NOT EXISTS prenotazioni (" +
+        	    "id_prenotazione INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        		"email TEXT NOT NULL, " +
+        		"id_libro INTEGER NOT NULL, " +
+        		"inizio_prestito DATE, " +
+        		"fine_prestito DATE, " +
+        		"data_prenotazione DATE " +
+        		"data_fineprenotazione DATE" +
+        		");";
+        		
+        
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createUtentiTable);
             stmt.execute(createLibriTable);
+            stmt.execute(createPrenotazioniTable);
             logger.info("Tabelle create con successo.");
         } catch (SQLException e) {
             logger.error("Errore durante la configurazione del database.", e);

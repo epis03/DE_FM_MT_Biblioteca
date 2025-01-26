@@ -71,26 +71,68 @@ public class GestioneLibri {
 
 
 
-    public void ritiraLibro(int libroId) {
+    public static int prenotaLibro(String titolo, String autore) {
         LocalDate inizioPrestito = LocalDate.now();
         LocalDate finePrestito = inizioPrestito.plusDays(30);
-        String sql = "UPDATE libri SET stato = 'prenotato', copie = copie - 1, inizio_prestito = ?, fine_prestito = ? " +
-                     "WHERE id = ? AND stato = 'DISPONIBILE' AND copie > 0";      
+        int libroId = -1;
+
+        String sqlUpdate = "UPDATE libri SET stato = 'PRENOTATO', copie = copie - 1, inizio_prestito = ?, fine_prestito = ? " +
+                           "WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE' AND copie > 0 LIMIT 1";  
+
+        String sqlSelect = "SELECT id FROM libri WHERE titolo = ? AND autore = ? AND stato = 'PRENOTATO'";
+
+        String sqlUpdateStato = "UPDATE libri SET stato = 'NON_DISPONIBILE' WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE'";
+
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, java.sql.Date.valueOf(inizioPrestito));
-            pstmt.setDate(2, java.sql.Date.valueOf(finePrestito));
-            pstmt.setInt(3, libroId);
-            int rowsUpdated = pstmt.executeUpdate();
+             PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate);
+             PreparedStatement pstmtSelect = conn.prepareStatement(sqlSelect);
+             PreparedStatement pstmtUpdateStato = conn.prepareStatement(sqlUpdateStato)) {
+
+            pstmtUpdate.setDate(1, java.sql.Date.valueOf(inizioPrestito));
+            pstmtUpdate.setDate(2, java.sql.Date.valueOf(finePrestito));
+            pstmtUpdate.setString(3, titolo);  
+            pstmtUpdate.setString(4, autore);  
+
+            int rowsUpdated = pstmtUpdate.executeUpdate();
+
             if (rowsUpdated > 0) {
-                logger.info("Libro con ID '{}' prenotato con successo.", libroId);
+                pstmtSelect.setString(1, titolo);
+                pstmtSelect.setString(2, autore);
+                try (ResultSet rs = pstmtSelect.executeQuery()) {
+                    if (rs.next()) {
+                        libroId = rs.getInt("id");
+                    }
+                }
+
+                String checkCopie = "SELECT copie FROM libri WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE'";
+                try (PreparedStatement pstmtCheck = conn.prepareStatement(checkCopie)) {
+                    pstmtCheck.setString(1, titolo);
+                    pstmtCheck.setString(2, autore);
+                    try (ResultSet rsCheck = pstmtCheck.executeQuery()) {
+                        int copieDisponibili = 0;
+                        while (rsCheck.next()) {
+                            copieDisponibili += rsCheck.getInt("copie");
+                        }
+
+                        if (copieDisponibili == 0) {
+                            pstmtUpdateStato.setString(1, titolo);
+                            pstmtUpdateStato.setString(2, autore);
+                            pstmtUpdateStato.executeUpdate();
+                        }
+                    }
+                }
+
+                logger.info("Il libro con titolo '{}' e autore '{}' è stato prenotato con successo.", titolo, autore);
             } else {
-                logger.warn("Il libro con ID '{}' non è disponibile per la prenotazione.", libroId);
+                logger.warn("Il libro con titolo '{}' e autore '{}' non è disponibile per la prenotazione.", titolo, autore);
             }
         } catch (SQLException e) {
             logger.error("Errore durante la prenotazione del libro.", e);
         }
+
+        return libroId;
     }
+
 
 
     public void visualizzaLibri() {
@@ -348,6 +390,123 @@ public class GestioneLibri {
         
         return numeroCopie;
     }
+
+    public static Libro getLibroId(int id) {
+        String sql = "SELECT * FROM libri WHERE id = ?";
+        Libro libro = null;
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String titolo = rs.getString("titolo");
+                    String autore = rs.getString("autore");
+                    String genere = rs.getString("genere");
+                    String statoString = rs.getString("stato");
+                    Stato stato = Stato.valueOf(statoString);  
+                    int copie = rs.getInt("copie");
+                    LocalDate inizioPrestito = rs.getDate("inizio_prestito") != null ? rs.getDate("inizio_prestito").toLocalDate() : null;
+                    LocalDate finePrestito = rs.getDate("fine_prestito") != null ? rs.getDate("fine_prestito").toLocalDate() : null;
+                    libro = LibroFactory.createLibro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Errore durante il recupero del libro con id {}", id, e);
+        }
+        return libro;
+    }
+    public static void cambiaStatoInDisponibile(int libroId) {
+        String sqlSelect = "SELECT titolo, autore, genere, stato FROM libri WHERE id = ?";
+        String sqlUpdateStatoLibro = "UPDATE libri SET stato = 'DISPONIBILE' WHERE id = ?";
+        String sqlUpdateStatoAltriLibri = "UPDATE libri SET stato = 'DISPONIBILE' WHERE titolo = ? AND autore = ? AND genere = ? AND stato = 'NON_DISPONIBILE'";
+        String sqlUpdateCopieLibro = "UPDATE libri SET copie = copie + 1 WHERE id = ?";
+        String sqlUpdateCopieAltriLibri = "UPDATE libri SET copie = copie + 1 WHERE titolo = ? AND autore = ? AND genere = ? AND stato = 'NON_DISPONIBILE'";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmtSelect = conn.prepareStatement(sqlSelect);
+             PreparedStatement pstmtUpdateStatoLibro = conn.prepareStatement(sqlUpdateStatoLibro);
+             PreparedStatement pstmtUpdateStatoAltriLibri = conn.prepareStatement(sqlUpdateStatoAltriLibri);
+             PreparedStatement pstmtUpdateCopieLibro = conn.prepareStatement(sqlUpdateCopieLibro);
+             PreparedStatement pstmtUpdateCopieAltriLibri = conn.prepareStatement(sqlUpdateCopieAltriLibri)) {
+
+            pstmtSelect.setInt(1, libroId);
+            try (ResultSet rs = pstmtSelect.executeQuery()) {
+                if (rs.next()) {
+                    String titolo = rs.getString("titolo");
+                    String autore = rs.getString("autore");
+                    String genere = rs.getString("genere");
+                    String stato = rs.getString("stato");
+
+                    if ("DISPONIBILE".equals(stato)) {
+                        logger.info("Il libro con ID {} è già DISPONIBILE. Nessuna modifica effettuata.", libroId);
+                        return;
+                    }
+
+                    pstmtUpdateStatoLibro.setInt(1, libroId);
+                    pstmtUpdateStatoLibro.executeUpdate();
+
+                    pstmtUpdateCopieLibro.setInt(1, libroId);
+                    pstmtUpdateCopieLibro.executeUpdate();
+
+                    pstmtUpdateStatoAltriLibri.setString(1, titolo);
+                    pstmtUpdateStatoAltriLibri.setString(2, autore);
+                    pstmtUpdateStatoAltriLibri.setString(3, genere);
+                    pstmtUpdateStatoAltriLibri.executeUpdate();
+
+                    pstmtUpdateCopieAltriLibri.setString(1, titolo);
+                    pstmtUpdateCopieAltriLibri.setString(2, autore);
+                    pstmtUpdateCopieAltriLibri.setString(3, genere);
+                    pstmtUpdateCopieAltriLibri.executeUpdate();
+
+                    logger.info("Il libro con ID {} è stato aggiornato a DISPONIBILE e le copie sono aumentate. Gli altri libri con lo stesso titolo, autore e genere, se NON_DISPONIBILE, sono stati aggiornati.", libroId);
+                } else {
+                    logger.warn("Nessun libro trovato con l'ID {}.", libroId);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Errore durante l'aggiornamento dello stato del libro con ID {}.", libroId, e);
+        }
+    }
+    
+    public static void cambiaStatoInRitirato(int libroId) {
+        String sqlSelect = "SELECT stato FROM libri WHERE id = ?";
+        String sqlUpdate = "UPDATE libri SET stato = 'RITIRATO' WHERE id = ? AND stato = 'PRENOTATO'";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmtSelect = conn.prepareStatement(sqlSelect);
+             PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate)) {
+
+            pstmtSelect.setInt(1, libroId);
+            try (ResultSet rs = pstmtSelect.executeQuery()) {
+                if (rs.next()) {
+                    String stato = rs.getString("stato");
+
+                    if (!"PRENOTATO".equals(stato)) {
+                        logger.info("Il libro con ID {} non è in stato PRENOTATO. Nessuna modifica effettuata.", libroId);
+                        return;
+                    }
+
+                    pstmtUpdate.setInt(1, libroId);
+                    int rowsUpdated = pstmtUpdate.executeUpdate();
+
+                    if (rowsUpdated > 0) {
+                        logger.info("Il libro con ID {} è stato aggiornato a RITIRATO.", libroId);
+                    } else {
+                        logger.warn("Impossibile aggiornare il libro con ID {} a RITIRATO. Verifica lo stato.", libroId);
+                    }
+                } else {
+                    logger.warn("Nessun libro trovato con l'ID {}.", libroId);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Errore durante l'aggiornamento del libro con ID {} a RITIRATO.", libroId, e);
+        }
+    }
+
+
 
 
 }

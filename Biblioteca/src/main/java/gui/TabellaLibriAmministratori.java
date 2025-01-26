@@ -67,8 +67,10 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 		table.getColumnModel().getColumn(3).setCellEditor(new CustomizedCellEditor(new JButton("Visualizza Stato"), new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int riga  = table.getSelectedRow();
-				String autore = (String) table.getValueAt(riga, 1);
-				List<Libro> lista = GestioneLibri.filtraAutore(autore);
+				String autore = (String) table.getValueAt(riga, 0);
+				String titolo = (String) table.getValueAt(riga, 1);
+				String genere = (String) table.getValueAt(riga, 2);
+				List<Libro> lista = GestioneLibri.filtra(titolo, autore, genere);
 				    StatoPrestitiAmministratore state = new StatoPrestitiAmministratore(lista);
 					state.setVisible(true);
 			}}));

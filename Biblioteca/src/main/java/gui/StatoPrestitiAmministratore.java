@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import gui.TabellaLibriBase.CustomizedCellEditor;
 import gui.TabellaLibriBase.CustomizedTableRenderer;
 import main.GestioneLibri;
+import main.GestionePrestiti;
 import main.Libro;
 
 import javax.swing.JScrollPane;
@@ -41,7 +42,7 @@ public class StatoPrestitiAmministratore extends StatoPrestiti {
 				new Object[][] {
 				},
 				new String[] {
-						"Id", "stato", "scadenza prestito/prenotazione","Cambia Stato"
+						"Id", "stato", "scadenza prestito/prenotazione", "Cambia Stato"
 				}
 				) {
 			/**
@@ -67,13 +68,14 @@ public class StatoPrestitiAmministratore extends StatoPrestiti {
 	public static ActionListener getActionListener() {
 		ActionListener action = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();	
 				int riga  = table.getSelectedRow();
 				if (riga != -1) {
-					Object[] options = {"Aggiorna Dati", "Elimina"};
+					Object[] options = {"Disponibile","Ritirato",};
 					int choice = javax.swing.JOptionPane.showOptionDialog(
 							null,
-							"Scegli un'azione:",
-							"Azioni",
+							"Seleziona lo stato",
+							"Cambia stato",
 							javax.swing.JOptionPane.DEFAULT_OPTION,
 							javax.swing.JOptionPane.PLAIN_MESSAGE,
 							null,
@@ -81,27 +83,18 @@ public class StatoPrestitiAmministratore extends StatoPrestiti {
 							options[0]
 							);
 					if (choice == 0) {
-						ModificaRiga update = new ModificaRiga(table.getValueAt(riga, 0),table.getValueAt(riga, 1),table.getValueAt(riga, 2), riga);
-						update.setVisible(true);
-					} else if (choice == 1) {
-
-						Object[] opzioni = {"SI", "NO"};
-						int scelta = javax.swing.JOptionPane.showOptionDialog(
-								null,
-								"Vuoi cancelalre questa riga?",
-								"Elimina riga",
-								javax.swing.JOptionPane.DEFAULT_OPTION,
-								javax.swing.JOptionPane.PLAIN_MESSAGE,
-								null,
-								opzioni,
-								opzioni[1]
-								);
-						if (scelta== 0) {	
-							JOptionPane.showMessageDialog(null, "Riga eliminata");
-						} else if (scelta == 1) {
-							JOptionPane.showMessageDialog(null, "Azione cancellata");
-						}
-					}
+						int id = (int) model.getValueAt( riga, 0);
+						model.setValueAt("DISPONIBILE", riga, 1);
+						GestioneLibri.cambiaStatoInDisponibile(id);
+						JOptionPane.showMessageDialog(null, "Stato aggiornato");
+					} 
+					if (choice == 1) {									
+						int id = (int) model.getValueAt( riga, 0);
+						model.setValueAt("RITIRATO", riga, 1);
+						GestioneLibri.cambiaStatoInRitirato(id);		
+						GestionePrestiti.aggiornaPrestito(id);
+						JOptionPane.showMessageDialog(null, "Stato aggiornato");
+						}				
 				}
 			}};
 			return action; 

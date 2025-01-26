@@ -157,7 +157,7 @@ public class Login extends JDialog {
 											table.setVisible(true);
 										}
 										else {
-											TabellaLibri table= new TabellaLibri();
+											TabellaLibri table= new TabellaLibri(email);
 											table.setVisible(true);
 										}										
 										Login.this.dispose();
