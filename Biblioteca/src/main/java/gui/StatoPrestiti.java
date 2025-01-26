@@ -54,7 +54,7 @@ public abstract class StatoPrestiti extends JFrame {
 		titolo.setBounds(0, 10, 436, 21);
 		contentPane.add(titolo);
 
-		JLabel labelSottotitolo = new JLabel(sottotilo + "" + oggetto);
+		JLabel labelSottotitolo = new JLabel(sottotilo + " " + oggetto);
 		labelSottotitolo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		labelSottotitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelSottotitolo.setBounds(0, 40, 436, 26);

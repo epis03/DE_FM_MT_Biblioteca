@@ -32,10 +32,11 @@ public class RegolePassword extends JPanel {
 			public void mouseExited(MouseEvent e) {     
 				textArea.setVisible(false);
 				String testo = RegolePassword.accesso.getText();
-				revalidate();  
 				RegolePassword.accesso.setText(" ");
-				repaint();
+				revalidate();  
 				RegolePassword.accesso.setText(testo);
+				repaint();
+				
 			}
 		});
 

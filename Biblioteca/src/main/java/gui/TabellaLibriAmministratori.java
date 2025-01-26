@@ -78,7 +78,7 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 		List<Libro> lista = GestioneLibri.getListaLibri(true);
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
-			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), "Visualizza Stato", "Modifica"});
 		}
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
 		table.setRowSorter(sorter);
@@ -176,7 +176,7 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 		model.setRowCount(0);
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
-			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), "Visualizza Stato", "Modifica"});
 		}
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
 		table.setRowSorter(sorter);

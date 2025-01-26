@@ -16,7 +16,7 @@ public class GestioneLibri {
 
     public void aggiungiLibro(String titolo, String autore, String genere, int copie) {
         String checkSql = "SELECT id, copie FROM libri WHERE titolo = ? AND autore = ? AND genere = ?";
-        String insertSql = "INSERT INTO libri (titolo, autore, genere, stato, copie) VALUES (?, ?, ?, 'DISPONIBILE', 1)";
+        String insertSql = "INSERT INTO libri (titolo, autore, genere, stato, copie) VALUES (?, ?, ?, 'DISPONIBILE', ?)";
         String updateSql = "UPDATE libri SET copie = copie + ? WHERE id = ?";
         String updateStatusSql = "UPDATE libri SET stato = 'DISPONIBILE' WHERE titolo = ? AND autore = ? AND genere = ? AND copie > 0";
 
@@ -57,6 +57,7 @@ public class GestioneLibri {
                             pstmtInsert.setString(1, titolo);
                             pstmtInsert.setString(2, autore);
                             pstmtInsert.setString(3, genere);
+                            pstmtInsert.setInt(4, copie);
                             pstmtInsert.executeUpdate();
                         }
                     }
@@ -287,8 +288,8 @@ public class GestioneLibri {
 
 
     public static List<Libro> filtra(String titolo, String autore, String genere) {
-        String query = "SELECT titolo, autore, genere, MAX(id) AS id, stato, copie, inizio_prestito, fine_prestito " +
-                       "FROM libri WHERE titolo = ? AND autore = ? AND genere = ? GROUP BY titolo, autore, genere ORDER BY id;";
+        String query = "SELECT titolo, autore, genere, id, stato, copie, inizio_prestito, fine_prestito " +
+                       "FROM libri WHERE titolo = ? AND autore = ? AND genere = ? ORDER BY id;";
         List<Libro> libri = new ArrayList<>();
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

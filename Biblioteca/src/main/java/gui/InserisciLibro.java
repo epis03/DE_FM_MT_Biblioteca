@@ -91,7 +91,7 @@ public class InserisciLibro extends JDialog {
 		}
 
 		titoloTextField = new JTextField();
-		titoloTextField.setBounds(197, 156, 150, 22);
+		titoloTextField.setBounds(197, 82, 150, 22);
 		contentPanel.add(titoloTextField);
 		titoloTextField.setColumns(10);
 
@@ -101,7 +101,7 @@ public class InserisciLibro extends JDialog {
 		autoreTextField.setColumns(10);
 
 		genereTextField = new JTextField();
-		genereTextField.setBounds(197, 77, 153, 22);
+		genereTextField.setBounds(194, 156, 153, 22);
 		contentPanel.add(genereTextField);
 		genereTextField.setColumns(10);
 
@@ -157,7 +157,7 @@ public class InserisciLibro extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(verificadati()) {
-							TabellaLibriAmministratori.inserisciRiga(autoreTextField.getText().trim(), titoloTextField.getText().trim().replaceAll( "  ", " "), genereTextField.getText().trim(),Integer.parseInt( copieTextField.getText()));
+							TabellaLibriAmministratori.inserisciRiga(autoreTextField.getText(), titoloTextField.getText().trim().replaceAll( "  ", " "), genereTextField.getText().trim(),Integer.parseInt( copieTextField.getText()));
 							JOptionPane.showMessageDialog(null, "Libro inserito correttamente");
 							InserisciLibro.this.dispose();
 						}

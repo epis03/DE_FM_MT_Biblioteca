@@ -57,14 +57,15 @@ public class StatoPrestitiAmministratore extends StatoPrestiti {
 				return columnEditables[column];
 			}
 		});
+
+		ActionListener actionListener = getActionListener();
+		table.getColumnModel().getColumn(3).setCellRenderer(new CustomizedTableRenderer2("Modifica stato"));
+		table.getColumnModel().getColumn(3).setCellEditor(new CustomizedCellEditor2(new JButton("Modifica stato"), actionListener));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
 			model.addRow(new Object[]{ libro.getId(),libro.getStato(),libro.getFinePrestito() != null ? libro.getFinePrestito() : "", "Cambia Stato"});
 		}
-		ActionListener actionListener = getActionListener();
-		table.getColumnModel().getColumn(4).setCellRenderer(new CustomizedTableRenderer2("Modifica stato"));
-		table.getColumnModel().getColumn(4).setCellEditor(new CustomizedCellEditor2(new JButton("Modifica stato"), actionListener));
 	}
 	public static ActionListener getActionListener() {
 		ActionListener action = new ActionListener() {
