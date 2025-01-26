@@ -16,28 +16,29 @@ public class GestionePrestiti {
 
 	 private static final Logger logger = LogManager.getLogger(GestionePrestiti.class);
 	 
-	 public List<Libro> getLibriConStatoRitirato() {
+	 public static List<Libro> getLibriScaduti() {
 		    List<Libro> libriRitirati = new ArrayList<>();
-		    String sql = "SELECT id, titolo, autore, genere, stato, copie, inizio_prestito, fine_prestito " +
-		                 "FROM libri " +
-		                 "WHERE stato = 'RITIRATO'";
+		    String sql = "SELECT u.*, p.email " +
+	                 "FROM libri u " +
+	                 "JOIN prenotazioni p ON u.id = p.id_libro " +
+	                 "WHERE u.stato = 'RITIRATO' AND u.fine_prestito < DATE('now') " +
+	                 "u.id";
 
 		    try (Connection conn = DatabaseManager.getConnection();
 		         PreparedStatement pstmt = conn.prepareStatement(sql);
 		         ResultSet rs = pstmt.executeQuery()) {
 
 		        while (rs.next()) {
-		          
 		            int id = rs.getInt("id");
 		            String titolo = rs.getString("titolo");
 		            String autore = rs.getString("autore");
 		            String genere = rs.getString("genere");
-		            Stato stato = Stato.valueOf(rs.getString("stato")); 
+		            Stato stato = Stato.valueOf(rs.getString("stato"));
 		            int copie = rs.getInt("copie");
 		            LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
 		            LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
-
-		           
+		            String email = rs.getString("email");
+		            
 		            Libro libro = new Libro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
 		            libriRitirati.add(libro);
 		        }
@@ -46,32 +47,32 @@ public class GestionePrestiti {
 		    }
 		    return libriRitirati;
 		}
+
 	 
-	 public List<String> getEmailUtentiPrestitoScaduto() {
-		    List<String> emailScadute = new ArrayList<>();
-		    String sql = "SELECT DISTINCT u.email " +
-		                 "FROM utenti u " +
-		                 "JOIN prenotazioni p ON u.email = p.email " +
-		                 "WHERE p.fine_prestito < DATE('now')";
+	 
+	 public static String getEmail(int idLibro) {
+		    String email = null;
+		    String sql = "SELECT email FROM prenotazioni WHERE id_libro = ?";
 
 		    try (Connection conn = DatabaseManager.getConnection();
-		         PreparedStatement pstmt = conn.prepareStatement(sql);
-		         ResultSet rs = pstmt.executeQuery()) {
-
-		        while (rs.next()) {
-		            
-		            String email = rs.getString("email");
-		            emailScadute.add(email);
+		         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		        
+		        pstmt.setInt(1, idLibro);
+		        try (ResultSet rs = pstmt.executeQuery()) {
+		            if (rs.next()) {
+		                email = rs.getString("email");
+		            }
 		        }
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
-		    return emailScadute;
+		    
+		    return email;
 		}
+
 	 
 	 
-	 
-	 public List<Integer> getIdLibriPrenotazioneScaduta() {
+	 public static List<Integer> getIdLibriPrenotazioneScaduta() {
 		    List<Integer> idLibriScaduti = new ArrayList<>();
 		    String sql = "SELECT id_libro " +
 		                 "FROM prenotazioni " +
@@ -201,7 +202,30 @@ public class GestionePrestiti {
 	    }
 	}
 
+	public static void controllaPrestiti() {
+		String email;
+		List<Libro> libriScaduti = GestionePrestiti.getLibriScaduti();
+		for(int i=0; i<libriScaduti.size();i++) {
+			email = GestionePrestiti.getEmail(libriScaduti.get(i).getId());
+			GestioneUtenti.aggiornaPrestitoScaduto(email);		
+			GestioneEmail.SegnalaPrestitoScaduto(email, libriScaduti.get(i));
+		}
 
+	}
+	public static void controllaPreenotazioni() {
+		List<Integer> idScaduti = GestionePrestiti.getIdLibriPrenotazioneScaduta();
+		List<Libro> listaLibri = new ArrayList<Libro>();
+		for(int i=0;i<idScaduti.size();i++) {
+			listaLibri.add(GestioneLibri.getLibroId(idScaduti.get(i).intValue()));
+		}
+		String email;
+		for(int i=0;i<listaLibri.size();i++) {
+			email = GestionePrestiti.getEmail(listaLibri.get(i).getId());
+			GestioneLibri.cambiaStatoInDisponibile(listaLibri.get(i).getId());
+			GestionePrestiti.eliminaPrenotazione(listaLibri.get(i).getId());
+			GestioneEmail.SegnalaRitiroScaduto(email, listaLibri.get(i));			
+		}
+	}
 
 
 }

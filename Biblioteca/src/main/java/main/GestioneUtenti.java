@@ -112,7 +112,7 @@ public class GestioneUtenti {
         }
     }
     
-        public void aggiornaPrestitoScaduto(String email) {
+        public static void aggiornaPrestitoScaduto(String email) {
             
             String sql = "UPDATE utenti SET prestitoScaduto = 1 WHERE email = ?";
 

@@ -153,6 +153,8 @@ public class Login extends JDialog {
 									public void actionPerformed(ActionEvent e) {
 										String ruolo = gestioneUtenti.getUserRole(email);
 										if(ruolo.equals("amministratore")){
+											GestionePrestiti.controllaPreenotazioni();
+											GestionePrestiti.controllaPrestiti();
 											TabellaLibriAmministratori table = new TabellaLibriAmministratori();
 											table.setVisible(true);
 										}

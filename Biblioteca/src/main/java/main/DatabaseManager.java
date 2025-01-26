@@ -23,7 +23,7 @@ public class DatabaseManager {
                 "password TEXT NOT NULL, " +
                 "ruolo TEXT NOT NULL," +
                 "prestitoScaduto INTEGER NOT NULL DEFAULT 0" +
-                ");";
+                ");"; 
 
         String createLibriTable = "CREATE TABLE IF NOT EXISTS libri (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -46,6 +46,7 @@ public class DatabaseManager {
         		"data_fineprenotazione DATE" +
         		");";
         		
+        
         
 
         try (Connection conn = getConnection();

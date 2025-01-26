@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.Console;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import gui.Home;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
@@ -18,7 +19,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         logger.info("Sistema di Gestione Biblioteca Digitale avviato.");
-
+        
+        Home start = new Home(); //Avvio GUI
+        start.main(args);
         
         System.out.print("Inserisci email: ");
         String email = scanner.nextLine();

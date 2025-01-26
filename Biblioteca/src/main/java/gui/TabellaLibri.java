@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import main.GestioneEmail;
 import main.GestioneLibri;
 import main.GestionePrestiti;
 import main.Libro;
@@ -101,6 +102,7 @@ public class TabellaLibri extends TabellaLibriBase{
 						DefaultTableModel model = (DefaultTableModel) table.getModel();
 						int id=GestioneLibri.prenotaLibro((String)model.getValueAt(riga, 0), (String)model.getValueAt(riga, 1));
 						GestionePrestiti.prenotaLibro(email, id);
+						GestioneEmail.prenotazione(email, GestioneLibri.getLibroId(id));
 						if(GestioneLibri.getLibroId(id).getCopie()==0) {
 							model.setValueAt("NON_DISPONIBILE", riga, 3);
 						}
