@@ -15,8 +15,97 @@ import java.util.List;
 public class GestionePrestiti {
 
 	 private static final Logger logger = LogManager.getLogger(GestionePrestiti.class);
-	
-	 public static void prenotaLibro(String email, int idLibro) {
+	 
+	 public List<Libro> getLibriConStatoRitirato() {
+		    List<Libro> libriRitirati = new ArrayList<>();
+		    String sql = "SELECT id, titolo, autore, genere, stato, copie, inizio_prestito, fine_prestito " +
+		                 "FROM libri " +
+		                 "WHERE stato = 'RITIRATO'";
+
+		    try (Connection conn = DatabaseManager.getConnection();
+		         PreparedStatement pstmt = conn.prepareStatement(sql);
+		         ResultSet rs = pstmt.executeQuery()) {
+
+		        while (rs.next()) {
+		          
+		            int id = rs.getInt("id");
+		            String titolo = rs.getString("titolo");
+		            String autore = rs.getString("autore");
+		            String genere = rs.getString("genere");
+		            Stato stato = Stato.valueOf(rs.getString("stato")); 
+		            int copie = rs.getInt("copie");
+		            LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
+		            LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
+
+		           
+		            Libro libro = new Libro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
+		            libriRitirati.add(libro);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return libriRitirati;
+		}
+	 
+	 public List<String> getEmailUtentiPrestitoScaduto() {
+		    List<String> emailScadute = new ArrayList<>();
+		    String sql = "SELECT DISTINCT u.email " +
+		                 "FROM utenti u " +
+		                 "JOIN prenotazioni p ON u.email = p.email " +
+		                 "WHERE p.fine_prestito < DATE('now')";
+
+		    try (Connection conn = DatabaseManager.getConnection();
+		         PreparedStatement pstmt = conn.prepareStatement(sql);
+		         ResultSet rs = pstmt.executeQuery()) {
+
+		        while (rs.next()) {
+		            
+		            String email = rs.getString("email");
+		            emailScadute.add(email);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return emailScadute;
+		}
+	 
+	 
+	 
+	 public List<Integer> getIdLibriPrenotazioneScaduta() {
+		    List<Integer> idLibriScaduti = new ArrayList<>();
+		    String sql = "SELECT id_libro " +
+		                 "FROM prenotazioni " +
+		                 "WHERE data_fineprenotazione < DATE('now')";
+
+		    try (Connection conn = DatabaseManager.getConnection();
+		         PreparedStatement pstmt = conn.prepareStatement(sql);
+		         ResultSet rs = pstmt.executeQuery()) {
+
+		        while (rs.next()) {
+		            
+		            int idLibro = rs.getInt("id_libro");
+		            idLibriScaduti.add(idLibro);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return idLibriScaduti;
+		}
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	  public static void prenotaLibro(String email, int idLibro) {
 	    String sql = "INSERT INTO prenotazioni (email, id_libro, data_prenotazione, data_fineprenotazione) " +
 	                 "VALUES (?, ?, ?, ?)";
 
