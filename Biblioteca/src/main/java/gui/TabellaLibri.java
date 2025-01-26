@@ -52,11 +52,11 @@ public class TabellaLibri extends TabellaLibriBase{
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
 			Stato stato;
-			if(libro.getStato()!= Stato.NON_DISPONOBILE) {
+			if(libro.getStato()!= Stato.NON_DISPONIBILE) {
 				stato = Stato.DISPONIBILE;
 			}
 			else {
-				stato = Stato.NON_DISPONOBILE;
+				stato = Stato.NON_DISPONIBILE;
 			}
 			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), stato, "Prenota"});
 		}

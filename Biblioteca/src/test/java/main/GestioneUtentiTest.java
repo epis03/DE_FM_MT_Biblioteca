@@ -25,14 +25,14 @@ class GestioneUtentiTest {
 
     @Test
     void testRegistraUtente() throws Exception {
-        // Mock delle classi statiche e delle connessioni al database
+       
         try (MockedStatic<DatabaseManager> mockedDbManager = Mockito.mockStatic(DatabaseManager.class);
              MockedStatic<HashPasswords> mockedHashPasswords = Mockito.mockStatic(HashPasswords.class)) {
 
             Connection mockConnection = mock(Connection.class);
             PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
 
-            // Configura i comportamenti dei metodi mockati
+           
             mockedDbManager.when(DatabaseManager::getConnection).thenReturn(mockConnection);
             when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
 
@@ -41,10 +41,10 @@ class GestioneUtentiTest {
             mockedHashPasswords.when(() -> HashPasswords.hashPassword(new String(password)))
                                .thenReturn("hashedPassword");
 
-            // Testa il metodo
+            
             boolean result = gestioneUtenti.registraUtente(email, password);
 
-            // Verifica
+        
             assertTrue(result, "La registrazione dovrebbe avere successo.");
             verify(mockPreparedStatement).setString(1, email);
             verify(mockPreparedStatement).setString(2, "hashedPassword");
@@ -55,7 +55,7 @@ class GestioneUtentiTest {
 
     @Test
     void testAutenticaUtente() throws Exception {
-        // Mock delle classi statiche e delle connessioni al database
+       
         try (MockedStatic<DatabaseManager> mockedDbManager = Mockito.mockStatic(DatabaseManager.class);
              MockedStatic<HashPasswords> mockedHashPasswords = Mockito.mockStatic(HashPasswords.class)) {
 
@@ -63,7 +63,7 @@ class GestioneUtentiTest {
             PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
             ResultSet mockResultSet = mock(ResultSet.class);
 
-            // Configura i comportamenti dei metodi mockati
+            
             mockedDbManager.when(DatabaseManager::getConnection).thenReturn(mockConnection);
             when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
             when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
@@ -75,10 +75,10 @@ class GestioneUtentiTest {
             mockedHashPasswords.when(() -> HashPasswords.verificaPassword(new String(password), "hashedPassword"))
                                .thenReturn(true);
 
-            // Testa il metodo
+         
             boolean result = gestioneUtenti.autenticaUtente(email, password);
 
-            // Verifica
+            
             assertTrue(result, "L'autenticazione dovrebbe avere successo.");
             verify(mockPreparedStatement).setString(1, email);
         }
@@ -86,14 +86,14 @@ class GestioneUtentiTest {
 
     @Test
     void testEmailEsiste() throws Exception {
-        // Mock delle classi statiche e delle connessioni al database
+        
         try (MockedStatic<DatabaseManager> mockedDbManager = Mockito.mockStatic(DatabaseManager.class)) {
 
             Connection mockConnection = mock(Connection.class);
             PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
             ResultSet mockResultSet = mock(ResultSet.class);
 
-            // Configura i comportamenti dei metodi mockati
+           
             mockedDbManager.when(DatabaseManager::getConnection).thenReturn(mockConnection);
             when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
             when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
@@ -101,10 +101,10 @@ class GestioneUtentiTest {
             String email = "utente@example.com";
             when(mockResultSet.next()).thenReturn(true);
 
-            // Testa il metodo
+           
             boolean result = gestioneUtenti.emailEsiste(email);
 
-            // Verifica
+            
             assertTrue(result, "L'email dovrebbe esistere.");
             verify(mockPreparedStatement).setString(1, email);
         }
@@ -112,14 +112,14 @@ class GestioneUtentiTest {
 
     @Test
     void testChangeUserPassword() throws Exception {
-        // Mock delle classi statiche e delle connessioni al database
+        
         try (MockedStatic<DatabaseManager> mockedDbManager = Mockito.mockStatic(DatabaseManager.class);
              MockedStatic<HashPasswords> mockedHashPasswords = Mockito.mockStatic(HashPasswords.class)) {
 
             Connection mockConnection = mock(Connection.class);
             PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
 
-            // Configura i comportamenti dei metodi mockati
+           
             mockedDbManager.when(DatabaseManager::getConnection).thenReturn(mockConnection);
             when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
 
@@ -129,10 +129,10 @@ class GestioneUtentiTest {
                                .thenReturn("newHashedPassword");
             when(mockPreparedStatement.executeUpdate()).thenReturn(1);
 
-            // Testa il metodo
+            
             boolean result = gestioneUtenti.changeUserPassword(email, newPassword);
 
-            // Verifica
+            
             assertTrue(result, "La password dovrebbe essere aggiornata.");
             verify(mockPreparedStatement).setString(1, "newHashedPassword");
             verify(mockPreparedStatement).setString(2, email);
@@ -141,14 +141,14 @@ class GestioneUtentiTest {
 
     @Test
     void testVerificaPrestitoScaduto() throws Exception {
-        // Mock delle classi statiche e delle connessioni al database
+       
         try (MockedStatic<DatabaseManager> mockedDbManager = Mockito.mockStatic(DatabaseManager.class)) {
 
             Connection mockConnection = mock(Connection.class);
             PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
             ResultSet mockResultSet = mock(ResultSet.class);
 
-            // Configura i comportamenti dei metodi mockati
+            
             mockedDbManager.when(DatabaseManager::getConnection).thenReturn(mockConnection);
             when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
             when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
@@ -157,10 +157,10 @@ class GestioneUtentiTest {
             when(mockResultSet.next()).thenReturn(true);
             when(mockResultSet.getInt("prestitoScaduto")).thenReturn(1);
 
-            // Testa il metodo
+            
             boolean result = GestioneUtenti.verificaPrestitoScaduto(email);
 
-            // Verifica
+            
             assertTrue(result, "Il prestito scaduto dovrebbe essere segnalato.");
             verify(mockPreparedStatement).setString(1, email);
         }
