@@ -1,23 +1,35 @@
 package main;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import jakarta.mail.Transport;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GestioneEmailTest {
 
+    private Libro libro;
+
     @BeforeEach
     void setup() {
         // Mocking del Transport per evitare invio effettivo delle email
         mockStatic(Transport.class);
+
+        // Creazione di un libro di esempio
+        libro = new Libro(
+                1, 
+                "Il Signore degli Anelli", 
+                "J.R.R. Tolkien", 
+                "Fantasy", 
+                Stato.DISPONIBILE, 
+                1, 
+                LocalDate.of(2023, 1, 1), 
+                LocalDate.of(2023, 1, 15)
+        );
     }
 
     @Test
@@ -47,7 +59,6 @@ class GestioneEmailTest {
     @Test
     void testSegnalaPrestitoScaduto() {
         String destinatario = "utente@example.com";
-        Libro libro = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", "Fantasy");
 
         GestioneEmail.SegnalaPrestitoScaduto(destinatario, libro);
 
@@ -58,7 +69,6 @@ class GestioneEmailTest {
     @Test
     void testSegnalaRitiroScaduto() {
         String destinatario = "utente@example.com";
-        Libro libro = new Libro("1984", "George Orwell", "Distopia");
 
         GestioneEmail.SegnalaRitiroScaduto(destinatario, libro);
 
@@ -69,7 +79,6 @@ class GestioneEmailTest {
     @Test
     void testPrenotazione() {
         String destinatario = "utente@example.com";
-        Libro libro = new Libro("Harry Potter", "J.K. Rowling", "Fantasy");
 
         GestioneEmail.prenotazione(destinatario, libro);
 
