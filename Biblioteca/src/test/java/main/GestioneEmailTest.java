@@ -9,27 +9,71 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-public class GestioneEmailTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-    private static final Logger logger = LogManager.getLogger(GestioneEmailTest.class);
+class GestioneEmailTest {
+
+    @BeforeEach
+    void setup() {
+        // Mocking del Transport per evitare invio effettivo delle email
+        mockStatic(Transport.class);
+    }
 
     @Test
-    public void testVerificaEmail() {
-        // Mocking del metodo Transport.send
-        try (MockedStatic<Transport> mockedTransport = mockStatic(Transport.class)) {        
-        	
-        	String destinatario = "test@example.com";
-            String codiceGenerato = GestioneEmail.verificaEmail(destinatario);
+    void testVerificaEmail() {
+        String destinatario = "test@example.com";
+        String codice = GestioneEmail.verificaEmail(destinatario);
 
-            // Verifica il risultato
-            assertNotNull(codiceGenerato, "Il codice generato non dovrebbe essere null");
+        // Verifica che il codice generato abbia la lunghezza corretta
+        assertNotNull(codice, "Il codice non dovrebbe essere null.");
+        assertEquals(6, codice.length(), "Il codice dovrebbe avere 6 caratteri.");
+        // Verifica che l'email venga inviata
+        verify(Transport.class);
+    }
 
-            // Verifica che il metodo Transport.send sia stato chiamato almeno una volta
-            mockedTransport.verify(() -> Transport.send(any()), times(1));
+    @Test
+    void testIdentificaUtente() {
+        String destinatario = "utente@example.com";
+        String codice = GestioneEmail.identificaUtente(destinatario);
 
-            // Verifica il Logger
-            logger.info("Test eseguito per l'invio email.");
-        }
+        // Verifica che il codice generato sia valido
+        assertNotNull(codice, "Il codice non dovrebbe essere null.");
+        assertEquals(6, codice.length(), "Il codice dovrebbe avere 6 caratteri.");
+        // Verifica che l'email venga inviata
+        verify(Transport.class);
+    }
+
+    @Test
+    void testSegnalaPrestitoScaduto() {
+        String destinatario = "utente@example.com";
+        Libro libro = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", "Fantasy");
+
+        GestioneEmail.SegnalaPrestitoScaduto(destinatario, libro);
+
+        // Verifica che l'email venga inviata
+        verify(Transport.class);
+    }
+
+    @Test
+    void testSegnalaRitiroScaduto() {
+        String destinatario = "utente@example.com";
+        Libro libro = new Libro("1984", "George Orwell", "Distopia");
+
+        GestioneEmail.SegnalaRitiroScaduto(destinatario, libro);
+
+        // Verifica che l'email venga inviata
+        verify(Transport.class);
+    }
+
+    @Test
+    void testPrenotazione() {
+        String destinatario = "utente@example.com";
+        Libro libro = new Libro("Harry Potter", "J.K. Rowling", "Fantasy");
+
+        GestioneEmail.prenotazione(destinatario, libro);
+
+        // Verifica che l'email venga inviata
+        verify(Transport.class);
     }
 }
-
