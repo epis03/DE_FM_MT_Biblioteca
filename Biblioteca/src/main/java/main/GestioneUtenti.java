@@ -57,7 +57,7 @@ public class GestioneUtenti {
     
         public boolean registraUtente(String email, char[] password) {
         String hashedPassword = HashPasswords.hashPassword(new String(password));
-        String ruolo = email.contains("@unibg") ? "amministratore" : "utente";
+        String ruolo = email.contains("@studenti.unibg") ? "amministratore" : "utente";
         String sql = "INSERT INTO utenti (email, password, ruolo) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
