@@ -206,7 +206,7 @@ public  class GestioneEmail {
 	            	    "    <p>la informiamo che la sua prenotazione: </p>" +
 	            	    "    <p>titolo: " + libro.getTitolo() + "</p>" +
 	            	    "    <p>autore: " + libro.getAutore() + "</p>" +
-	            	    "    <p>è scaduto in data: </p>" +
+	            	    "    <p>è scaduta in data: </p>" +
 	            	    "    <p style='margin: 20px 0; font-size: 24px; font-weight: bold; color: #000;'>" + libro.getFinePrestito()  + "</p>" +
 	            	    "    <p>Questa email è stata generata automaticamente dal sistema, si prega di non rispondere!</p>" +
 	            	    "    <p>Cordiali saluti,<br>Team Biblioteca</p>" +
@@ -258,7 +258,7 @@ public  class GestioneEmail {
 		            	    "    <p>autore: " + libro.getAutore() + "</p>" +
 		            	    "    <p>è avvenuta con successo! Ha tempo fino a: </p>" +
 		            	    "    <p style='margin: 20px 0; font-size: 24px; font-weight: bold; color: #000;'>" + libro.getFinePrestito()  + "</p>" +
-		            	    "    <p>per ritirare il libro./p>" +
+		            	    "    <p>per ritirare il libro.</p>" +
 		            	    "    <p>Questa email è stata generata automaticamente dal sistema, si prega di non rispondere!</p>" +
 		            	    "    <p>Cordiali saluti,<br>Team Biblioteca</p>" +
 		            	    "</div>",

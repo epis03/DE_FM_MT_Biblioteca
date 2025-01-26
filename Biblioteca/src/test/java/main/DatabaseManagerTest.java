@@ -12,6 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseManagerTest {
 
+	 private static final Logger logger = LogManager.getLogger(DatabaseManagerTest.class);
+	 
+	 
     @Test
     void testGetConnection() {
         try (Connection conn = DatabaseManager.getConnection()) {
@@ -47,4 +50,18 @@ public class DatabaseManagerTest {
             fail("Eccezione durante la verifica delle tabelle: " + e.getMessage());
         }
     }
+    
+    @AfterAll
+    static void cleanupDatabase() {
+        logger.info("Pulizia del database dopo i test...");
+        try (Connection conn = DatabaseManager.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute("DROP TABLE IF EXISTS utenti;");
+            stmt.execute("DROP TABLE IF EXISTS libri;");
+            logger.info("Tabelle eliminate con successo.");
+        } catch (SQLException e) {
+            logger.error("Errore durante la pulizia del database", e);
+            fail("Eccezione durante la verifica delle tabelle: " + e.getMessage());
+        }
+}
 }
