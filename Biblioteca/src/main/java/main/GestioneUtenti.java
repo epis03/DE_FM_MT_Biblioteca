@@ -41,7 +41,6 @@ public class GestioneUtenti {
         	String hashedPassword = HashPasswords.hashPassword(new String(newPassword));
             String sql = "UPDATE utenti SET password = ? WHERE email = ?";
             boolean updated = false;
-
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
@@ -112,5 +111,42 @@ public class GestioneUtenti {
             return false;
         }
     }
+    
+        public void aggiornaPrestitoScaduto(String email) {
+            
+            String sql = "UPDATE utenti SET prestitoScaduto = 1 WHERE email = ?";
+
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, email);
+                int rowsUpdated = pstmt.executeUpdate();            
+                logger.info("Prestito scaduto aggiornato correttamente per l'utente con email: {}", email);             
+            } catch (Exception e) {
+                e.printStackTrace();       
+                logger.error("Errore nell'aggiornamento del database:", e);           
+            }
+        }
+        public static boolean verificaPrestitoScaduto(String email) {
+            String sql = "SELECT prestitoScaduto FROM utenti WHERE email = ?";
+            
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, email);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        int prestitoScaduto = rs.getInt("prestitoScaduto");
+                        return prestitoScaduto==1;
+                    } else {
+                        logger.warn("Nessun utente trovato con l'email: {}", email);
+                        return false;
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("Errore durante la verifica del prestito scaduto per l'email: {}", email, e);
+                return false;
+            }
+        }
+        
+
 }
 

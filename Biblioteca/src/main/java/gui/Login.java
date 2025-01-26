@@ -157,7 +157,8 @@ public class Login extends JDialog {
 											table.setVisible(true);
 										}
 										else {
-											TabellaLibri table= new TabellaLibri(email);
+											Boolean scaduto = GestioneUtenti.verificaPrestitoScaduto(email);
+											TabellaLibri table= new TabellaLibri(email,scaduto);
 											table.setVisible(true);
 										}										
 										Login.this.dispose();

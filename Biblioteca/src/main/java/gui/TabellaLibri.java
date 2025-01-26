@@ -36,14 +36,15 @@ public class TabellaLibri extends TabellaLibriBase{
 	private static JTable table;
 	private static final String azione = "Prenota";
 	private static String email;
-
+	private static boolean scaduto;
 	
 	/**
 	 * Create the frame.
 	 */
-	public TabellaLibri(String email) {
+	public TabellaLibri(String email, boolean scaduto) {
 		super(false,columnEditables,row,azione,getActionListener());
 		this.email=email;
+		this.scaduto=scaduto;
 		table = super.getTable();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		List<Libro> lista = GestioneLibri.getListaLibri(true);
@@ -79,6 +80,10 @@ public class TabellaLibri extends TabellaLibriBase{
 	public static ActionListener getActionListener() {
 		ActionListener action = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(scaduto) {
+					JOptionPane.showMessageDialog(null, "Hai una prenotazione scaduta, impossibile prenotare altri libri");
+				}
+				else{
 				int riga = table.getSelectedRow();
 				if (riga != -1) {
 					Object[] options = {"SI", "NO"};
@@ -104,8 +109,9 @@ public class TabellaLibri extends TabellaLibriBase{
 						JOptionPane.showMessageDialog(null, "Azione cancellata");
 					}
 				}
+				}
 			}};
-
+		
 			return action;
 	}
 	
