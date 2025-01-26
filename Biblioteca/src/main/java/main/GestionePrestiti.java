@@ -90,6 +90,26 @@ public class GestionePrestiti {
 	    } catch (SQLException e) {
 	        logger.error("Errore durante l'aggiornamento del prestito per id_libro '{}'.", idLibro, e);
 	    }
+	};
+	
+	public static void eliminaPrenotazione(int idLibro) {
+	    String sqlDelete = "DELETE FROM prenotazioni WHERE id_libro = ?";
+
+	    try (Connection conn = DatabaseManager.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sqlDelete)) {
+
+	        pstmt.setInt(1, idLibro);
+
+	        int rowsDeleted = pstmt.executeUpdate();
+
+	        if (rowsDeleted > 0) {
+	            logger.info("Prenotazione eliminata per id_libro '{}'.", idLibro);
+	        } else {
+	            logger.warn("Nessuna prenotazione trovata per id_libro '{}'.", idLibro);
+	        }
+	    } catch (SQLException e) {
+	        logger.error("Errore durante l'eliminazione della prenotazione per id_libro '{}'.", idLibro, e);
+	    }
 	}
 
 

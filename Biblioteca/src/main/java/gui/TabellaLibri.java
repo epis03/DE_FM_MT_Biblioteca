@@ -23,6 +23,7 @@ import javax.swing.table.TableRowSorter;
 import main.GestioneLibri;
 import main.GestionePrestiti;
 import main.Libro;
+import main.Stato;
 
 
 public class TabellaLibri extends TabellaLibriBase{
@@ -48,7 +49,14 @@ public class TabellaLibri extends TabellaLibriBase{
 		List<Libro> lista = GestioneLibri.getListaLibri(true);
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
-			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+			Stato stato;
+			if(libro.getStato()!= Stato.NON_DISPONOBILE) {
+				stato = Stato.DISPONIBILE;
+			}
+			else {
+				stato = Stato.NON_DISPONOBILE;
+			}
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), stato, "Prenota"});
 		}
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
 		table.setRowSorter(sorter);
@@ -88,6 +96,9 @@ public class TabellaLibri extends TabellaLibriBase{
 						DefaultTableModel model = (DefaultTableModel) table.getModel();
 						int id=GestioneLibri.prenotaLibro((String)model.getValueAt(riga, 0), (String)model.getValueAt(riga, 1));
 						GestionePrestiti.prenotaLibro(email, id);
+						if(GestioneLibri.getLibroId(id).getCopie()==0) {
+							model.setValueAt("NON_DISPONIBILE", riga, 3);
+						}
 						JOptionPane.showMessageDialog(null, "Libro prenotato con successo");
 					} else if (choice == 1) {
 						JOptionPane.showMessageDialog(null, "Azione cancellata");
