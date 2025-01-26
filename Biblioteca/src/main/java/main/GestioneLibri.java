@@ -175,9 +175,9 @@ public class GestioneLibri {
                 String genere = rs.getString("genere");
                 Stato stato = Stato.valueOf(rs.getString("stato"));
                 int copie = rs.getInt("copie");
-                LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
-                LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
-
+                LocalDate inizioPrestito = rs.getDate("inizio_prestito") != null ? rs.getDate("inizio_prestito").toLocalDate() : null;
+                LocalDate finePrestito = rs.getDate("fine_prestito") != null ? rs.getDate("fine_prestito").toLocalDate() : null;
+                
                 Libro libro = LibroFactory.createLibro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
                 libri.add(libro);
             }
@@ -220,8 +220,8 @@ public class GestioneLibri {
                 String genere = rs.getString("genere");
                 Stato stato = Stato.valueOf(rs.getString("stato"));
                 int copie = rs.getInt("copie");
-                LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
-                LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
+                LocalDate inizioPrestito = rs.getDate("inizio_prestito") != null ? rs.getDate("inizio_prestito").toLocalDate() : null;
+                LocalDate finePrestito = rs.getDate("fine_prestito") != null ? rs.getDate("fine_prestito").toLocalDate() : null;
 
                 Libro libro = LibroFactory.createLibro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
                 libri.add(libro);
@@ -246,8 +246,8 @@ public class GestioneLibri {
                 String autore = rs.getString("autore");
                 Stato stato = Stato.valueOf(rs.getString("stato"));
                 int copie = rs.getInt("copie");
-                LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
-                LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
+                LocalDate inizioPrestito = rs.getDate("inizio_prestito") != null ? rs.getDate("inizio_prestito").toLocalDate() : null;
+                LocalDate finePrestito = rs.getDate("fine_prestito") != null ? rs.getDate("fine_prestito").toLocalDate() : null;
 
                 Libro libro = LibroFactory.createLibro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
                 libri.add(libro);
@@ -273,8 +273,8 @@ public class GestioneLibri {
                 String genere = rs.getString("genere");
                 Stato stato = Stato.valueOf(rs.getString("stato"));
                 int copie = rs.getInt("copie");
-                LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
-                LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
+                LocalDate inizioPrestito = rs.getDate("inizio_prestito") != null ? rs.getDate("inizio_prestito").toLocalDate() : null;
+                LocalDate finePrestito = rs.getDate("fine_prestito") != null ? rs.getDate("fine_prestito").toLocalDate() : null;
 
                 Libro libro = LibroFactory.createLibro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
                 libri.add(libro);
@@ -300,8 +300,8 @@ public class GestioneLibri {
                 int id = rs.getInt("id");
                 Stato stato = Stato.valueOf(rs.getString("stato"));
                 int copie = rs.getInt("copie");
-                LocalDate inizioPrestito = rs.getDate("inizio_prestito").toLocalDate();
-                LocalDate finePrestito = rs.getDate("fine_prestito").toLocalDate();
+                LocalDate inizioPrestito = rs.getDate("inizio_prestito") != null ? rs.getDate("inizio_prestito").toLocalDate() : null;
+                LocalDate finePrestito = rs.getDate("fine_prestito") != null ? rs.getDate("fine_prestito").toLocalDate() : null;
 
                 Libro libro = LibroFactory.createLibro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
                 libri.add(libro);

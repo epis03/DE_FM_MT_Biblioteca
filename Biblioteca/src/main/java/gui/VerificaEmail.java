@@ -53,7 +53,7 @@ public class VerificaEmail extends InserimentoCodice {
 					GestioneUtenti gestione = new GestioneUtenti();
 					if(gestione.registraUtente(email, password)) {
 					Arrays.fill(password, '\0');
-					JOptionPane.showMessageDialog(null, "Utente:" + email +  "registrato correttamente");
+					JOptionPane.showMessageDialog(null, "Utente:" + email +  " registrato correttamente");
 					Home.chiudiRegistrazione();
 					VerificaEmail.this.dispose();
 					}

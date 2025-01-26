@@ -42,7 +42,7 @@ public class DatabaseManager {
         		"id_libro INTEGER NOT NULL, " +
         		"inizio_prestito DATE, " +
         		"fine_prestito DATE, " +
-        		"data_prenotazione DATE " +
+        		"data_prenotazione DATE, " +
         		"data_fineprenotazione DATE" +
         		");";
         		

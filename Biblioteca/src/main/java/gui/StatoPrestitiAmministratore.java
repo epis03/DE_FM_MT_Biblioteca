@@ -60,7 +60,7 @@ public class StatoPrestitiAmministratore extends StatoPrestiti {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
-			model.addRow(new Object[]{ libro.getId(),libro.getStato(),libro.getFinePrestito(), "Cambia Stato"});
+			model.addRow(new Object[]{ libro.getId(),libro.getStato(),libro.getFinePrestito() != null ? libro.getFinePrestito() : "", "Cambia Stato"});
 		}
 		ActionListener actionListener = getActionListener();
 		table.getColumnModel().getColumn(4).setCellRenderer(new CustomizedTableRenderer2("Modifica stato"));

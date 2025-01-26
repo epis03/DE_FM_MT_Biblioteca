@@ -152,7 +152,7 @@ public class TabellaLibriAmministratori extends TabellaLibriBase {
 						Object[] opzioni = {"SI", "NO"};
 						int scelta = javax.swing.JOptionPane.showOptionDialog(
 								null,
-								"Vuoi cancelalre questa riga?",
+								"Vuoi cancelarre questa riga?",
 								"Elimina riga",
 								javax.swing.JOptionPane.DEFAULT_OPTION,
 								javax.swing.JOptionPane.PLAIN_MESSAGE,
