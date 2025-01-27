@@ -52,7 +52,7 @@ public class TabellaLibri extends TabellaLibriBase{
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
 			Stato stato;
-			if(libro.getStato()!= Stato.NON_DISPONIBILE) {
+			if(libro.getCopie()==0) {
 				stato = Stato.DISPONIBILE;
 			}
 			else {
@@ -88,9 +88,10 @@ public class TabellaLibri extends TabellaLibriBase{
 				int riga = table.getSelectedRow();
 				if (riga != -1) {
 					Object[] options = {"SI", "NO"};
+					DefaultTableModel model = (DefaultTableModel) table.getModel();
 					int choice = javax.swing.JOptionPane.showOptionDialog(
 							null,
-							"Vuoi prenotare questo libro:",
+							"Vuoi prenotare questo libro: " + (String)model.getValueAt(riga, 0),
 							"Prenotazione",
 							javax.swing.JOptionPane.DEFAULT_OPTION,
 							javax.swing.JOptionPane.PLAIN_MESSAGE,
@@ -99,14 +100,18 @@ public class TabellaLibri extends TabellaLibriBase{
 							options[1]
 							);
 					if (choice == 0) {
-						DefaultTableModel model = (DefaultTableModel) table.getModel();
-						int id=GestioneLibri.prenotaLibro((String)model.getValueAt(riga, 0), (String)model.getValueAt(riga, 1));
+						int id=GestioneLibri.prenotaLibro((String)model.getValueAt(riga, 1), (String)model.getValueAt(riga, 0));
+						if(model.getValueAt( riga, 3)==Stato.DISPONIBILE && id!=-1) {
 						GestionePrestiti.prenotaLibro(email, id);
 						GestioneEmail.prenotazione(email, GestioneLibri.getLibroId(id));
 						if(GestioneLibri.getLibroId(id).getCopie()==0) {
 							model.setValueAt("NON_DISPONIBILE", riga, 3);
 						}
 						JOptionPane.showMessageDialog(null, "Libro prenotato con successo");
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "Impossibile effettuare la prenotazione, libro esaurito");
+						}
 					} else if (choice == 1) {
 						JOptionPane.showMessageDialog(null, "Azione cancellata");
 					}
@@ -122,7 +127,14 @@ public class TabellaLibri extends TabellaLibriBase{
 		model.setRowCount(0);
 		for (int i = 0; i < lista.size(); i++) {
 			Libro libro = lista.get(i);
-			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), libro.getStato(), "Prenota"});
+			Stato stato;
+			if(libro.getCopie()==0) {
+				stato = Stato.NON_DISPONIBILE;
+			}
+			else {
+				stato=Stato.DISPONIBILE;
+			}
+			model.addRow(new Object[]{ libro.getAutore(),libro.getTitolo(),libro.getGenere(), stato, "Prenota"});
 		}
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
 		table.setRowSorter(sorter);

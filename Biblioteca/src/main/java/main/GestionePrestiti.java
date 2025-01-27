@@ -212,7 +212,7 @@ public class GestionePrestiti {
 		}
 
 	}
-	public static void controllaPreenotazioni() {
+	public static void controllaPrenotazioni() {
 		List<Integer> idScaduti = GestionePrestiti.getIdLibriPrenotazioneScaduta();
 		List<Libro> listaLibri = new ArrayList<Libro>();
 		for(int i=0;i<idScaduti.size();i++) {

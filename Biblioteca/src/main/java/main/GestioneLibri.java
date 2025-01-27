@@ -77,52 +77,44 @@ public class GestioneLibri {
         LocalDate finePrestito = inizioPrestito.plusDays(30);
         int libroId = -1;
 
-        String sqlUpdate = "UPDATE libri SET stato = 'PRENOTATO', copie = copie - 1, inizio_prestito = ?, fine_prestito = ? " +
-                           "WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE' AND copie > 0 LIMIT 1";  
-
-        String sqlSelect = "SELECT id FROM libri WHERE titolo = ? AND autore = ? AND stato = 'PRENOTATO'";
-
-        String sqlUpdateStato = "UPDATE libri SET stato = 'NON_DISPONIBILE' WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE'";
+        			           			    
+        String checkSql = "SELECT MIN(id) FROM libri WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE' ";
+        String sqlUpdate = "UPDATE libri SET stato = 'PRENOTATO', inizio_prestito = ?, fine_prestito = ? " +
+            	           "WHERE id = ? ";
+        String sqlUpdateCopie = "UPDATE libri SET copie = copie - 1 WHERE titolo = ? AND autore = ?";
+        String sqlUpdateStato = "UPDATE libri SET stato = 'NON_DISPONIBILE' WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE' AND copie = 0";
 
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate);
-             PreparedStatement pstmtSelect = conn.prepareStatement(sqlSelect);
+             PreparedStatement pstmtCheck = conn.prepareStatement(checkSql);
+        	 PreparedStatement pstmUpdateCopie = conn.prepareStatement(sqlUpdateCopie);
              PreparedStatement pstmtUpdateStato = conn.prepareStatement(sqlUpdateStato)) {
 
-            pstmtUpdate.setDate(1, java.sql.Date.valueOf(inizioPrestito));
-            pstmtUpdate.setDate(2, java.sql.Date.valueOf(finePrestito));
-            pstmtUpdate.setString(3, titolo);  
-            pstmtUpdate.setString(4, autore);  
-
-            int rowsUpdated = pstmtUpdate.executeUpdate();
+        	pstmtCheck.setString(1, titolo);
+        	pstmtCheck.setString(2, autore);
+        	
+        	ResultSet rs = pstmtCheck.executeQuery();
+            if (rs.next()) {
+            	 libroId = rs.getInt(1);
+        		  pstmtUpdate.setDate(1, java.sql.Date.valueOf(inizioPrestito));
+                  pstmtUpdate.setDate(2, java.sql.Date.valueOf(finePrestito));
+                  pstmtUpdate.setInt(3, libroId);  
+                   
+              
+                  int rowsUpdated = pstmtUpdate.executeUpdate();
 
             if (rowsUpdated > 0) {
-                pstmtSelect.setString(1, titolo);
-                pstmtSelect.setString(2, autore);
-                try (ResultSet rs = pstmtSelect.executeQuery()) {
-                    if (rs.next()) {
-                        libroId = rs.getInt("id");
-                    }
-                }
-
-                String checkCopie = "SELECT copie FROM libri WHERE titolo = ? AND autore = ? AND stato = 'DISPONIBILE'";
-                try (PreparedStatement pstmtCheck = conn.prepareStatement(checkCopie)) {
-                    pstmtCheck.setString(1, titolo);
-                    pstmtCheck.setString(2, autore);
-                    try (ResultSet rsCheck = pstmtCheck.executeQuery()) {
-                        int copieDisponibili = 0;
-                        while (rsCheck.next()) {
-                            copieDisponibili += rsCheck.getInt("copie");
-                        }
-
-                        if (copieDisponibili == 0) {
-                            pstmtUpdateStato.setString(1, titolo);
-                            pstmtUpdateStato.setString(2, autore);
-                            pstmtUpdateStato.executeUpdate();
-                        }
-                    }
-                }
-
+                       
+                        pstmUpdateCopie.setString(1, titolo);
+                        pstmUpdateCopie.setString(2, autore);
+                        pstmUpdateCopie.executeUpdate();
+                    
+                
+            }
+            pstmtUpdateStato.setString(1, titolo);
+            pstmtUpdateStato.setString(2, autore);
+            pstmtUpdateStato.executeUpdate();
+                
                 logger.info("Il libro con titolo '{}' e autore '{}' è stato prenotato con successo.", titolo, autore);
             } else {
                 logger.warn("Il libro con titolo '{}' e autore '{}' non è disponibile per la prenotazione.", titolo, autore);
