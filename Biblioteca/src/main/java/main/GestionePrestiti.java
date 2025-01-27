@@ -21,13 +21,14 @@ public class GestionePrestiti {
 		    String sql = "SELECT u.*, p.email " +
 		             "FROM libri u " +
 		             "JOIN prenotazioni p ON u.id = p.id_libro " +
-		             "WHERE u.stato = 'RITIRATO' AND u.fine_prestito < DATE('now') " +
+		             "WHERE u.stato = 'RITIRATO' AND u.fine_prestito < ? " +
 		             "ORDER BY u.id";
-
+		    java.sql.Date today = java.sql.Date.valueOf(java.time.LocalDate.now());
 		    try (Connection conn = DatabaseManager.getConnection();
-		         PreparedStatement pstmt = conn.prepareStatement(sql);
-		         ResultSet rs = pstmt.executeQuery()) {
-
+		         PreparedStatement pstmt = conn.prepareStatement(sql)){
+		      pstmt.setDate(1, today); 
+		         
+		    	try (ResultSet rs = pstmt.executeQuery()) {
 		        while (rs.next()) {
 		            int id = rs.getInt("id");
 		            String titolo = rs.getString("titolo");
@@ -42,6 +43,7 @@ public class GestionePrestiti {
 		            Libro libro = new Libro(id, titolo, autore, genere, stato, copie, inizioPrestito, finePrestito);
 		            libriRitirati.add(libro);
 		        }
+		    	}
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
@@ -73,31 +75,34 @@ public class GestionePrestiti {
 	 
 	 
 	 public static List<Integer> getIdLibriPrenotazioneScaduta() {
-		    List<Integer> idLibriScaduti = new ArrayList<>();
-		    String sql = "SELECT id_libro " +
-		                 "FROM prenotazioni " +
-		                 "WHERE data_fineprenotazione < DATE('now')";
+		 List<Integer> idLibriScaduti = new ArrayList<>();
+		 String sql = "SELECT id_libro " +
+				 "FROM prenotazioni " +
+				 "WHERE data_fineprenotazione < ?";
+		 java.sql.Date today = java.sql.Date.valueOf(java.time.LocalDate.now());
 
-		    try (Connection conn = DatabaseManager.getConnection();
-		         PreparedStatement pstmt = conn.prepareStatement(sql);
-		         ResultSet rs = pstmt.executeQuery()) {
+		 try (Connection conn = DatabaseManager.getConnection();
+				 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-		        while (rs.next()) {
-		            
-		            int idLibro = rs.getInt("id_libro");
-		            idLibriScaduti.add(idLibro);
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-		    return idLibriScaduti;
-		}
-	 
-	 
-	 
-	 
-	 
-	 
+			 pstmt.setDate(1, today); 
+
+			 try (ResultSet rs = pstmt.executeQuery()) {
+				 while (rs.next()) {
+					 int idLibro = rs.getInt("id_libro");
+					 idLibriScaduti.add(idLibro);
+				 }
+			 }
+		 } catch (SQLException e) {
+			 e.printStackTrace();
+		 }
+		 return idLibriScaduti;
+	 }
+
+
+
+
+
+
 	 
 	 
 	 
