@@ -77,10 +77,10 @@ public class Home  {
 		btnNewButton_1.setBounds(364, 232, 135, 70);
 		frame.getContentPane().add(btnNewButton_1);
 
-		lblNewLabel = new JLabel("Nome Biblioteca");
+		lblNewLabel = new JLabel("Biblioteca");
 		lblNewLabel.setForeground(new Color(64, 128, 128));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Verdana", lblNewLabel.getFont().getStyle() | Font.BOLD | Font.ITALIC, 50));
+		lblNewLabel.setFont(new Font("Verdana", lblNewLabel.getFont().getStyle() | Font.BOLD | Font.ITALIC, 55));
 		lblNewLabel.setBounds(0, 34, 583, 153);
 		frame.getContentPane().add(lblNewLabel);
 
